@@ -1,0 +1,636 @@
+[
+  {
+    "file": "frontend/eslint.config.js",
+    "lines": 21,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/vite.config.js",
+    "lines": 12,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/App.jsx",
+    "lines": 716,
+    "handlers": [
+      "Icon",
+      "App",
+      "WelcomeTransition",
+      "Brand",
+      "SplashScreen",
+      "LoginPortal",
+      "submit",
+      "MerchantDashboard",
+      "onMerchantOrder",
+      "handleOrderSoundChange",
+      "handleWalletTransaction",
+      "updateAdditionalCharge",
+      "SettingsPage",
+      "saveProfile",
+      "togglePreference",
+      "removeAccount",
+      "uploadLogo",
+      "SettingsSwitch",
+      "NotificationsMenu",
+      "closeOutside",
+      "closeOnEscape",
+      "EmptyState",
+      "RegistrationPortal",
+      "handleChange",
+      "handleFileChange",
+      "handleSubmit",
+      "DocumentUpload"
+    ],
+    "buttons": 27,
+    "inputs": 26,
+    "fetch_calls": [],
+    "storage_calls": [
+      142,
+      217,
+      225,
+      226,
+      231,
+      232,
+      240,
+      241,
+      242,
+      243
+    ]
+  },
+  {
+    "file": "frontend/src/DeliveryPage.jsx",
+    "lines": 109,
+    "handlers": [
+      "Icon",
+      "dateKey",
+      "statusOf",
+      "readAmount",
+      "formatAmount",
+      "displayDate",
+      "orderItems",
+      "DeliveryPage",
+      "closeOutside",
+      "closeOnEscape"
+    ],
+    "buttons": 7,
+    "inputs": 1,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/main.jsx",
+    "lines": 10,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/MenuPage.jsx",
+    "lines": 158,
+    "handlers": [
+      "Icon",
+      "MenuPage",
+      "onKey",
+      "closeOutside",
+      "closeOnEscape",
+      "closeOutside",
+      "closeOnEscape",
+      "closeOutside",
+      "closeOnEscape",
+      "closeDrawer",
+      "openNew",
+      "editItem",
+      "change",
+      "setSize",
+      "loadImage",
+      "save"
+    ],
+    "buttons": 19,
+    "inputs": 11,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/orderAudio.js",
+    "lines": 75,
+    "handlers": [
+      "getAudioContext",
+      "prepareOrderAudio",
+      "stopOrderAudio",
+      "playOrderAlert"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/OrdersPage.jsx",
+    "lines": 103,
+    "handlers": [
+      "Icon",
+      "dateKey",
+      "OrdersPage",
+      "closeOutside",
+      "closeOnEscape",
+      "readAmount",
+      "formatAmount",
+      "OrderRows"
+    ],
+    "buttons": 7,
+    "inputs": 2,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/transactionAudio.js",
+    "lines": 59,
+    "handlers": [
+      "getContext",
+      "prepareTransactionAudio",
+      "playTransactionResult"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/WalletPage.jsx",
+    "lines": 273,
+    "handlers": [
+      "WalletPage",
+      "addAccount",
+      "requestTransfer",
+      "printReceipt",
+      "PeriodPicker",
+      "closeOutside",
+      "closeOnEscape",
+      "BankLogo",
+      "BankNamePicker",
+      "closeOutside",
+      "closeOnEscape",
+      "BankAccountPicker",
+      "closeOutside",
+      "closeOnEscape"
+    ],
+    "buttons": 24,
+    "inputs": 4,
+    "fetch_calls": [
+      {
+        "line": 46,
+        "source": "fetch('/api/wallet/transfers')"
+      },
+      {
+        "line": 90,
+        "source": "const createResponse = await fetch('/api/wallet/transfers', {"
+      },
+      {
+        "line": 106,
+        "source": "const statusResponse = await fetch(`/api/wallet/transfers/${encodeURIComponent(result.transactionId)}`)"
+      }
+    ],
+    "storage_calls": [
+      23,
+      40,
+      69
+    ]
+  },
+  {
+    "file": "frontend/src/walletReportExports.js",
+    "lines": 195,
+    "handlers": [
+      "download",
+      "reportRows",
+      "crc32",
+      "zip",
+      "downloadBlob",
+      "wordParagraph",
+      "wordCell",
+      "wordTableRow",
+      "downloadWord",
+      "excelCell",
+      "downloadExcel",
+      "downloadPdf"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "frontend/src/WalletReports.jsx",
+    "lines": 133,
+    "handlers": [
+      "reportRow",
+      "isCompleted",
+      "isRejected",
+      "WalletReports",
+      "exportAs"
+    ],
+    "buttons": 5,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/eslint.config.js",
+    "lines": 21,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/vite.config.js",
+    "lines": 11,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/AccountCenter.jsx",
+    "lines": 172,
+    "handlers": [
+      "ContactIcon",
+      "AccountNavIcon",
+      "BankLogo",
+      "BankPicker",
+      "AccountCenter",
+      "saveProfile",
+      "uploadPhoto",
+      "savePassword",
+      "addCard",
+      "deleteCard"
+    ],
+    "buttons": 14,
+    "inputs": 15,
+    "fetch_calls": [],
+    "storage_calls": [
+      76,
+      117,
+      124
+    ]
+  },
+  {
+    "file": "customer/frontend/src/App.jsx",
+    "lines": 225,
+    "handlers": [
+      "FieldIcon",
+      "Brand",
+      "FoodDecorations",
+      "SplashScreen",
+      "Feature",
+      "formatPhone",
+      "passwordStrength",
+      "normalizeCustomerPhone",
+      "readLocalCustomerAccounts",
+      "App",
+      "switchMode",
+      "submit"
+    ],
+    "buttons": 7,
+    "inputs": 14,
+    "fetch_calls": [],
+    "storage_calls": [
+      75,
+      155,
+      160,
+      166,
+      215
+    ]
+  },
+  {
+    "file": "customer/frontend/src/CheckoutPage.jsx",
+    "lines": 154,
+    "handlers": [
+      "sriLankanPhoneDigits",
+      "loadCards",
+      "Steps",
+      "Field",
+      "CardSummary",
+      "CheckoutPage",
+      "changeDetail",
+      "saveNewCard",
+      "continueFromDelivery",
+      "continueToReview",
+      "completeOrder"
+    ],
+    "buttons": 12,
+    "inputs": 5,
+    "fetch_calls": [],
+    "storage_calls": [
+      15,
+      103
+    ]
+  },
+  {
+    "file": "customer/frontend/src/HomePage.jsx",
+    "lines": 340,
+    "handlers": [
+      "Brand",
+      "NavigationIcon",
+      "AccountMenuIcon",
+      "ProfileMenuRow",
+      "RestaurantArt",
+      "HomePage",
+      "closeOnEscape",
+      "closeSuggestions",
+      "beginCheckout",
+      "addPublishedMenuItem",
+      "selectSearchResult",
+      "toggleFavorite",
+      "renderRestaurantCard",
+      "renderFeaturedCard",
+      "changeQuantity",
+      "updateProfile",
+      "openAccount",
+      "completeCheckout",
+      "signOut"
+    ],
+    "buttons": 26,
+    "inputs": 2,
+    "fetch_calls": [
+      {
+        "line": 161,
+        "source": "const loadMenu = () => fetch('/api/menu-items').then((response) => response.ok ? response.json() : []).then((items) => { if (active && Array.isArray(items)) setMenuItems(items) }).catch(() => {})"
+      }
+    ],
+    "storage_calls": [
+      75,
+      85,
+      86,
+      87,
+      90,
+      97,
+      98,
+      150,
+      166,
+      167,
+      196,
+      219,
+      240,
+      244,
+      245,
+      249,
+      259,
+      263
+    ]
+  },
+  {
+    "file": "customer/frontend/src/main.jsx",
+    "lines": 10,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/offersData.js",
+    "lines": 53,
+    "handlers": [
+      "normalizeOffer",
+      "loadCustomerOffers"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [
+      {
+        "line": 44,
+        "source": "const response = await fetch(endpoint, { headers: { Accept: 'application/json' }, signal })"
+      }
+    ],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/OffersPage.jsx",
+    "lines": 114,
+    "handlers": [
+      "OfferSort",
+      "closeOnOutsideClick",
+      "closeOnEscape",
+      "Countdown",
+      "OfferDialog",
+      "copyCode",
+      "OffersPage"
+    ],
+    "buttons": 6,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/OrderTracking.jsx",
+    "lines": 198,
+    "handlers": [
+      "normalizeStage",
+      "formatMoney",
+      "formatPlacedAt",
+      "addressParts",
+      "DeliveryAddress",
+      "OrderMap",
+      "ProgressTimeline",
+      "DriverCard",
+      "OrderTracking",
+      "updateStage",
+      "receiveOrder",
+      "submitIssue",
+      "RestaurantSummary",
+      "OrderSummary"
+    ],
+    "buttons": 5,
+    "inputs": 2,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/orderTrackingService.js",
+    "lines": 42,
+    "handlers": [
+      "getProvider",
+      "subscribeToOrder",
+      "mountTrackingMap",
+      "saveOrderUpdate",
+      "confirmDelivery"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/restaurantData.js",
+    "lines": 41,
+    "handlers": [
+      "mapMerchantRestaurant",
+      "fetchMerchantRestaurants"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [
+      {
+        "line": 36,
+        "source": "const response = await fetch('/api/restaurants')"
+      }
+    ],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/RestaurantExperience.jsx",
+    "lines": 113,
+    "handlers": [
+      "adaptMerchantItem",
+      "ItemDetail",
+      "submit",
+      "RestaurantExperience",
+      "addItem",
+      "changeQuantity"
+    ],
+    "buttons": 12,
+    "inputs": 5,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "customer/frontend/src/rewardPoints.js",
+    "lines": 7,
+    "handlers": [
+      "rewardPoints"
+    ],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "admin/frontend/eslint.config.js",
+    "lines": 21,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "admin/frontend/vite.config.js",
+    "lines": 14,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  },
+  {
+    "file": "admin/frontend/src/App.jsx",
+    "lines": 929,
+    "handlers": [
+      "Icon",
+      "NotificationCenterPage",
+      "FoodieLogo",
+      "StatCard",
+      "OrderStatus",
+      "FoodThumb",
+      "isoDate",
+      "displayDate",
+      "DateRangePicker",
+      "openPicker",
+      "chooseDay",
+      "downloadFile",
+      "zipFiles",
+      "xmlEscape",
+      "createXlsx",
+      "createDocx",
+      "createPdf",
+      "ReportDialog",
+      "exportReport",
+      "ReportExport",
+      "OrdersPage",
+      "chooseSuggestion",
+      "handleSearchKeyDown",
+      "PaymentsPage",
+      "chooseSuggestion",
+      "handleSearchKeyDown",
+      "RefundsPage",
+      "chooseSuggestion",
+      "handleSearchKeyDown",
+      "ComplaintsPage",
+      "couponState",
+      "CouponsOffersPage",
+      "generateCode",
+      "handleCreate",
+      "cancelCoupon",
+      "RestaurantPage",
+      "chooseSuggestion",
+      "onSearchKeyDown",
+      "DeliveryRidersPage",
+      "chooseSuggestion",
+      "handleSearchKeyDown",
+      "AdminDashboard",
+      "openNotification",
+      "handleRestaurantAction",
+      "handleRiderAction",
+      "handlePaymentCancel",
+      "handleRefundDecision",
+      "getLoginCsrfToken",
+      "checkAdminSession",
+      "getAdminCsrfToken",
+      "LoginPage",
+      "handleSubmit",
+      "App",
+      "signOut"
+    ],
+    "buttons": 78,
+    "inputs": 16,
+    "fetch_calls": [
+      {
+        "line": 831,
+        "source": "const response = await fetch('/login', { credentials: 'include', headers: { Accept: 'text/html' } })"
+      },
+      {
+        "line": 841,
+        "source": "const response = await fetch('/api/admin/test', { credentials: 'include', headers: { Accept: 'application/json' } })"
+      },
+      {
+        "line": 848,
+        "source": "const response = await fetch('/api/admin/csrf', { credentials: 'include', headers: { Accept: 'application/json' } })"
+      },
+      {
+        "line": 867,
+        "source": "await fetch('/login', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'text/html' }, body })"
+      },
+      {
+        "line": 916,
+        "source": "await fetch('/logout', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ _csrf: csrf }) })"
+      }
+    ],
+    "storage_calls": [
+      454,
+      471,
+      682,
+      715
+    ]
+  },
+  {
+    "file": "admin/frontend/src/main.jsx",
+    "lines": 10,
+    "handlers": [],
+    "buttons": 0,
+    "inputs": 0,
+    "fetch_calls": [],
+    "storage_calls": []
+  }
+]

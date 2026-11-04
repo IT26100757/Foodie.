@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Colombo",
+  "backend": [
+    {
+      "suite": "com.foodie.CrossPortalHttpTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "policyChangesRequireAdminAndPersistInDatabase",
+        "unsafeRequestsWithoutCsrfAreRejected",
+        "sameDatabaseOrderMovesThroughCustomerMerchantDriverAndAdmin"
+      ]
+    },
+    {
+      "suite": "com.foodie.HttpStartupTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "oneServerServesOriginalBuildsAndCustomerDeepLinks",
+        "actualTomcatServesPublicContractsAndProtectsPrivateOnes"
+      ]
+    },
+    {
+      "suite": "com.foodie.media.CloudinaryImagesTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "disabledUploadsAndInvalidFilesNeverContactCloudinary",
+        "unchangedLegacyReferencesNeedNoCloudWriteAndCannotBeAttachedToAnotherRecord",
+        "uploadUsesServerCredentialsUniqueOwnershipIdAndNeverOverwrites"
+      ]
+    },
+    {
+      "suite": "com.foodie.NewBackendTest",
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "vehicleChangesRequireDocumentsAndAdminReview",
+        "incompleteApplicationsCannotBeApprovedAndSuspensionIsRechecked",
+        "simultaneousDriversCannotBothAccept",
+        "driverRegistrationVerificationDocumentsAndApproval",
+        "passwordsAndSuspensionsInvalidateOperationalAccess",
+        "rejectionEmailsAndPermissionChecks",
+        "customerFavoritesAndRewardsArePersistentAndPrivate",
+        "driverBankAndAvailabilityValidateActualContract",
+        "guestCheckoutUsesCatalogPricesAndScopedAccessToken",
+        "driverEmailChangesRequireVerifiedCode",
+        "identicalProductNamesKeepRestaurantPricesAndCloudinaryReferencesSeparate",
+        "sessionCsrfAndAdminFormLogin",
+        "notificationsArePrivateAndReadStateIsPerAccount",
+        "chargeConsentAndRefundsNeverClaimUnverifiedSettlement",
+        "restaurantOwnershipAndRealLocationFilters",
+        "guestExtraChargeNeedsMatchingPrivateTokenAndExactCurrentAmount",
+        "browserMenuAliasNeverBecomesDatabaseId",
+        "pickupCannotEnterDriverQueueAndCashCannotBeDuplicated",
+        "orderTotalsIdempotencyOwnershipAndCardUnavailability",
+        "rewardsAreReservedAndCancellationRestoresThem",
+        "reviewsSupportOwnedCrudAndRejectDuplicates",
+        "bankEncryptionPayoutReservationsAndVerifiedSettlement",
+        "merchantCanSaveLegacyMenuWithNullImageCropAndKeepDatabaseId",
+        "merchantApprovalIsPersistentAndMailFailureCannotUndoIt",
+        "documentDownloadsArePrivate",
+        "passwordRecoveryUsesEmailProofAndRevokesPriorSessions",
+        "actualDriverContractDeliveryAndEarnings",
+        "pendingUsersCanReadStatusButCannotOperate",
+        "complaintsNotificationsAndReportsUsePersistentRecords",
+        "concurrentPayoutsCannotOverdrawCollectedFunds",
+        "malformedInputsAndHistoricalPricesAreProtected",
+        "offersAreDatabaseBackedAndApplyServerSide",
+        "customerRegistrationIsImmediateAndRejectsDuplicates"
+      ]
+    }
+  ],
+  "total_backend_tests": 41,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "frontend_contract_tests": 3,
+  "frontend_builds": {
+    "customer": "passed",
+    "merchant": "passed",
+    "driver": "passed",
+    "admin": "passed"
+  },
+  "database": "Isolated H2 memory; never live Aiven",
+  "cloudinary": "mocked; no live uploads/deletes",
+  "email": "mocked success/failure; no inbox delivery claim",
+  "browser_workflow": {
+    "final_run": {
+      "restaurant_id": 1,
+      "menu_item_id": 1,
+      "menu_price": 1050,
+      "delivery_fee": 150,
+      "order_id": 1,
+      "total": 1200,
+      "customer": "Delivered",
+      "merchant": "Completed",
+      "driver": "Pickup/completion recorded",
+      "admin": "Delivered, same order/customer/restaurant/item/total",
+      "cash_payment": "PENDING; not falsely collected"
+    },
+    "earlier_run": "Same workflow at price1000/total1150; review saved and Admin suspend/reactivate; H2 reset before final run",
+    "runtime": "Actual original React browser interfaces, development ports proxied to one safe H2 Spring Boot backend18081"
+  },
+  "live_services_unverified": [
+    "Aiven connectivity/CA/MySQL migration compatibility",
+    "Cloudinary real uploads",
+    "SMTP inbox delivery",
+    "device GPS/routing/ETA",
+    "card gateway/tokenization",
+    "bank execution/actual cash collection",
+    "deployed HTTPS/reverse proxy"
+  ],
+  "approved_controls_browser": {
+    "admin_policy": "Delivery fee150\u2192200 saved, reopened and used by new checkout; prior order1200 preserved",
+    "customer_extra_charge": "Order2 at1250; Merchant proposal75; explicit acceptance1325 persisted across refresh and matched Admin/Merchant",
+    "guest_extra_charge": "Private token, wrong token, null/stale amount and replay covered by isolated backend test"
+  },
+  "github_handoff": {
+    "repository_or_commits_created": false,
+    "module_packs": 6,
+    "gitignore_cases_passed": 20
+  },
+  "source_only_checkout_simulation": {
+    "git_repository_created": false,
+    "files_copied": 266,
+    "generated_files_excluded": true,
+    "frontend_builds": 4,
+    "backend_tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "dependencies": "Reused cached npm/Maven dependencies; no fresh remote dependency download or GitHub clone claimed"
+  },
+  "merchant_browser_readouts": {
+    "orders": 2,
+    "average_order_value": 1262.5,
+    "repeat_customers": 1,
+    "feedback": "Actual completed-order Customer review visible in Merchant",
+    "design": "Existing readout areas/classes/CSS preserved; no invented graph"
+  }
+}

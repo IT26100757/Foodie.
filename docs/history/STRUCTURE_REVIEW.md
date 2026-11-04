@@ -1,0 +1,7 @@
+# Architecture simplification review
+
+The initial 71 classes were split across 41 packages. Unnecessary fragmentation was the main complexity: a four-class feature used separate one-class controller/model/repository/service packages. These are now feature packages for Customer, Delivery, Driver, Notification and Review. Order and Operations combine their small persistence groups in data packages; controller/service pairs stay together. Restaurant and Payment retain separate model/repository groups because combining them would violate the five-file cap. User role models remain together for visible inheritance and polymorphism.
+
+Final: 71 Java files, 22 packages, maximum five Java files per package including tests. No classes or behaviors were removed solely to reduce the count. GuestOrderController intentionally separates unauthenticated guest access from authenticated account operations. DomainEntity, AppUser, BankCipher and validation utilities serve actual persistence, OOP/security or reuse needs. No custom repository abstraction, DTO-per-field hierarchy or interface-per-service layer was added. Request records are nested in their owning service/controller. Complete clean verify was rerun after all package/import moves: 31 tests passed.
+
+No frontend source/build changes. Backend source is newly authored; old application backend is excluded. API integration still requires permission and is separately listed. See BACKEND_STRUCTURE.txt for every Java file.

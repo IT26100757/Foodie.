@@ -1,0 +1,132 @@
+Java sources (main+test): 79
+Exact packages: 25
+Maximum files per exact package: 5
+
+com.foodie [4]
+  backend\src\main\java\com\foodie\FoodieApplication.java
+  backend\src\test\java\com\foodie\CrossPortalHttpTest.java
+  backend\src\test\java\com\foodie\HttpStartupTest.java
+  backend\src\test\java\com\foodie\NewBackendTest.java
+
+com.foodie.browser [1]
+  backend\src\test\java\com\foodie\browser\BrowserTestFixtures.java
+
+com.foodie.common [2]
+  backend\src\main\java\com\foodie\common\DomainEntity.java
+  backend\src\main\java\com\foodie\common\Inputs.java
+
+com.foodie.config [4]
+  backend\src\main\java\com\foodie\config\AdminSetup.java
+  backend\src\main\java\com\foodie\config\Errors.java
+  backend\src\main\java\com\foodie\config\SecurityConfig.java
+  backend\src\main\java\com\foodie\config\WebPortals.java
+
+com.foodie.customer [4]
+  backend\src\main\java\com\foodie\customer\CustomerController.java
+  backend\src\main\java\com\foodie\customer\CustomerService.java
+  backend\src\main\java\com\foodie\customer\Favorite.java
+  backend\src\main\java\com\foodie\customer\FavoriteRepository.java
+
+com.foodie.delivery [4]
+  backend\src\main\java\com\foodie\delivery\Delivery.java
+  backend\src\main\java\com\foodie\delivery\DeliveryController.java
+  backend\src\main\java\com\foodie\delivery\DeliveryRepository.java
+  backend\src\main\java\com\foodie\delivery\DeliveryService.java
+
+com.foodie.driver [2]
+  backend\src\main\java\com\foodie\driver\DriverController.java
+  backend\src\main\java\com\foodie\driver\DriverService.java
+
+com.foodie.media [2]
+  backend\src\main\java\com\foodie\media\CloudinaryImages.java
+  backend\src\test\java\com\foodie\media\CloudinaryImagesTest.java
+
+com.foodie.notification [3]
+  backend\src\main\java\com\foodie\notification\Notification.java
+  backend\src\main\java\com\foodie\notification\NotificationRepository.java
+  backend\src\main\java\com\foodie\notification\NotificationService.java
+
+com.foodie.operations [2]
+  backend\src\main\java\com\foodie\operations\OperationsController.java
+  backend\src\main\java\com\foodie\operations\OperationsService.java
+
+com.foodie.operations.data [4]
+  backend\src\main\java\com\foodie\operations\data\Complaint.java
+  backend\src\main\java\com\foodie\operations\data\ComplaintRepository.java
+  backend\src\main\java\com\foodie\operations\data\Offer.java
+  backend\src\main\java\com\foodie\operations\data\OfferRepository.java
+
+com.foodie.order [3]
+  backend\src\main\java\com\foodie\order\GuestOrderController.java
+  backend\src\main\java\com\foodie\order\OrderController.java
+  backend\src\main\java\com\foodie\order\OrderService.java
+
+com.foodie.order.data [4]
+  backend\src\main\java\com\foodie\order\data\FoodOrder.java
+  backend\src\main\java\com\foodie\order\data\FoodOrderRepository.java
+  backend\src\main\java\com\foodie\order\data\OrderLine.java
+  backend\src\main\java\com\foodie\order\data\OrderLineRepository.java
+
+com.foodie.payment [3]
+  backend\src\main\java\com\foodie\payment\BankCipher.java
+  backend\src\main\java\com\foodie\payment\PaymentService.java
+  backend\src\main\java\com\foodie\payment\WalletController.java
+
+com.foodie.payment.model [4]
+  backend\src\main\java\com\foodie\payment\model\BankAccount.java
+  backend\src\main\java\com\foodie\payment\model\Payment.java
+  backend\src\main\java\com\foodie\payment\model\Payout.java
+  backend\src\main\java\com\foodie\payment\model\Refund.java
+
+com.foodie.payment.repository [4]
+  backend\src\main\java\com\foodie\payment\repository\BankAccountRepository.java
+  backend\src\main\java\com\foodie\payment\repository\PaymentRepository.java
+  backend\src\main\java\com\foodie\payment\repository\PayoutRepository.java
+  backend\src\main\java\com\foodie\payment\repository\RefundRepository.java
+
+com.foodie.restaurant [2]
+  backend\src\main\java\com\foodie\restaurant\RestaurantController.java
+  backend\src\main\java\com\foodie\restaurant\RestaurantService.java
+
+com.foodie.restaurant.model [3]
+  backend\src\main\java\com\foodie\restaurant\model\MenuItem.java
+  backend\src\main\java\com\foodie\restaurant\model\MenuSize.java
+  backend\src\main\java\com\foodie\restaurant\model\Restaurant.java
+
+com.foodie.restaurant.repository [3]
+  backend\src\main\java\com\foodie\restaurant\repository\MenuItemRepository.java
+  backend\src\main\java\com\foodie\restaurant\repository\MenuSizeRepository.java
+  backend\src\main\java\com\foodie\restaurant\repository\RestaurantRepository.java
+
+com.foodie.review [4]
+  backend\src\main\java\com\foodie\review\Review.java
+  backend\src\main\java\com\foodie\review\ReviewController.java
+  backend\src\main\java\com\foodie\review\ReviewRepository.java
+  backend\src\main\java\com\foodie\review\ReviewService.java
+
+com.foodie.settings [3]
+  backend\src\main\java\com\foodie\settings\BusinessPolicy.java
+  backend\src\main\java\com\foodie\settings\BusinessPolicyRepository.java
+  backend\src\main\java\com\foodie\settings\BusinessPolicyService.java
+
+com.foodie.user [2]
+  backend\src\main\java\com\foodie\user\AppUserRepository.java
+  backend\src\main\java\com\foodie\user\UserService.java
+
+com.foodie.user.controller [3]
+  backend\src\main\java\com\foodie\user\controller\AdminController.java
+  backend\src\main\java\com\foodie\user\controller\ApplicationController.java
+  backend\src\main\java\com\foodie\user\controller\AuthController.java
+
+com.foodie.user.document [4]
+  backend\src\main\java\com\foodie\user\document\Document.java
+  backend\src\main\java\com\foodie\user\document\DocumentRepository.java
+  backend\src\main\java\com\foodie\user\document\VehicleChange.java
+  backend\src\main\java\com\foodie\user\document\VehicleChangeRepository.java
+
+com.foodie.user.model [5]
+  backend\src\main\java\com\foodie\user\model\AdminUser.java
+  backend\src\main\java\com\foodie\user\model\AppUser.java
+  backend\src\main\java\com\foodie\user\model\CustomerUser.java
+  backend\src\main\java\com\foodie\user\model\MerchantUser.java
+  backend\src\main\java\com\foodie\user\model\RiderUser.java

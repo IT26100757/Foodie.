@@ -1,0 +1,4 @@
+ALTER TABLE nf_orders ADD COLUMN points INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE nf_orders ADD COLUMN redeemed_points INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE nf_orders ADD COLUMN offer_id BIGINT;
+ALTER TABLE nf_orders ADD FOREIGN KEY(offer_id) REFERENCES nf_offers(id);

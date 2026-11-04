@@ -1,0 +1,2 @@
+.provider-map-layer{position:absolute;z-index:0;inset:0;overflow:hidden}.provider-map-layer>*{width:100%;height:100%}.tracking-map.provider-map-mounted .map-art{display:none}.tracking-map.provider-map-mounted .map-demo-label{display:none}.tracking-map.provider-map-mounted .map-chip{z-index:1}
+.tracking-map.provider-map-mounted .map-chip{display:none!important}

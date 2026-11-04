@@ -1,0 +1,70 @@
+{
+  "environment": "H2 memory, live cloud credentials removed, SMTP/uploads disabled",
+  "routes": [
+    {
+      "route": "/",
+      "status": 200,
+      "assets_checked": [
+        "/assets/index-C7VJ0PTH.js",
+        "/assets/index-0urPMqdc.css"
+      ]
+    },
+    {
+      "route": "/login",
+      "status": 200,
+      "assets_checked": [
+        "/assets/index-C7VJ0PTH.js",
+        "/assets/index-0urPMqdc.css"
+      ]
+    },
+    {
+      "route": "/store/1",
+      "status": 200,
+      "assets_checked": [
+        "/assets/index-C7VJ0PTH.js",
+        "/assets/index-0urPMqdc.css"
+      ]
+    },
+    {
+      "route": "/checkout",
+      "status": 200,
+      "assets_checked": [
+        "/assets/index-C7VJ0PTH.js",
+        "/assets/index-0urPMqdc.css"
+      ]
+    },
+    {
+      "route": "/track-order",
+      "status": 200,
+      "assets_checked": [
+        "/assets/index-C7VJ0PTH.js",
+        "/assets/index-0urPMqdc.css"
+      ]
+    },
+    {
+      "route": "/merchant/",
+      "status": 200,
+      "assets_checked": [
+        "/merchant/assets/index-D74z5gdh.js",
+        "/merchant/assets/index-B9up4vlv.css"
+      ]
+    },
+    {
+      "route": "/driver/",
+      "status": 200,
+      "assets_checked": [
+        "/driver/assets/index-CuG8LYor.js",
+        "/driver/assets/index-CHDb-kf_.css"
+      ]
+    },
+    {
+      "route": "/admin/",
+      "status": 200,
+      "assets_checked": [
+        "/admin/assets/index-Os0qOm1V.js",
+        "/admin/assets/index-BIZUZt9q.css"
+      ]
+    }
+  ],
+  "driver_original_image": "200 image/png"
+}

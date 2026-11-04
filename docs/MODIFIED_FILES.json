@@ -1,0 +1,457 @@
+[
+  {
+    "path": "backend/src/main/java/com/foodie/config/AdminSetup.java",
+    "change": "modified",
+    "sha256": "8aac8e663b27d321043b615815491dd3e9a0d8074dc1ce9eaa61316dfb618aad"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/config/SecurityConfig.java",
+    "change": "modified",
+    "sha256": "97aabf8f74fdfb66501fb2a734aaa6584331f75cbab9fc5e45748e0b1d810601"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/config/WebPortals.java",
+    "change": "added",
+    "sha256": "fd037d08fe81e71cf23f36605fc10a80081e1dce55937973e3f49a3b5ae4987d"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/customer/CustomerController.java",
+    "change": "modified",
+    "sha256": "ca79e4ec203170db5a6206a7dafb5f23836c84dcf8acce4ea3531ebdbada5f56"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/customer/CustomerService.java",
+    "change": "modified",
+    "sha256": "4d55595fc1792a6e9d99072a3eee7eadbf8877b35457c89f4123143105546f05"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/customer/FavoriteRepository.java",
+    "change": "modified",
+    "sha256": "3a7ce145ada6e7c707118469a7d85f6394a9f0a2ecb145d723a68f150fc1ba8b"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/delivery/Delivery.java",
+    "change": "modified",
+    "sha256": "c1e8f2e149a432854aaa80a0c8e9af3f0371faa9704598064c27a247ff6e2f99"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/delivery/DeliveryController.java",
+    "change": "modified",
+    "sha256": "8db51022ae1a9d1f0e944d4bd13f2d7780a47ea589ed0593ac9f5f89308785ee"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/delivery/DeliveryRepository.java",
+    "change": "modified",
+    "sha256": "069ce1d3032486592d0e480aa5ca20e8adc2b951e3e7973621db4f588614c89d"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/delivery/DeliveryService.java",
+    "change": "modified",
+    "sha256": "5f5b3ef3916efd98d16289fe2e3c5df3418774a1bcfe241bcd9ea93f369ad222"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/driver/DriverController.java",
+    "change": "modified",
+    "sha256": "a494d29dbe1ee037482d38f70200ec9748fcdbeeb8949a41b67a171ec3794a4f"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/driver/DriverService.java",
+    "change": "modified",
+    "sha256": "421e3d260247bc94b092c4f833e0e7533aeaabdfc23826a8b0bd09e2bb09ba95"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/media/CloudinaryImages.java",
+    "change": "added",
+    "sha256": "6e1e7de5e64107d858b3b600d7b6162c2918d360cf57baf60c53679738122745"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/notification/NotificationRepository.java",
+    "change": "modified",
+    "sha256": "0251fd27455965edd36a73e58f214a568dcc3ea07c4758ffc68a4c22b2cb5085"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/notification/NotificationService.java",
+    "change": "modified",
+    "sha256": "6e58d7c76dd8c8dec3e1712b2c6eb69e662550a58612aa64875afbe878d2ef49"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/operations/data/Complaint.java",
+    "change": "modified",
+    "sha256": "d472aacb4790274f968ff2d6e8af8119f21dc4738f342c15923f7da910b10020"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/operations/data/ComplaintRepository.java",
+    "change": "modified",
+    "sha256": "ceb428f7206ad650aed677ce4297099816ebe6175a31fdc07c221dfeb9ef5290"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/operations/data/OfferRepository.java",
+    "change": "modified",
+    "sha256": "281d784df6e3b7c0a83c377a3f1e4a18e315fd7b6fcd648eda6f5a399d6e2206"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/operations/OperationsController.java",
+    "change": "modified",
+    "sha256": "cf158934a78464adeebf016693c7f1969be4183df234cce9f1f32cb3fcf166e1"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/operations/OperationsService.java",
+    "change": "modified",
+    "sha256": "eec09b0de9be3079889ef37b4c39b7e0324937534c5bb93a3e51d4c00fff715b"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/data/FoodOrder.java",
+    "change": "modified",
+    "sha256": "ce2b3e28a2aac6da33fe2ba802edd5651b643a356dbb8ec45b766415fdd8315b"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/data/FoodOrderRepository.java",
+    "change": "modified",
+    "sha256": "ba25c22ce40e03c99507cc6c38e707d07c908e5e7ee318f4e6193b704da4551f"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/data/OrderLine.java",
+    "change": "modified",
+    "sha256": "72714277a6db735b1316f56ec6051ee41216b4a3e148f2638738a2b569b42f7c"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/data/OrderLineRepository.java",
+    "change": "modified",
+    "sha256": "72bacbb506511b0252cf2bd7a88cb1653f90504c78993db3d859ddf3b4d2661f"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/GuestOrderController.java",
+    "change": "modified",
+    "sha256": "bfcfff391259224674047863574c5e76c631c42c20406578e6f6df50d238cd49"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/OrderController.java",
+    "change": "modified",
+    "sha256": "98d764a5a3118c2dcebd3d5a906f3818474e12d5cd2f8b02b53efb5971b05680"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/order/OrderService.java",
+    "change": "modified",
+    "sha256": "c47803baf73a0c339228cdba8ddea0a46f0acc2a43f3a1b6c106804e0ea2daa7"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/payment/PaymentService.java",
+    "change": "modified",
+    "sha256": "85bb9821b110d8ecad09ea361c4bd7a92223385a2334b6e9fe5938273c6f4295"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/payment/WalletController.java",
+    "change": "modified",
+    "sha256": "e55165827cee7cb6ef77f0fdf639b949e99109e7abcddd85a57f3db5caed7165"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/restaurant/model/MenuItem.java",
+    "change": "modified",
+    "sha256": "5badc3d9ea184ebe52941a194cff1115767abdb3c0ad75310fcfc8ab63cb03cf"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/restaurant/model/Restaurant.java",
+    "change": "modified",
+    "sha256": "252dc4b3a8e1adcecc35947db394452b904cdb90e87b602075c53e46942e8ee6"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/restaurant/RestaurantController.java",
+    "change": "modified",
+    "sha256": "ef7a476778447581055f2a43206c9a59527fc12c83840b12c7842df682437a8a"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/restaurant/RestaurantService.java",
+    "change": "modified",
+    "sha256": "7a3f6049a4dce5d8cb7d005db977e2dea44fb391b97b3a389d42eb77d445afdc"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/review/ReviewController.java",
+    "change": "modified",
+    "sha256": "bf394a441740db315ab877fe8d4d43204b141584633c591191216ff3e49de436"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/review/ReviewRepository.java",
+    "change": "modified",
+    "sha256": "abee8afe2da1c2e59b0b0a25ab7127645778aa5d69ce401d0660a8a854451b47"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/review/ReviewService.java",
+    "change": "modified",
+    "sha256": "1eb9d7796765e39402f70415511becfa2047277dfba3a7025c3fc96f4d1da543"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/settings/BusinessPolicy.java",
+    "change": "added",
+    "sha256": "3a0850c4657a80bb05ddbfe6739e2566292040bffb7fd7b0bb691b09540a063c"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/settings/BusinessPolicyRepository.java",
+    "change": "added",
+    "sha256": "b1b31705953351a302c095bc1178613d5f9f45d938f953c92a5dab9c19c9c5e6"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/settings/BusinessPolicyService.java",
+    "change": "added",
+    "sha256": "1791b64d0d171e8d6ba4a83d70f3b87705fadb99519167ac100edf0c7ded6635"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/controller/AdminController.java",
+    "change": "modified",
+    "sha256": "f4424454f94cf4c109e9840307acb81b4aa917287cd8932686b10b3cc22f1b3a"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/controller/ApplicationController.java",
+    "change": "modified",
+    "sha256": "ec91a4248f108908a4dcc320638e3df6a54b28d441e7d8774005d61ba9b996e7"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/controller/AuthController.java",
+    "change": "modified",
+    "sha256": "35b8cf0ce7bc4ede091250899e9776cc163e242f0dce3f81e8a0eabcc4d91d66"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/model/AppUser.java",
+    "change": "modified",
+    "sha256": "531134e64eef6e76aa245fb97fb7bd75159c19495fb7978e6553504b027b0a71"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/model/RiderUser.java",
+    "change": "modified",
+    "sha256": "4de1aaef14968c75b548680ba947505640edca8d2b1ced179dcf5666a904b10b"
+  },
+  {
+    "path": "backend/src/main/java/com/foodie/user/UserService.java",
+    "change": "modified",
+    "sha256": "d1bb9fdf2b34eafc1c45fe8a3f41f372b599c4753b62a244ef1be86eba36b888"
+  },
+  {
+    "path": "backend/src/main/resources/application.properties",
+    "change": "modified",
+    "sha256": "81064ae44596597ccefb671b9235226169431a942d12426f6394ad7a29295859"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V10__order_instructions.sql",
+    "change": "added",
+    "sha256": "3114af9b991acc8d0775b6d89d8d60d254cc16848da1deeccef37414f6a41c0e"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V11__discount_breakdown.sql",
+    "change": "added",
+    "sha256": "bf82833d67ba5407b679c6a64fb9962285506bbcccf1231391467af6b0bc76b2"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V12__delivery_rate_snapshot.sql",
+    "change": "added",
+    "sha256": "6d7460ed75dce2fbf8246429a648b13af8de4384d2c6cbedc97f3e05b149fee5"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V13__cloudinary_image_references.sql",
+    "change": "added",
+    "sha256": "844f4f22edbc934a2b16494018ca1c482201da0f005537c3a28648481917496f"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V6__business_policies.sql",
+    "change": "added",
+    "sha256": "60465a61c2eb8d4823be92a52f49da8ea593abdd2d34f6c87f48be6f7af76508"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V7__profile_photo.sql",
+    "change": "added",
+    "sha256": "be7446e6e723e22a0aa7c1c07d4b60128b04bf8ed3903af387f6a871391754e8"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V8__restaurant_image_capacity.sql",
+    "change": "added",
+    "sha256": "8873cd9f0db8a8da7fa7cf9e9887ced1fa1a2b2321866fc1e0ec9263094de341"
+  },
+  {
+    "path": "backend/src/main/resources/db/migration/V9__complaint_type.sql",
+    "change": "added",
+    "sha256": "f90d01ab14d4784efe81786c8fa10044a013bd0b348eb75105fec44021adf304"
+  },
+  {
+    "path": "backend/src/test/java/com/foodie/browser/BrowserTestFixtures.java",
+    "change": "added",
+    "sha256": "9fbfb28f3a39eb86b53442bdd411c69d0f433553b8ce7e4f039d2f2682857a52"
+  },
+  {
+    "path": "backend/src/test/java/com/foodie/CrossPortalHttpTest.java",
+    "change": "added",
+    "sha256": "b6559f6bf7aa7f4670e3a7088acad10d8573b1056d0db7fce140619fa98a8c11"
+  },
+  {
+    "path": "backend/src/test/java/com/foodie/HttpStartupTest.java",
+    "change": "modified",
+    "sha256": "9e690341d49a0238306d84a83f5fb08a0b950d2b1ed8087ba23fea8df93a81df"
+  },
+  {
+    "path": "backend/src/test/java/com/foodie/media/CloudinaryImagesTest.java",
+    "change": "added",
+    "sha256": "211f1b5622a78dbcd1bdfd0acbd5b15d079bb57d2f54947e703a09aa8ef56c84"
+  },
+  {
+    "path": "backend/src/test/java/com/foodie/NewBackendTest.java",
+    "change": "modified",
+    "sha256": "f1d4cb0b0f0e6ed98916c1f1f7e5e4638c7d11c2e4ff9801772cbbd69c244dc7"
+  },
+  {
+    "path": "backend/src/test/resources/application-test.properties",
+    "change": "modified",
+    "sha256": "be84eb05de45092adfddc03161dc33d8fef75f6a401f0d5f0e6a1caf12adfcae"
+  },
+  {
+    "path": "frontend/admin/src/adminApi.js",
+    "change": "added",
+    "sha256": "fb095dbe82ee4d0f45fef79c4bbed5864059e4940eab07f3752a16d1b937199e"
+  },
+  {
+    "path": "frontend/admin/src/api.js",
+    "change": "added",
+    "sha256": "bbaf0800428c5c22017c11cad21d58d8f7c28462ceba723078cf75dff970ea29"
+  },
+  {
+    "path": "frontend/admin/src/App.jsx",
+    "change": "modified",
+    "sha256": "3934445ca7cfeaf5e4648e793baa51caf4aaa5e95d2a608309635b18c0f3a4af"
+  },
+  {
+    "path": "frontend/admin/vite.config.js",
+    "change": "modified",
+    "sha256": "a193ed91849b217fa71c27181a5816fba0f191b160e4a7206040979fb5037669"
+  },
+  {
+    "path": "frontend/customer/src/AccountCenter.jsx",
+    "change": "modified",
+    "sha256": "e84af06d307d821fda746c12b47e2c90854d5078a249de72f498643f59dc7313"
+  },
+  {
+    "path": "frontend/customer/src/api.js",
+    "change": "added",
+    "sha256": "bbaf0800428c5c22017c11cad21d58d8f7c28462ceba723078cf75dff970ea29"
+  },
+  {
+    "path": "frontend/customer/src/App.jsx",
+    "change": "modified",
+    "sha256": "fbe17862729cc8b3f5e3530f1bbb8a0143b6a35c597bc3dc28704d611ad32685"
+  },
+  {
+    "path": "frontend/customer/src/CheckoutPage.jsx",
+    "change": "modified",
+    "sha256": "63410616de5d9847b0c2d8381251b9a31b7bb6da80bad405bb80f4c74f536471"
+  },
+  {
+    "path": "frontend/customer/src/customerApi.js",
+    "change": "added",
+    "sha256": "e635c2eaf6e626ec845518c02287236df851fbac051685327fbb08489d4f00dc"
+  },
+  {
+    "path": "frontend/customer/src/HomePage.jsx",
+    "change": "modified",
+    "sha256": "e3da1e4b3c4dafb49c9ccc2a3ec371df0b92481215f1e05520a4cb64f1d0856c"
+  },
+  {
+    "path": "frontend/customer/src/offersData.js",
+    "change": "modified",
+    "sha256": "28cc4c139449e81bd63e9c064320dc2f2189b8ec9bbd23838f843f2366bb6e3c"
+  },
+  {
+    "path": "frontend/customer/src/OffersPage.jsx",
+    "change": "modified",
+    "sha256": "f5ab9e49a74d77c45ed88f3df813ef5d71c86c51d0e7a9c004d43d7866f1cfd2"
+  },
+  {
+    "path": "frontend/customer/src/OrderTracking.jsx",
+    "change": "modified",
+    "sha256": "a8fcf5c9411ed81f94672596d141d13f8763635ae3d2a38a18db3ec0c3d5509b"
+  },
+  {
+    "path": "frontend/customer/src/orderTrackingService.js",
+    "change": "modified",
+    "sha256": "9937425a262fd443cfe7783027739184c84bcdab8f3cf2e7e7b4ee548ab9cbf2"
+  },
+  {
+    "path": "frontend/customer/src/restaurantData.js",
+    "change": "modified",
+    "sha256": "66107705d0b47b75d1272604c81ad2ebe46efabad53951529986318bab791010"
+  },
+  {
+    "path": "frontend/customer/src/RestaurantExperience.jsx",
+    "change": "modified",
+    "sha256": "85f8efd655a9a597f461c2a44f9efb2d7e05c94b2e6db0d52465184aa0fd2685"
+  },
+  {
+    "path": "frontend/customer/test/api-contracts.test.mjs",
+    "change": "added",
+    "sha256": "29c130529b44796d495cde495a7b17c0764aa6b01404c90cb40e9916bdf7fe92"
+  },
+  {
+    "path": "frontend/customer/vite.config.js",
+    "change": "modified",
+    "sha256": "66b29c4780f462957482ec3e9c25dff89047e08eea38fdca71aede46e5c19eb9"
+  },
+  {
+    "path": "frontend/driver/src/api.js",
+    "change": "added",
+    "sha256": "bbaf0800428c5c22017c11cad21d58d8f7c28462ceba723078cf75dff970ea29"
+  },
+  {
+    "path": "frontend/driver/src/App.jsx",
+    "change": "modified",
+    "sha256": "916eb281a701bdd636b545338e84269f995b66809a568b15645ada5e16fae06f"
+  },
+  {
+    "path": "frontend/driver/vite.config.js",
+    "change": "modified",
+    "sha256": "1ef48979d366da23c60255ea62226c2262ff974adef754929abb06a51745096a"
+  },
+  {
+    "path": "frontend/merchant/src/api.js",
+    "change": "added",
+    "sha256": "bbaf0800428c5c22017c11cad21d58d8f7c28462ceba723078cf75dff970ea29"
+  },
+  {
+    "path": "frontend/merchant/src/App.jsx",
+    "change": "modified",
+    "sha256": "0992cc30d81f3aab04da2962a83dd39213fcf6bcaca1edda19f615eb54c9f9cb"
+  },
+  {
+    "path": "frontend/merchant/src/DeliveryPage.jsx",
+    "change": "modified",
+    "sha256": "ff77cd2ceffe0f44e6786037d0b7caa4610c04e0e00d5194cc20748ceaa4e31f"
+  },
+  {
+    "path": "frontend/merchant/src/MenuPage.jsx",
+    "change": "modified",
+    "sha256": "9bb41fb27d7033c0ef1f3c250e22d2885c9d7a5bfbaf3e777894d25c78e2c866"
+  },
+  {
+    "path": "frontend/merchant/src/merchantApi.js",
+    "change": "added",
+    "sha256": "f0e69a4fdb1e195dda8e8d6e43fecd3b9e7aede3693a9d367f98f09da4ce87b4"
+  },
+  {
+    "path": "frontend/merchant/src/OrdersPage.jsx",
+    "change": "modified",
+    "sha256": "690e587a1f9572c20a2e2611dd29ab6807a9fa6320ac036d612eb58938315ff3"
+  },
+  {
+    "path": "frontend/merchant/src/WalletPage.jsx",
+    "change": "modified",
+    "sha256": "31d961168076492300cc8d4f6661171ed1ef5e2bd19641de684d8e8d3d876add"
+  },
+  {
+    "path": "frontend/merchant/src/walletReportExports.js",
+    "change": "modified",
+    "sha256": "eee00c7481d064696a6ef276cc58b47d7dd9ba36e2fed0e9f2e9dc9ac1305ba0"
+  },
+  {
+    "path": "frontend/merchant/src/WalletReports.jsx",
+    "change": "modified",
+    "sha256": "c0b0aed6d7b167a43f6de09c4350fd116f3af9140e9e964ff667bfc98dff9b7a"
+  },
+  {
+    "path": "frontend/merchant/vite.config.js",
+    "change": "modified",
+    "sha256": "909df23d7f0b344c0c785a45289761c7b6c2c6992d2b7babc9f7ae44c7ba6d6b"
+  }
+]

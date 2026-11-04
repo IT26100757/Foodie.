@@ -1,0 +1,51 @@
+{
+  "backend_source_files_unchanged": 79,
+  "backend_test_totals": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "java_files": 71,
+  "packages": 22,
+  "max_files_per_package": 5,
+  "frontend_build_command": "npm run build -- --configLoader native",
+  "frontend_builds": {
+    "customer": "passed",
+    "merchant": "passed",
+    "driver": "passed",
+    "admin": "passed"
+  },
+  "config_changes": [
+    {
+      "old_path": "customer/frontend/vite.config.js",
+      "new_path": "frontend/customer/vite.config.js",
+      "original_sha256": "2bdff66d85e1acd18bf245c2335a642a0dd39933b35d28443a38c27dd8756d78",
+      "current_sha256": "1ce62e0e864313956622d03480db5eccf79e7e854b6f30e45893e2f4033eb692",
+      "unchanged": false
+    },
+    {
+      "old_path": "frontend/vite.config.js",
+      "new_path": "frontend/merchant/vite.config.js",
+      "original_sha256": "52fda8575a4ba2eb1f82efc7183de677eee0678c0ec74daeca20fffdfadc8536",
+      "current_sha256": "27180d622aefd856d22bc437412076c0329302f6412c760f15d6b8dbcb3249cf",
+      "unchanged": false
+    },
+    {
+      "old_path": "driver/frontend/vite.config.js",
+      "new_path": "frontend/driver/vite.config.js",
+      "original_sha256": "e1eefd0ed1639c88d1213884ef760516884db9e168190e223fee6b063ad3e088",
+      "current_sha256": "ac34cfe58d8aa6b0e7d2c2391fba07aca93262859f8c5dc52ad050783d565b8b",
+      "unchanged": false
+    },
+    {
+      "old_path": "admin/frontend/vite.config.js",
+      "new_path": "frontend/admin/vite.config.js",
+      "original_sha256": "b5b9079f99e173c4fb6464aa7235646694c0a22362ab7e785f58988ebb2c9f4b",
+      "current_sha256": "bd2f21df9dd5a4ceed2560027d9097ee817c2c21e51845d3320ce7977b76f373",
+      "unchanged": false
+    }
+  ],
+  "business_logic_changed": false,
+  "frontend_integration_complete": false
+}

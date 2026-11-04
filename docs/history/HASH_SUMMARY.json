@@ -1,0 +1,22 @@
+{
+  "Customer": {
+    "source_files": 40,
+    "build_files": 11,
+    "mismatches": 0
+  },
+  "Merchant": {
+    "source_files": 28,
+    "build_files": 7,
+    "mismatches": 0
+  },
+  "Driver": {
+    "source_files": 18,
+    "build_files": 7,
+    "mismatches": 0
+  },
+  "Admin": {
+    "source_files": 16,
+    "build_files": 5,
+    "mismatches": 0
+  }
+}

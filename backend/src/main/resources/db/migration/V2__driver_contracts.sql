@@ -1,0 +1,10 @@
+ALTER TABLE nf_users ADD COLUMN license_number VARCHAR(255);
+ALTER TABLE nf_users ADD COLUMN birth_date DATE;
+ALTER TABLE nf_users ADD COLUMN online BOOLEAN DEFAULT FALSE;
+ALTER TABLE nf_users ADD COLUMN latitude DOUBLE;
+ALTER TABLE nf_users ADD COLUMN longitude DOUBLE;
+ALTER TABLE nf_menu_items ADD COLUMN client_id VARCHAR(80) UNIQUE;
+CREATE TABLE nf_delivery_declines (order_id BIGINT NOT NULL,rider_id BIGINT NOT NULL,PRIMARY KEY(order_id,rider_id),FOREIGN KEY(order_id) REFERENCES nf_orders(id),FOREIGN KEY(rider_id) REFERENCES nf_users(id));
+CREATE TABLE nf_vehicle_changes (id BIGINT AUTO_INCREMENT PRIMARY KEY,version BIGINT NOT NULL DEFAULT 0,user_id BIGINT NOT NULL,registration VARCHAR(40),status VARCHAR(30),created_at TIMESTAMP(6),FOREIGN KEY(user_id) REFERENCES nf_users(id));
+ALTER TABLE nf_documents ADD COLUMN vehicle_change_id BIGINT;
+ALTER TABLE nf_documents ADD FOREIGN KEY(vehicle_change_id) REFERENCES nf_vehicle_changes(id);

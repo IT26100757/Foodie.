@@ -1,0 +1,1005 @@
+{
+  "frontends": {
+    "frontend/customer": {
+      "original_file_count": 51,
+      "unchanged_files": 50,
+      "config_changes": 1,
+      "files": [
+        {
+          "old_path": "customer/frontend/.gitignore",
+          "new_path": "frontend/customer/.gitignore",
+          "original_sha256": "d50ab07e11fa4bf3b1c7c3312e1d7baeab56cca756832ccf40476823ad2a38b7",
+          "current_sha256": "d50ab07e11fa4bf3b1c7c3312e1d7baeab56cca756832ccf40476823ad2a38b7",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/eslint.config.js",
+          "new_path": "frontend/customer/eslint.config.js",
+          "original_sha256": "9f9b44b8e55768eaf86e417b96919510b12055d87806e0e2f0703c5a0eb64817",
+          "current_sha256": "9f9b44b8e55768eaf86e417b96919510b12055d87806e0e2f0703c5a0eb64817",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/index.html",
+          "new_path": "frontend/customer/index.html",
+          "original_sha256": "8c2a6aa6ce22a2678c664c6e073bd2cf8941bf775a81e5402206b0ce374078f4",
+          "current_sha256": "8c2a6aa6ce22a2678c664c6e073bd2cf8941bf775a81e5402206b0ce374078f4",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/ORDER_TRACKING_INTEGRATION.md",
+          "new_path": "frontend/customer/ORDER_TRACKING_INTEGRATION.md",
+          "original_sha256": "cfedda0c65cb773bd5351d7943c647169462587610595ee9ecb309d1288d2598",
+          "current_sha256": "cfedda0c65cb773bd5351d7943c647169462587610595ee9ecb309d1288d2598",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/package-lock.json",
+          "new_path": "frontend/customer/package-lock.json",
+          "original_sha256": "a62e916daa666cdc89695b5cbae34e22536cfad9917d8ba311b5355ad0360aa0",
+          "current_sha256": "a62e916daa666cdc89695b5cbae34e22536cfad9917d8ba311b5355ad0360aa0",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/package.json",
+          "new_path": "frontend/customer/package.json",
+          "original_sha256": "7c954d85a017b5778852b1ec04a4d612488d7448bd5a8ea5d525ffbbc4dec491",
+          "current_sha256": "7c954d85a017b5778852b1ec04a4d612488d7448bd5a8ea5d525ffbbc4dec491",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/README.md",
+          "new_path": "frontend/customer/README.md",
+          "original_sha256": "a2648adf2f4e92d188d79e14c2b26e207bb0654e90beb5d99e7eb594d995fe65",
+          "current_sha256": "a2648adf2f4e92d188d79e14c2b26e207bb0654e90beb5d99e7eb594d995fe65",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/vite.config.js",
+          "new_path": "frontend/customer/vite.config.js",
+          "original_sha256": "2bdff66d85e1acd18bf245c2335a642a0dd39933b35d28443a38c27dd8756d78",
+          "current_sha256": "1ce62e0e864313956622d03480db5eccf79e7e854b6f30e45893e2f4033eb692",
+          "unchanged": false
+        },
+        {
+          "old_path": "customer/frontend/dist/bank-logo-sheet.png",
+          "new_path": "frontend/customer/dist/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/favicon.svg",
+          "new_path": "frontend/customer/dist/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/icons.svg",
+          "new_path": "frontend/customer/dist/icons.svg",
+          "original_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "current_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/index.html",
+          "new_path": "frontend/customer/dist/index.html",
+          "original_sha256": "9c8a8ad6367cb6476ddeb59ef0163b026d2b9a9e5c1ff55426be185f93350bd2",
+          "current_sha256": "9c8a8ad6367cb6476ddeb59ef0163b026d2b9a9e5c1ff55426be185f93350bd2",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/bank-logo-sheet.png",
+          "new_path": "frontend/customer/public/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/favicon.svg",
+          "new_path": "frontend/customer/public/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/icons.svg",
+          "new_path": "frontend/customer/public/icons.svg",
+          "original_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "current_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/AccountCenter.css",
+          "new_path": "frontend/customer/src/AccountCenter.css",
+          "original_sha256": "5bbd287bf025ea7379af0c1c95edfc13bfe0bb8d81f4aa3ab96466a9280efc53",
+          "current_sha256": "5bbd287bf025ea7379af0c1c95edfc13bfe0bb8d81f4aa3ab96466a9280efc53",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/AccountCenter.jsx",
+          "new_path": "frontend/customer/src/AccountCenter.jsx",
+          "original_sha256": "41b896329a920fab550214476186d40f1aeafa2394a19e63cc8de97b56040381",
+          "current_sha256": "41b896329a920fab550214476186d40f1aeafa2394a19e63cc8de97b56040381",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/App.css",
+          "new_path": "frontend/customer/src/App.css",
+          "original_sha256": "42cdb24516c030be0f98b491df0a71a17a74c85010f802be3e97a0863c35c9b8",
+          "current_sha256": "42cdb24516c030be0f98b491df0a71a17a74c85010f802be3e97a0863c35c9b8",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/App.jsx",
+          "new_path": "frontend/customer/src/App.jsx",
+          "original_sha256": "8b7605178d2d70e7478cdecacc4f71f091ec6952a278ed8dbb33ed5d0357ea74",
+          "current_sha256": "8b7605178d2d70e7478cdecacc4f71f091ec6952a278ed8dbb33ed5d0357ea74",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/CheckoutPage.css",
+          "new_path": "frontend/customer/src/CheckoutPage.css",
+          "original_sha256": "1d182e306d17d35f107240e311b8492669961b4fb67faf7585cd1016af6790d6",
+          "current_sha256": "1d182e306d17d35f107240e311b8492669961b4fb67faf7585cd1016af6790d6",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/CheckoutPage.jsx",
+          "new_path": "frontend/customer/src/CheckoutPage.jsx",
+          "original_sha256": "519ddff0bdb7633855f456f3e1337daec0ad37e6dd651aaa99df5ac2e4869802",
+          "current_sha256": "519ddff0bdb7633855f456f3e1337daec0ad37e6dd651aaa99df5ac2e4869802",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/HomePage.css",
+          "new_path": "frontend/customer/src/HomePage.css",
+          "original_sha256": "dc74ecbe90012f69c67897f26567104274954fc93807736df72af8175d0a40fa",
+          "current_sha256": "dc74ecbe90012f69c67897f26567104274954fc93807736df72af8175d0a40fa",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/HomePage.jsx",
+          "new_path": "frontend/customer/src/HomePage.jsx",
+          "original_sha256": "51b4839018695733cc540fd950acbdb1f0b6af86384541fa47d81d23b5ff066e",
+          "current_sha256": "51b4839018695733cc540fd950acbdb1f0b6af86384541fa47d81d23b5ff066e",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/index.css",
+          "new_path": "frontend/customer/src/index.css",
+          "original_sha256": "c1cfba803b47222d9eb5679292d496424eeacd09a0225dd6d7afa9d43c35aa4e",
+          "current_sha256": "c1cfba803b47222d9eb5679292d496424eeacd09a0225dd6d7afa9d43c35aa4e",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/main.jsx",
+          "new_path": "frontend/customer/src/main.jsx",
+          "original_sha256": "ae81f1c01f2c8018a1ba5cf73171921c8982d90b049bb6b039ea82f8e1dec958",
+          "current_sha256": "ae81f1c01f2c8018a1ba5cf73171921c8982d90b049bb6b039ea82f8e1dec958",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/offersData.js",
+          "new_path": "frontend/customer/src/offersData.js",
+          "original_sha256": "9f70b33f2c72ed913eea24481132f2ad0cb8cda2f63050f9790fd6869ef4bb56",
+          "current_sha256": "9f70b33f2c72ed913eea24481132f2ad0cb8cda2f63050f9790fd6869ef4bb56",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/OffersPage.css",
+          "new_path": "frontend/customer/src/OffersPage.css",
+          "original_sha256": "632780355b603e2c803cfa4ce7ef76550ea84ee0d802d04f249239417cb567e4",
+          "current_sha256": "632780355b603e2c803cfa4ce7ef76550ea84ee0d802d04f249239417cb567e4",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/OffersPage.jsx",
+          "new_path": "frontend/customer/src/OffersPage.jsx",
+          "original_sha256": "5d209378d41a5edccce4e134ff5b69c68e87a793a2d71df51bcc47cc06a298b9",
+          "current_sha256": "5d209378d41a5edccce4e134ff5b69c68e87a793a2d71df51bcc47cc06a298b9",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/OrderTracking.css",
+          "new_path": "frontend/customer/src/OrderTracking.css",
+          "original_sha256": "4106d345a0fa5930c17f337ae05c70ca72199b8bda9921bffaf8c60b85397b47",
+          "current_sha256": "4106d345a0fa5930c17f337ae05c70ca72199b8bda9921bffaf8c60b85397b47",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/OrderTracking.jsx",
+          "new_path": "frontend/customer/src/OrderTracking.jsx",
+          "original_sha256": "b59d3f2887d9659c472fc4e4fc13e4b72d8098c9bbf68d1d712d876933d9725d",
+          "current_sha256": "b59d3f2887d9659c472fc4e4fc13e4b72d8098c9bbf68d1d712d876933d9725d",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/OrderTrackingProvider.css",
+          "new_path": "frontend/customer/src/OrderTrackingProvider.css",
+          "original_sha256": "76e65c60e126a2dd87634b0bd22f1ffd5052c971a847cd75da2bc6b345e21de3",
+          "current_sha256": "76e65c60e126a2dd87634b0bd22f1ffd5052c971a847cd75da2bc6b345e21de3",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/orderTrackingService.js",
+          "new_path": "frontend/customer/src/orderTrackingService.js",
+          "original_sha256": "8f77241b8f800336ef9186dda944252239e692e014b6bdb049fc71e19e88cad6",
+          "current_sha256": "8f77241b8f800336ef9186dda944252239e692e014b6bdb049fc71e19e88cad6",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/restaurantData.js",
+          "new_path": "frontend/customer/src/restaurantData.js",
+          "original_sha256": "311767ad96ad0386bdf99038b6d1117b7810d0c1db272990163079d31ddf5706",
+          "current_sha256": "311767ad96ad0386bdf99038b6d1117b7810d0c1db272990163079d31ddf5706",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/RestaurantExperience.css",
+          "new_path": "frontend/customer/src/RestaurantExperience.css",
+          "original_sha256": "9398b21e57425d996326d7e1787efb408650676255bb592e821b4e92a0b39d4b",
+          "current_sha256": "9398b21e57425d996326d7e1787efb408650676255bb592e821b4e92a0b39d4b",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/RestaurantExperience.jsx",
+          "new_path": "frontend/customer/src/RestaurantExperience.jsx",
+          "original_sha256": "e5d2bb979c4266e432da777e5f78f656c7fb5b4c681f8b4eceb5834f5713f9f9",
+          "current_sha256": "e5d2bb979c4266e432da777e5f78f656c7fb5b4c681f8b4eceb5834f5713f9f9",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/rewardPoints.js",
+          "new_path": "frontend/customer/src/rewardPoints.js",
+          "original_sha256": "4e5d55e4d7b0a600561de20cfeb7ac28d74f4b5da17cc854044fc40c1cb81741",
+          "current_sha256": "4e5d55e4d7b0a600561de20cfeb7ac28d74f4b5da17cc854044fc40c1cb81741",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/assets/index-0urPMqdc.css",
+          "new_path": "frontend/customer/dist/assets/index-0urPMqdc.css",
+          "original_sha256": "9c32631fc34ce83f7134ab2979ac0ada708a939431194d480e4deabb7d761446",
+          "current_sha256": "9c32631fc34ce83f7134ab2979ac0ada708a939431194d480e4deabb7d761446",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/assets/index-Dfsj2-VJ.js",
+          "new_path": "frontend/customer/dist/assets/index-Dfsj2-VJ.js",
+          "original_sha256": "ee3f2ec05e23dab560667855262b5406d3ab1729026bf7953adf7cc59cddf3e4",
+          "current_sha256": "ee3f2ec05e23dab560667855262b5406d3ab1729026bf7953adf7cc59cddf3e4",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/backgrounds/discovery-food-photo.png",
+          "new_path": "frontend/customer/dist/backgrounds/discovery-food-photo.png",
+          "original_sha256": "88541f51f9be9eb9d74cb9af5d52ef996c6b16a6a49fa3ab083203ac21e23728",
+          "current_sha256": "88541f51f9be9eb9d74cb9af5d52ef996c6b16a6a49fa3ab083203ac21e23728",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/banners/discover-local-favorites.jpg",
+          "new_path": "frontend/customer/dist/banners/discover-local-favorites.jpg",
+          "original_sha256": "8b56ac2b29f5b4eebc9b6c0f09dea1ec2d2acc9d3b5f02a8852703bb2c99c5c5",
+          "current_sha256": "8b56ac2b29f5b4eebc9b6c0f09dea1ec2d2acc9d3b5f02a8852703bb2c99c5c5",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/banners/faster-delivery.jpg",
+          "new_path": "frontend/customer/dist/banners/faster-delivery.jpg",
+          "original_sha256": "3e5eb8a54015d356a17565377213c25491da83ef09580dcf100f77d10f051fec",
+          "current_sha256": "3e5eb8a54015d356a17565377213c25491da83ef09580dcf100f77d10f051fec",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/banners/good-food-together.jpg",
+          "new_path": "frontend/customer/dist/banners/good-food-together.jpg",
+          "original_sha256": "2357b5610d1643381eb07c8fd1c38264b1bed058cb4a76d4f4bbfc6651aeebe7",
+          "current_sha256": "2357b5610d1643381eb07c8fd1c38264b1bed058cb4a76d4f4bbfc6651aeebe7",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/dist/banners/local-food-love-delivered.jpg",
+          "new_path": "frontend/customer/dist/banners/local-food-love-delivered.jpg",
+          "original_sha256": "6ca1e5980adc469709881d4d38962da9368899b103f47727eb5e6c8375f04e41",
+          "current_sha256": "6ca1e5980adc469709881d4d38962da9368899b103f47727eb5e6c8375f04e41",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/backgrounds/discovery-food-photo.png",
+          "new_path": "frontend/customer/public/backgrounds/discovery-food-photo.png",
+          "original_sha256": "88541f51f9be9eb9d74cb9af5d52ef996c6b16a6a49fa3ab083203ac21e23728",
+          "current_sha256": "88541f51f9be9eb9d74cb9af5d52ef996c6b16a6a49fa3ab083203ac21e23728",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/banners/discover-local-favorites.jpg",
+          "new_path": "frontend/customer/public/banners/discover-local-favorites.jpg",
+          "original_sha256": "8b56ac2b29f5b4eebc9b6c0f09dea1ec2d2acc9d3b5f02a8852703bb2c99c5c5",
+          "current_sha256": "8b56ac2b29f5b4eebc9b6c0f09dea1ec2d2acc9d3b5f02a8852703bb2c99c5c5",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/banners/faster-delivery.jpg",
+          "new_path": "frontend/customer/public/banners/faster-delivery.jpg",
+          "original_sha256": "3e5eb8a54015d356a17565377213c25491da83ef09580dcf100f77d10f051fec",
+          "current_sha256": "3e5eb8a54015d356a17565377213c25491da83ef09580dcf100f77d10f051fec",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/banners/good-food-together.jpg",
+          "new_path": "frontend/customer/public/banners/good-food-together.jpg",
+          "original_sha256": "2357b5610d1643381eb07c8fd1c38264b1bed058cb4a76d4f4bbfc6651aeebe7",
+          "current_sha256": "2357b5610d1643381eb07c8fd1c38264b1bed058cb4a76d4f4bbfc6651aeebe7",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/public/banners/local-food-love-delivered.jpg",
+          "new_path": "frontend/customer/public/banners/local-food-love-delivered.jpg",
+          "original_sha256": "6ca1e5980adc469709881d4d38962da9368899b103f47727eb5e6c8375f04e41",
+          "current_sha256": "6ca1e5980adc469709881d4d38962da9368899b103f47727eb5e6c8375f04e41",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/assets/hero.png",
+          "new_path": "frontend/customer/src/assets/hero.png",
+          "original_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "current_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/assets/react.svg",
+          "new_path": "frontend/customer/src/assets/react.svg",
+          "original_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "current_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "unchanged": true
+        },
+        {
+          "old_path": "customer/frontend/src/assets/vite.svg",
+          "new_path": "frontend/customer/src/assets/vite.svg",
+          "original_sha256": "2f1f6c6f90a0ef7422cbb4cfafcd8ad329c507a18afdc34cc21fa72179b9c54a",
+          "current_sha256": "2f1f6c6f90a0ef7422cbb4cfafcd8ad329c507a18afdc34cc21fa72179b9c54a",
+          "unchanged": true
+        }
+      ]
+    },
+    "frontend/merchant": {
+      "original_file_count": 35,
+      "unchanged_files": 34,
+      "config_changes": 1,
+      "files": [
+        {
+          "old_path": "frontend/.gitignore",
+          "new_path": "frontend/merchant/.gitignore",
+          "original_sha256": "d50ab07e11fa4bf3b1c7c3312e1d7baeab56cca756832ccf40476823ad2a38b7",
+          "current_sha256": "d50ab07e11fa4bf3b1c7c3312e1d7baeab56cca756832ccf40476823ad2a38b7",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/eslint.config.js",
+          "new_path": "frontend/merchant/eslint.config.js",
+          "original_sha256": "9f9b44b8e55768eaf86e417b96919510b12055d87806e0e2f0703c5a0eb64817",
+          "current_sha256": "9f9b44b8e55768eaf86e417b96919510b12055d87806e0e2f0703c5a0eb64817",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/index.html",
+          "new_path": "frontend/merchant/index.html",
+          "original_sha256": "efe2f9aa7779e8a21ed71c220218b25a67b9c12ace66ad3ed02b181ce4e44a1d",
+          "current_sha256": "efe2f9aa7779e8a21ed71c220218b25a67b9c12ace66ad3ed02b181ce4e44a1d",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/package-lock.json",
+          "new_path": "frontend/merchant/package-lock.json",
+          "original_sha256": "126a019c077bbe69d05ef24ff013338a4e5e216855715a169dbd64be6e0db6b9",
+          "current_sha256": "126a019c077bbe69d05ef24ff013338a4e5e216855715a169dbd64be6e0db6b9",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/package.json",
+          "new_path": "frontend/merchant/package.json",
+          "original_sha256": "530d3b39f66c90c6685329052692e0adb634437a2d388f3ceba707e5affc66b8",
+          "current_sha256": "530d3b39f66c90c6685329052692e0adb634437a2d388f3ceba707e5affc66b8",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/README.md",
+          "new_path": "frontend/merchant/README.md",
+          "original_sha256": "a2648adf2f4e92d188d79e14c2b26e207bb0654e90beb5d99e7eb594d995fe65",
+          "current_sha256": "a2648adf2f4e92d188d79e14c2b26e207bb0654e90beb5d99e7eb594d995fe65",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/vite.config.js",
+          "new_path": "frontend/merchant/vite.config.js",
+          "original_sha256": "52fda8575a4ba2eb1f82efc7183de677eee0678c0ec74daeca20fffdfadc8536",
+          "current_sha256": "27180d622aefd856d22bc437412076c0329302f6412c760f15d6b8dbcb3249cf",
+          "unchanged": false
+        },
+        {
+          "old_path": "frontend/dist/bank-logo-sheet.png",
+          "new_path": "frontend/merchant/dist/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/favicon.svg",
+          "new_path": "frontend/merchant/dist/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/food-doodle-pattern.jpg",
+          "new_path": "frontend/merchant/dist/food-doodle-pattern.jpg",
+          "original_sha256": "4610c602e84dc824a0c62c1af9d563370464051daef57c93ca0c420e44d081e9",
+          "current_sha256": "4610c602e84dc824a0c62c1af9d563370464051daef57c93ca0c420e44d081e9",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/icons.svg",
+          "new_path": "frontend/merchant/dist/icons.svg",
+          "original_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "current_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/index.html",
+          "new_path": "frontend/merchant/dist/index.html",
+          "original_sha256": "e745d7f9c35d15bd86d3e5b976bc5160490bd789863065fb069f82401efe9833",
+          "current_sha256": "e745d7f9c35d15bd86d3e5b976bc5160490bd789863065fb069f82401efe9833",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/public/bank-logo-sheet.png",
+          "new_path": "frontend/merchant/public/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/public/favicon.svg",
+          "new_path": "frontend/merchant/public/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/public/food-doodle-pattern.jpg",
+          "new_path": "frontend/merchant/public/food-doodle-pattern.jpg",
+          "original_sha256": "4610c602e84dc824a0c62c1af9d563370464051daef57c93ca0c420e44d081e9",
+          "current_sha256": "4610c602e84dc824a0c62c1af9d563370464051daef57c93ca0c420e44d081e9",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/public/icons.svg",
+          "new_path": "frontend/merchant/public/icons.svg",
+          "original_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "current_sha256": "7ca2d67c9c3aebf50cdc8709ee8aacf8cdb8cc7ea6325ea94939caef5da1c53d",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/App.css",
+          "new_path": "frontend/merchant/src/App.css",
+          "original_sha256": "9f55ddca50fa15978b3eb4acf9b673119a1e23c0ceffc447e603752495738832",
+          "current_sha256": "9f55ddca50fa15978b3eb4acf9b673119a1e23c0ceffc447e603752495738832",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/App.jsx",
+          "new_path": "frontend/merchant/src/App.jsx",
+          "original_sha256": "f60015e66954266aac0398766044710b9dee99ba1e030afe19fdf7b87f6124c6",
+          "current_sha256": "f60015e66954266aac0398766044710b9dee99ba1e030afe19fdf7b87f6124c6",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/DeliveryPage.jsx",
+          "new_path": "frontend/merchant/src/DeliveryPage.jsx",
+          "original_sha256": "ca5dd232a23a03aba0fbcd5625cd0bda363f76cc717e0c1e328c7c5ff6377b47",
+          "current_sha256": "ca5dd232a23a03aba0fbcd5625cd0bda363f76cc717e0c1e328c7c5ff6377b47",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/index.css",
+          "new_path": "frontend/merchant/src/index.css",
+          "original_sha256": "dcae8cfbf457514ba27cf6e5d00acf0882135fbe6b18b1d3533bdd3b48fbc80f",
+          "current_sha256": "dcae8cfbf457514ba27cf6e5d00acf0882135fbe6b18b1d3533bdd3b48fbc80f",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/main.jsx",
+          "new_path": "frontend/merchant/src/main.jsx",
+          "original_sha256": "ae81f1c01f2c8018a1ba5cf73171921c8982d90b049bb6b039ea82f8e1dec958",
+          "current_sha256": "ae81f1c01f2c8018a1ba5cf73171921c8982d90b049bb6b039ea82f8e1dec958",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/MenuPage.jsx",
+          "new_path": "frontend/merchant/src/MenuPage.jsx",
+          "original_sha256": "787f6a7c4e71d26dfa55ebb1c769a1dcff2b56f077d8d7fc76e767ab928e4a44",
+          "current_sha256": "787f6a7c4e71d26dfa55ebb1c769a1dcff2b56f077d8d7fc76e767ab928e4a44",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/orderAudio.js",
+          "new_path": "frontend/merchant/src/orderAudio.js",
+          "original_sha256": "887f0655b404e6d07eda8cff1b253987f2a02fd9e7c25f8120df42fa8a3724f6",
+          "current_sha256": "887f0655b404e6d07eda8cff1b253987f2a02fd9e7c25f8120df42fa8a3724f6",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/orders-integration.md",
+          "new_path": "frontend/merchant/src/orders-integration.md",
+          "original_sha256": "f3b3ef3adb456d53a2ebcaf31470a57090179507e528a5298ffcae5c3e5a5dee",
+          "current_sha256": "f3b3ef3adb456d53a2ebcaf31470a57090179507e528a5298ffcae5c3e5a5dee",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/OrdersPage.jsx",
+          "new_path": "frontend/merchant/src/OrdersPage.jsx",
+          "original_sha256": "52251aaeebf510b6cb07f53fb910c4b1f75094c25fe9f56b2fc2a07f0a1e5434",
+          "current_sha256": "52251aaeebf510b6cb07f53fb910c4b1f75094c25fe9f56b2fc2a07f0a1e5434",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/transactionAudio.js",
+          "new_path": "frontend/merchant/src/transactionAudio.js",
+          "original_sha256": "e931d57d7beea5b62b9d16469b746a9033576d659cddd4e8afe30992945b5a28",
+          "current_sha256": "e931d57d7beea5b62b9d16469b746a9033576d659cddd4e8afe30992945b5a28",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/WalletPage.css",
+          "new_path": "frontend/merchant/src/WalletPage.css",
+          "original_sha256": "c804440eeba1ada5f6fa48e2a79a0ea248bf38b19fca371a91bc6225a0d2e444",
+          "current_sha256": "c804440eeba1ada5f6fa48e2a79a0ea248bf38b19fca371a91bc6225a0d2e444",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/WalletPage.jsx",
+          "new_path": "frontend/merchant/src/WalletPage.jsx",
+          "original_sha256": "ab494546a4246ce1e81b36596e70d711d1ee48def027407de8affbbdd8e29821",
+          "current_sha256": "ab494546a4246ce1e81b36596e70d711d1ee48def027407de8affbbdd8e29821",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/walletReportExports.js",
+          "new_path": "frontend/merchant/src/walletReportExports.js",
+          "original_sha256": "69817babae30499130f55d68dc6584adbe4b8d3d7e4e6592e60950f333c96038",
+          "current_sha256": "69817babae30499130f55d68dc6584adbe4b8d3d7e4e6592e60950f333c96038",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/WalletReports.jsx",
+          "new_path": "frontend/merchant/src/WalletReports.jsx",
+          "original_sha256": "f81dd9eeffc029cdf6adcf87d941da140c98ccf4a168c4cb6f783fc3ead3136a",
+          "current_sha256": "f81dd9eeffc029cdf6adcf87d941da140c98ccf4a168c4cb6f783fc3ead3136a",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/assets/index-I-RzkGeu.css",
+          "new_path": "frontend/merchant/dist/assets/index-I-RzkGeu.css",
+          "original_sha256": "f78ed568aece17a0b7f0236fdad8307a1648c0a2f2808073c9854edd6e2369cb",
+          "current_sha256": "f78ed568aece17a0b7f0236fdad8307a1648c0a2f2808073c9854edd6e2369cb",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/dist/assets/index-mVZPpuXd.js",
+          "new_path": "frontend/merchant/dist/assets/index-mVZPpuXd.js",
+          "original_sha256": "b091bbd7234da1a17ef71f4a1f324e7bedd2b616ca0b1f632a8b1ac1a0a79f60",
+          "current_sha256": "b091bbd7234da1a17ef71f4a1f324e7bedd2b616ca0b1f632a8b1ac1a0a79f60",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/assets/hero.png",
+          "new_path": "frontend/merchant/src/assets/hero.png",
+          "original_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "current_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/assets/react.svg",
+          "new_path": "frontend/merchant/src/assets/react.svg",
+          "original_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "current_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "unchanged": true
+        },
+        {
+          "old_path": "frontend/src/assets/vite.svg",
+          "new_path": "frontend/merchant/src/assets/vite.svg",
+          "original_sha256": "2f1f6c6f90a0ef7422cbb4cfafcd8ad329c507a18afdc34cc21fa72179b9c54a",
+          "current_sha256": "2f1f6c6f90a0ef7422cbb4cfafcd8ad329c507a18afdc34cc21fa72179b9c54a",
+          "unchanged": true
+        }
+      ]
+    },
+    "frontend/driver": {
+      "original_file_count": 25,
+      "unchanged_files": 24,
+      "config_changes": 1,
+      "files": [
+        {
+          "old_path": "driver/frontend/.gitignore",
+          "new_path": "frontend/driver/.gitignore",
+          "original_sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+          "current_sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/eslint.config.js",
+          "new_path": "frontend/driver/eslint.config.js",
+          "original_sha256": "0197d9a843aaae267303c4d1ab1a43afad1afacc7646cdf6cf94a5af6b815fb8",
+          "current_sha256": "0197d9a843aaae267303c4d1ab1a43afad1afacc7646cdf6cf94a5af6b815fb8",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/index.html",
+          "new_path": "frontend/driver/index.html",
+          "original_sha256": "67b571f16b69fd5e27feab5053d062dfae38e97ddb820f26881f05374582d2d7",
+          "current_sha256": "67b571f16b69fd5e27feab5053d062dfae38e97ddb820f26881f05374582d2d7",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/package-lock.json",
+          "new_path": "frontend/driver/package-lock.json",
+          "original_sha256": "fc230ef66b0403973ce57d38d238976f4af245c4158755a22ab95abed1e68fa5",
+          "current_sha256": "fc230ef66b0403973ce57d38d238976f4af245c4158755a22ab95abed1e68fa5",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/package.json",
+          "new_path": "frontend/driver/package.json",
+          "original_sha256": "a7e0f3fe65fe74ff421b66002ded7cb8da9456c6139542790c25b8c24f8a8c01",
+          "current_sha256": "a7e0f3fe65fe74ff421b66002ded7cb8da9456c6139542790c25b8c24f8a8c01",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/README.md",
+          "new_path": "frontend/driver/README.md",
+          "original_sha256": "f73458cf2eddd38b4a9fb6157a97e228931b1f6592ce6425b3e2f3d7a94505ad",
+          "current_sha256": "f73458cf2eddd38b4a9fb6157a97e228931b1f6592ce6425b3e2f3d7a94505ad",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/vite.config.js",
+          "new_path": "frontend/driver/vite.config.js",
+          "original_sha256": "e1eefd0ed1639c88d1213884ef760516884db9e168190e223fee6b063ad3e088",
+          "current_sha256": "ac34cfe58d8aa6b0e7d2c2391fba07aca93262859f8c5dc52ad050783d565b8b",
+          "unchanged": false
+        },
+        {
+          "old_path": "driver/frontend/dist/bank-logo-sheet.png",
+          "new_path": "frontend/driver/dist/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/favicon.svg",
+          "new_path": "frontend/driver/dist/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/icons.svg",
+          "new_path": "frontend/driver/dist/icons.svg",
+          "original_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "current_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/index.html",
+          "new_path": "frontend/driver/dist/index.html",
+          "original_sha256": "0e335b6a37793f1bf5f3a5e935ea87c0e80e4bbaeb97eea534138d8021c73a40",
+          "current_sha256": "0e335b6a37793f1bf5f3a5e935ea87c0e80e4bbaeb97eea534138d8021c73a40",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/rider-scooter-v2.png",
+          "new_path": "frontend/driver/dist/rider-scooter-v2.png",
+          "original_sha256": "86c687925bd98e89ef7156d4734e82c8661dca0c5fee1162226d9ad75794dc9a",
+          "current_sha256": "86c687925bd98e89ef7156d4734e82c8661dca0c5fee1162226d9ad75794dc9a",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/public/bank-logo-sheet.png",
+          "new_path": "frontend/driver/public/bank-logo-sheet.png",
+          "original_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "current_sha256": "f964326599a4928f23d72557a784703eb1bb4af412624355572c1836b1d09377",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/public/favicon.svg",
+          "new_path": "frontend/driver/public/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/public/icons.svg",
+          "new_path": "frontend/driver/public/icons.svg",
+          "original_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "current_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/public/rider-scooter-v2.png",
+          "new_path": "frontend/driver/public/rider-scooter-v2.png",
+          "original_sha256": "86c687925bd98e89ef7156d4734e82c8661dca0c5fee1162226d9ad75794dc9a",
+          "current_sha256": "86c687925bd98e89ef7156d4734e82c8661dca0c5fee1162226d9ad75794dc9a",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/App.css",
+          "new_path": "frontend/driver/src/App.css",
+          "original_sha256": "86cd6093a9c3cd06485918c2d254e9d4310ca146bcc96e58239f9101f08a0624",
+          "current_sha256": "86cd6093a9c3cd06485918c2d254e9d4310ca146bcc96e58239f9101f08a0624",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/App.jsx",
+          "new_path": "frontend/driver/src/App.jsx",
+          "original_sha256": "df014def712473f5099400be15b5cdb07053eb2522b92cfbdb2bb4eb4c63bfab",
+          "current_sha256": "df014def712473f5099400be15b5cdb07053eb2522b92cfbdb2bb4eb4c63bfab",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/index.css",
+          "new_path": "frontend/driver/src/index.css",
+          "original_sha256": "184887c2745419ec976f5d5dbff321b2b3d97d0303bef02f9bf3191964ac971f",
+          "current_sha256": "184887c2745419ec976f5d5dbff321b2b3d97d0303bef02f9bf3191964ac971f",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/main.jsx",
+          "new_path": "frontend/driver/src/main.jsx",
+          "original_sha256": "deeff048606a0994a179cda868c9573e204b47e5c0bb06e21e209a20d9b66124",
+          "current_sha256": "deeff048606a0994a179cda868c9573e204b47e5c0bb06e21e209a20d9b66124",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/assets/index-2QZe6VQc.css",
+          "new_path": "frontend/driver/dist/assets/index-2QZe6VQc.css",
+          "original_sha256": "70e28d48524eaf99a8a7fbb147193794be95d91a8db475f635649630a6d01eb2",
+          "current_sha256": "70e28d48524eaf99a8a7fbb147193794be95d91a8db475f635649630a6d01eb2",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/dist/assets/index-BVRItpHQ.js",
+          "new_path": "frontend/driver/dist/assets/index-BVRItpHQ.js",
+          "original_sha256": "46f56e3811cd96228e22e980856103aa795df7d98d2c00b3a42319defccd024d",
+          "current_sha256": "46f56e3811cd96228e22e980856103aa795df7d98d2c00b3a42319defccd024d",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/assets/hero.png",
+          "new_path": "frontend/driver/src/assets/hero.png",
+          "original_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "current_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/assets/react.svg",
+          "new_path": "frontend/driver/src/assets/react.svg",
+          "original_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "current_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "unchanged": true
+        },
+        {
+          "old_path": "driver/frontend/src/assets/vite.svg",
+          "new_path": "frontend/driver/src/assets/vite.svg",
+          "original_sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+          "current_sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+          "unchanged": true
+        }
+      ]
+    },
+    "frontend/admin": {
+      "original_file_count": 21,
+      "unchanged_files": 20,
+      "config_changes": 1,
+      "files": [
+        {
+          "old_path": "admin/frontend/.gitignore",
+          "new_path": "frontend/admin/.gitignore",
+          "original_sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+          "current_sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/eslint.config.js",
+          "new_path": "frontend/admin/eslint.config.js",
+          "original_sha256": "0197d9a843aaae267303c4d1ab1a43afad1afacc7646cdf6cf94a5af6b815fb8",
+          "current_sha256": "0197d9a843aaae267303c4d1ab1a43afad1afacc7646cdf6cf94a5af6b815fb8",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/index.html",
+          "new_path": "frontend/admin/index.html",
+          "original_sha256": "597b4f662d0c654f1fe3be6af5b3a5645af949f35c89b6f3a5f70c557d2bf86f",
+          "current_sha256": "597b4f662d0c654f1fe3be6af5b3a5645af949f35c89b6f3a5f70c557d2bf86f",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/package-lock.json",
+          "new_path": "frontend/admin/package-lock.json",
+          "original_sha256": "e2b77010cb7035b5f085d682058e70b55bc32c3f8956e63e8cec5e0a94d69760",
+          "current_sha256": "e2b77010cb7035b5f085d682058e70b55bc32c3f8956e63e8cec5e0a94d69760",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/package.json",
+          "new_path": "frontend/admin/package.json",
+          "original_sha256": "18d9f9bddd8f45f7b84f8b20f3eaa84c00e22db94aa35dfcecff55f068e9386a",
+          "current_sha256": "18d9f9bddd8f45f7b84f8b20f3eaa84c00e22db94aa35dfcecff55f068e9386a",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/README.md",
+          "new_path": "frontend/admin/README.md",
+          "original_sha256": "a460b4dc7e6392e76aa54d844c9261b8db0adb7f967ba8300526456f1dcf5fb4",
+          "current_sha256": "a460b4dc7e6392e76aa54d844c9261b8db0adb7f967ba8300526456f1dcf5fb4",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/vite.config.js",
+          "new_path": "frontend/admin/vite.config.js",
+          "original_sha256": "b5b9079f99e173c4fb6464aa7235646694c0a22362ab7e785f58988ebb2c9f4b",
+          "current_sha256": "bd2f21df9dd5a4ceed2560027d9097ee817c2c21e51845d3320ce7977b76f373",
+          "unchanged": false
+        },
+        {
+          "old_path": "admin/frontend/dist/favicon.svg",
+          "new_path": "frontend/admin/dist/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/dist/icons.svg",
+          "new_path": "frontend/admin/dist/icons.svg",
+          "original_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "current_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/dist/index.html",
+          "new_path": "frontend/admin/dist/index.html",
+          "original_sha256": "464abf06bf10e6581724b7efce520aa84972158d78328cb50610b65810273faa",
+          "current_sha256": "464abf06bf10e6581724b7efce520aa84972158d78328cb50610b65810273faa",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/public/favicon.svg",
+          "new_path": "frontend/admin/public/favicon.svg",
+          "original_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "current_sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/public/icons.svg",
+          "new_path": "frontend/admin/public/icons.svg",
+          "original_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "current_sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/App.css",
+          "new_path": "frontend/admin/src/App.css",
+          "original_sha256": "0c7088daacd34127ccb6a5db63ab43be7356119a639ce65e774a28c7ab879aae",
+          "current_sha256": "0c7088daacd34127ccb6a5db63ab43be7356119a639ce65e774a28c7ab879aae",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/App.jsx",
+          "new_path": "frontend/admin/src/App.jsx",
+          "original_sha256": "3b45d24632798cc9d41cfa249e52f1dbf7223325d5b4ad4cfb6f3793b91676f9",
+          "current_sha256": "3b45d24632798cc9d41cfa249e52f1dbf7223325d5b4ad4cfb6f3793b91676f9",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/index.css",
+          "new_path": "frontend/admin/src/index.css",
+          "original_sha256": "835654b31753776eea6de723be81e9e0d0b9661d7ca8b6c47726672bc29df7be",
+          "current_sha256": "835654b31753776eea6de723be81e9e0d0b9661d7ca8b6c47726672bc29df7be",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/main.jsx",
+          "new_path": "frontend/admin/src/main.jsx",
+          "original_sha256": "4b4b864dbe45253425d0c925337180ec07e204295179f80f59551216f466f618",
+          "current_sha256": "4b4b864dbe45253425d0c925337180ec07e204295179f80f59551216f466f618",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/dist/assets/index-BLdMDxZu.js",
+          "new_path": "frontend/admin/dist/assets/index-BLdMDxZu.js",
+          "original_sha256": "f332a3573f79d6989af7033b26f468182456afa537805ffb2bafcc8d67ef9550",
+          "current_sha256": "f332a3573f79d6989af7033b26f468182456afa537805ffb2bafcc8d67ef9550",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/dist/assets/index-mZngMftu.css",
+          "new_path": "frontend/admin/dist/assets/index-mZngMftu.css",
+          "original_sha256": "6f4a0c6014fc0b81a61a644b77772eb479cd25824ae80d016e4a2a7b0edc82d3",
+          "current_sha256": "6f4a0c6014fc0b81a61a644b77772eb479cd25824ae80d016e4a2a7b0edc82d3",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/assets/hero.png",
+          "new_path": "frontend/admin/src/assets/hero.png",
+          "original_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "current_sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/assets/react.svg",
+          "new_path": "frontend/admin/src/assets/react.svg",
+          "original_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "current_sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+          "unchanged": true
+        },
+        {
+          "old_path": "admin/frontend/src/assets/vite.svg",
+          "new_path": "frontend/admin/src/assets/vite.svg",
+          "original_sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+          "current_sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f",
+          "unchanged": true
+        }
+      ]
+    }
+  },
+  "backend_source_files_unchanged": 79,
+  "backend_test_totals": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "java_files": 71,
+  "packages": 22,
+  "max_files_per_package": 5,
+  "frontend_build_command": "npm run build -- --configLoader native",
+  "frontend_builds": {
+    "customer": "passed",
+    "merchant": "passed",
+    "driver": "passed",
+    "admin": "passed"
+  },
+  "config_changes": [
+    {
+      "old_path": "customer/frontend/vite.config.js",
+      "new_path": "frontend/customer/vite.config.js",
+      "original_sha256": "2bdff66d85e1acd18bf245c2335a642a0dd39933b35d28443a38c27dd8756d78",
+      "current_sha256": "1ce62e0e864313956622d03480db5eccf79e7e854b6f30e45893e2f4033eb692",
+      "unchanged": false
+    },
+    {
+      "old_path": "frontend/vite.config.js",
+      "new_path": "frontend/merchant/vite.config.js",
+      "original_sha256": "52fda8575a4ba2eb1f82efc7183de677eee0678c0ec74daeca20fffdfadc8536",
+      "current_sha256": "27180d622aefd856d22bc437412076c0329302f6412c760f15d6b8dbcb3249cf",
+      "unchanged": false
+    },
+    {
+      "old_path": "driver/frontend/vite.config.js",
+      "new_path": "frontend/driver/vite.config.js",
+      "original_sha256": "e1eefd0ed1639c88d1213884ef760516884db9e168190e223fee6b063ad3e088",
+      "current_sha256": "ac34cfe58d8aa6b0e7d2c2391fba07aca93262859f8c5dc52ad050783d565b8b",
+      "unchanged": false
+    },
+    {
+      "old_path": "admin/frontend/vite.config.js",
+      "new_path": "frontend/admin/vite.config.js",
+      "original_sha256": "b5b9079f99e173c4fb6464aa7235646694c0a22362ab7e785f58988ebb2c9f4b",
+      "current_sha256": "bd2f21df9dd5a4ceed2560027d9097ee817c2c21e51845d3320ce7977b76f373",
+      "unchanged": false
+    }
+  ],
+  "business_logic_changed": false,
+  "frontend_integration_complete": false
+}

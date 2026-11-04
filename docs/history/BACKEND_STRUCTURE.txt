@@ -1,0 +1,22 @@
+com.foodie (3): FoodieApplication.java, HttpStartupTest.java, NewBackendTest.java
+com.foodie.common (2): DomainEntity.java, Inputs.java
+com.foodie.config (3): AdminSetup.java, Errors.java, SecurityConfig.java
+com.foodie.customer (4): CustomerController.java, CustomerService.java, Favorite.java, FavoriteRepository.java
+com.foodie.delivery (4): Delivery.java, DeliveryController.java, DeliveryRepository.java, DeliveryService.java
+com.foodie.driver (2): DriverController.java, DriverService.java
+com.foodie.notification (3): Notification.java, NotificationRepository.java, NotificationService.java
+com.foodie.operations (2): OperationsController.java, OperationsService.java
+com.foodie.operations.data (4): Complaint.java, ComplaintRepository.java, Offer.java, OfferRepository.java
+com.foodie.order (3): GuestOrderController.java, OrderController.java, OrderService.java
+com.foodie.order.data (4): FoodOrder.java, FoodOrderRepository.java, OrderLine.java, OrderLineRepository.java
+com.foodie.payment (3): BankCipher.java, PaymentService.java, WalletController.java
+com.foodie.payment.model (4): BankAccount.java, Payment.java, Payout.java, Refund.java
+com.foodie.payment.repository (4): BankAccountRepository.java, PaymentRepository.java, PayoutRepository.java, RefundRepository.java
+com.foodie.restaurant (2): RestaurantController.java, RestaurantService.java
+com.foodie.restaurant.model (3): MenuItem.java, MenuSize.java, Restaurant.java
+com.foodie.restaurant.repository (3): MenuItemRepository.java, MenuSizeRepository.java, RestaurantRepository.java
+com.foodie.review (4): Review.java, ReviewController.java, ReviewRepository.java, ReviewService.java
+com.foodie.user (2): AppUserRepository.java, UserService.java
+com.foodie.user.controller (3): AdminController.java, ApplicationController.java, AuthController.java
+com.foodie.user.document (4): Document.java, DocumentRepository.java, VehicleChange.java, VehicleChangeRepository.java
+com.foodie.user.model (5): AdminUser.java, AppUser.java, CustomerUser.java, MerchantUser.java, RiderUser.java
