@@ -23,7 +23,7 @@ function backendProxy() {
 }
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: process.env.NODE_ENV === 'production' ? '/merchant/' : '/',
+  base: '/',
   build: { outDir: 'build' },
   server: {
     port: 5173, strictPort: true,
