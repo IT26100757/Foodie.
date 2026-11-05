@@ -22,7 +22,7 @@ function backendProxy() {
 }
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? '/admin/' : '/',
+  base: '/',
   build: { outDir: 'build' },
   server: {
     port: 5176, strictPort: true,
