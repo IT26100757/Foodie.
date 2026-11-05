@@ -106,8 +106,21 @@ export default function HomePage() {
       try { const current=await loadOrders(account);if(active)setOrders(current) } catch(error){console.error(error.message)}
       try { const values=await api('/api/customer/policies');if(active)setPolicy(values) } catch(error){console.error(error.message)}
     }
-    refresh();const timer=setInterval(refresh,4000)
-    return ()=>{active=false;clearInterval(timer)}
+    let timer
+
+    async function poll() {
+      try {
+        await refresh()
+      } finally {
+        if (active) timer = window.setTimeout(poll, 30000)
+      }
+    }
+
+    poll()
+    return () => {
+      active = false
+      window.clearTimeout(timer)
+    }
   }, [])
   const [checkoutOffer] = useState(() => { try { return JSON.parse(sessionStorage.getItem('foodie.checkout.offer') || 'null') } catch { return null } })
   const handleTrackedOrderChange = useCallback((updatedOrder) => setOrders((current) => current.map((order) => order.id === updatedOrder.id ? updatedOrder : order)), [])
@@ -134,9 +147,23 @@ export default function HomePage() {
         if (active) setRestaurantsLoading(false)
       }
     }
-    loadRestaurants()
-    const restaurantsTimer=setInterval(loadRestaurants,4000)
-    return () => { active = false; clearInterval(restaurantsTimer) }
+    let restaurantsTimer
+
+    async function pollRestaurants() {
+      try {
+        await loadRestaurants()
+      } finally {
+        if (active) {
+          restaurantsTimer = window.setTimeout(pollRestaurants, 60000)
+        }
+      }
+    }
+
+    pollRestaurants()
+    return () => {
+      active = false
+      window.clearTimeout(restaurantsTimer)
+    }
   }, [])
   useEffect(() => {
     const timer = window.setInterval(() => changeSlide((activeSlideRef.current + 1) % slides.length), 6500)
@@ -174,9 +201,21 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
     const loadMenu = () => fetch('/api/menu-items').then((response) => response.ok ? response.json() : []).then((items) => { if (active && Array.isArray(items)) setMenuItems(items) }).catch(() => {})
-    loadMenu()
-    const timer = window.setInterval(loadMenu, 3500)
-    return () => { active = false; window.clearInterval(timer) }
+    let timer
+
+    async function pollMenu() {
+      try {
+        await loadMenu()
+      } finally {
+        if (active) timer = window.setTimeout(pollMenu, 60000)
+      }
+    }
+
+    pollMenu()
+    return () => {
+      active = false
+      window.clearTimeout(timer)
+    }
   }, [])
 
   useEffect(() => { localStorage.setItem('foodie.customer.theme', theme) }, [theme])
