@@ -57,7 +57,7 @@ public class NotificationService {
     } catch (MailException failure) {
       note.setEmailStatus("FAILED");
       org.slf4j.LoggerFactory.getLogger(getClass())
-          .warn("Notification {} SMTP delivery failed", note.getId());
+              .warn("Notification {} SMTP delivery failed", note.getId(), failure);
     }
     records.save(note);
   }

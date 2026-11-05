@@ -165,6 +165,7 @@ public class OrderService {
   }
 
   @Transactional
+
   private FoodOrder place(Long customerId, Checkout form, String requestKey) {
     return calculate(customerId, form, requestKey, true);
   }

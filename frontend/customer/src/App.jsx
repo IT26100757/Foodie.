@@ -128,7 +128,7 @@ function App() {
       const lastName = String(data.get('lastName') || '').trim()
       const nic = String(data.get('nationalId') || '').trim()
       const email = String(data.get('email') || '').trim()
-      const phoneDigits = String(data.get('phone') || '')
+      const phoneDigits = normalizeCustomerPhone(data.get('phone'))
       const validNic = /^(\d{9}[vVxX]|\d{12})$/.test(nic)
       const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
       const confirmPassword = String(data.get('confirmPassword') || '')

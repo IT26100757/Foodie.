@@ -1,7 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 import { api, apiFetch, signIn } from './api.js'
-import { platformData } from './adminApi.js'
+import { platformData, pollWhileVisible } from './adminApi.js'
+
+
+function useVisiblePolling(task, dependencies=[]) {
+  const latest=useRef(task)
+  latest.current=task
+  useEffect(()=>pollWhileVisible(()=>latest.current()),dependencies)
+}
 
 function Icon({ name, size = 20, ...props }) {
   const paths = {
@@ -436,7 +443,7 @@ function ComplaintsPage() {
   const [reply,setReply]=useState('')
   const [message,setMessage]=useState('')
   async function load(){try{const [rows,accounts]=await Promise.all([api('/api/admin/complaints'),api('/api/admin/users')]);setComplaints(rows);setUsers(accounts)}catch(error){setMessage(error.message)}}
-  useEffect(()=>{load();const timer=setInterval(load,4000);return()=>clearInterval(timer)},[])
+  useVisiblePolling(load)
   const sender=id=>users.find(user=>user.id===id)
   const rows=complaints.filter(complaint=>(category==='ALL'||sender(complaint.userId)?.role===(category==='DRIVER'?'RIDER':category))&&[complaint.subject,complaint.description,sender(complaint.userId)?.email].join(' ').toLowerCase().includes(query.toLowerCase())&&complaint.createdAt.slice(0,10)>=dateFrom&&complaint.createdAt.slice(0,10)<=dateTo)
   const tabs = [['ALL', 'All complaints'], ['MERCHANT', 'Merchants'], ['DRIVER', 'Drivers'], ['CUSTOMER', 'Customers']]
@@ -477,7 +484,7 @@ function CouponsOffersPage() {
   const [error, setError] = useState('')
 
   async function loadCoupons(){try{setLoading(true);const rows=await api('/api/admin/coupons');setCoupons(rows.map(coupon=>({...coupon,status:coupon.enabled?'ACTIVE':'CANCELLED'})))}catch(error){setError(error.message)}finally{setLoading(false)}}
-  useEffect(()=>{loadCoupons();const timer=setInterval(loadCoupons,4000);return()=>clearInterval(timer)},[])
+  useVisiblePolling(loadCoupons)
   const counts = {
     all: coupons.length,
     active: coupons.filter((coupon) => couponState(coupon) === 'active').length,
@@ -692,6 +699,343 @@ function CustomerManagement({users,onChange}) {
  return <section className="panel restaurants-page"><div className="restaurants-page-heading"><div><h2>Customer Management</h2><p>Review registered customers and account access.</p></div><span>{rows.length} customers</span></div><label className="order-search"><Icon name="search" size={17}/><span className="sr-only">Search customers</span><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search customers..."/></label>{message&&<p className="payment-feedback" role="status">{message}</p>}<div className="table-scroll"><table><thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Registered</th><th>Status</th><th>Action</th></tr></thead><tbody>{rows.map(user=><tr key={user.id}><td>{user.firstName} {user.lastName}</td><td>{user.email}</td><td>{user.phone}</td><td>{displayDate(user.createdAt.slice(0,10))}</td><td>{user.active?'Active':'Suspended'}</td><td><button className={user.active?'restaurant-reject-button':'restaurant-approve-button'} onClick={()=>change(user)}>{user.active?'Suspend customer':'Reactivate customer'}</button></td></tr>)}</tbody></table>{!rows.length&&<p className="empty-state">No customers match this search.</p>}</div></section>
 }
 
+function PlatformRevenueChart({ payments, revenueStart }) {
+  const formatMoney = (value) =>
+      'Rs. ' + value.toLocaleString('en-LK', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+  const now = new Date();
+
+  const startDate = isoDate(revenueStart);
+  const endDate = isoDate(now);
+
+  const collectedPayments = payments.filter((payment) =>
+      payment.status === 'COMPLETED' &&
+      payment.paidDate >= startDate &&
+      payment.paidDate <= endDate
+  );
+
+  const dailyAmounts = new Map();
+
+  const cursor = new Date(startDate + 'T00:00:00Z');
+
+  while (cursor.toISOString().slice(0, 10) <= endDate) {
+    const date = cursor.toISOString().slice(0, 10);
+
+    dailyAmounts.set(date, {
+      date,
+      merchant: 0,
+      rider: 0
+    });
+
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+
+  for (const payment of collectedPayments) {
+    const day = dailyAmounts.get(payment.paidDate);
+
+    if (day) {
+      day.merchant += Number(payment.commission ?? 0);
+      day.rider += Number(payment.riderCommission ?? 0);
+    }
+  }
+
+  const data = [...dailyAmounts.values()];
+
+  const merchantTotal = data.reduce(
+      (sum, day) => sum + day.merchant,
+      0
+  );
+
+  const riderTotal = data.reduce(
+      (sum, day) => sum + day.rider,
+      0
+  );
+
+  const maximum = Math.max(
+      1,
+      ...data.map((day) => Math.max(day.merchant, day.rider))
+  );
+
+  const ceiling = Math.ceil(maximum / 4) * 4;
+
+  const left = 55;
+  const right = 465;
+  const top = 20;
+  const bottom = 175;
+
+  const getX = (index) =>
+      data.length === 1
+          ? (left + right) / 2
+          : left + (index / (data.length - 1)) * (right - left);
+
+  const getY = (value) =>
+      bottom - (value / ceiling) * (bottom - top);
+
+  const series = [
+    {
+      key: 'merchant',
+      label: 'Merchant charges',
+      color: '#237352'
+    },
+    {
+      key: 'rider',
+      label: 'Rider charges',
+      color: '#ff6934'
+    }
+  ];
+
+  function generateReport() {
+    const rows = [
+      [
+        'Date',
+        'Merchant charges (LKR)',
+        'Rider charges (LKR)',
+        'Total revenue (LKR)'
+      ],
+      ...data.map((day) => [
+        day.date,
+        day.merchant.toFixed(2),
+        day.rider.toFixed(2),
+        (day.merchant + day.rider).toFixed(2)
+      ]),
+      [
+        'TOTAL',
+        merchantTotal.toFixed(2),
+        riderTotal.toFixed(2),
+        (merchantTotal + riderTotal).toFixed(2)
+      ]
+    ];
+
+    const csv = rows.map((row) => row.join(',')).join('\r\n');
+
+    const url = URL.createObjectURL(
+        new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    );
+
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `Foodie-revenue-${startDate}-${endDate}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  return (
+      <div className="platform-revenue-chart">
+        <div className="platform-revenue-toolbar">
+          <span>Collected platform charges</span>
+
+          <button
+              type="button"
+              className="soft-button"
+              onClick={generateReport}
+          >
+            Generate Report
+          </button>
+        </div>
+
+        <div className="platform-revenue-legend">
+          {series.map((item) => (
+              <span key={item.key}>
+            <i style={{ background: item.color }} />
+                {item.label}
+          </span>
+          ))}
+        </div>
+
+        <svg
+            viewBox="0 0 490 210"
+            role="img"
+            aria-label="Daily merchant and rider charges in rupees"
+        >
+          {[0, 1, 2, 3, 4].map((tick) => {
+            const value = (ceiling / 4) * tick;
+            const position = getY(value);
+
+            return (
+                <g key={tick}>
+                  <line
+                      x1={left}
+                      x2={right}
+                      y1={position}
+                      y2={position}
+                      stroke="#e4ebe6"
+                      strokeDasharray="4 4"
+                  />
+
+                  <text
+                      x={left - 9}
+                      y={position + 4}
+                      textAnchor="end"
+                  >
+                    {value.toLocaleString('en-LK', {
+                      notation: 'compact'
+                    })}
+                  </text>
+                </g>
+            );
+          })}
+
+          {series.map((item) => (
+              <g key={item.key}>
+                <polyline
+                    points={data.map((day, index) =>
+                        `${getX(index)},${getY(day[item.key])}`
+                    ).join(' ')}
+                    fill="none"
+                    stroke={item.color}
+                    strokeWidth="3"
+                    strokeLinejoin="round"
+                />
+
+                {data.map((day, index) => (
+                    <circle
+                        key={day.date}
+                        cx={getX(index)}
+                        cy={getY(day[item.key])}
+                        r={day[item.key] > 0 || data.length === 1 ? 4 : 1.5}
+                        fill="white"
+                        stroke={item.color}
+                        strokeWidth="2"
+                    >
+                      <title>
+                        {`${day.date} · ${item.label} · ${
+                            formatMoney(day[item.key])
+                        }`}
+                      </title>
+                    </circle>
+                ))}
+              </g>
+          ))}
+
+          <text x={left} y="199">
+            {startDate}
+          </text>
+
+          <text x={right} y="199" textAnchor="end">
+            {endDate}
+          </text>
+        </svg>
+
+        <div className="platform-revenue-breakdown">
+          <div>
+            <span>Merchant charges</span>
+            <strong>{formatMoney(merchantTotal)}</strong>
+          </div>
+
+          <div>
+            <span>Rider charges</span>
+            <strong>{formatMoney(riderTotal)}</strong>
+          </div>
+        </div>
+      </div>
+  );
+}
+function OrderOverviewChart({ orders }) {
+  const groups = [
+    {
+      label: 'Completed',
+      color: '#237352',
+      statuses: ['DELIVERED', 'PICKED_UP']
+    },
+    {
+      label: 'New',
+      color: '#f0ad36',
+      statuses: ['NEW']
+    },
+    {
+      label: 'In progress',
+      color: '#548bcc',
+      statuses: ['PREPARING', 'READY', 'ON_DELIVERY']
+    },
+    {
+      label: 'Cancelled',
+      color: '#df655e',
+      statuses: ['CANCELLED']
+    }
+  ];
+
+  const summary = groups.map((group) => ({
+    ...group,
+    count: orders.filter((order) =>
+        group.statuses.includes(order.backendStatus)
+    ).length
+  }));
+
+  const knownCount = summary.reduce(
+      (total, group) => total + group.count,
+      0
+  );
+
+  if (knownCount < orders.length) {
+    summary.push({
+      label: 'Other',
+      color: '#929b95',
+      count: orders.length - knownCount
+    });
+  }
+
+  let angle = 0;
+
+  const segments = summary
+      .filter((group) => group.count > 0)
+      .map((group) => {
+        const start = angle;
+
+        angle += (group.count / orders.length) * 360;
+
+        return `${group.color} ${start}deg ${angle}deg`;
+      });
+
+  const background = segments.length
+      ? `conic-gradient(${segments.join(', ')})`
+      : '#e9efeb';
+
+  return (
+      <div className="admin-order-overview">
+        <div
+            className="admin-order-donut"
+            style={{ background }}
+            role="img"
+            aria-label={summary.map((group) =>
+                `${group.label}: ${group.count}`
+            ).join(', ')}
+        >
+          <div className="admin-order-donut-center">
+            <strong>{orders.length}</strong>
+            <span>Total orders</span>
+          </div>
+        </div>
+
+        <div className="admin-order-legend">
+          {summary.map((group) => {
+            const percentage = orders.length
+                ? Math.round((group.count / orders.length) * 100)
+                : 0;
+
+            return (
+                <div className="admin-order-legend-row" key={group.label}>
+                  <i style={{ background: group.color }} />
+
+                  <span>{group.label}</span>
+
+                  <strong>
+                    {group.count} ({percentage}%)
+                  </strong>
+                </div>
+            );
+          })}
+        </div>
+      </div>
+  );
+}
 function AdminDashboard({ onLogout, previewMode = false }) {
   const [activeNav, setActiveNav] = useState('Dashboard')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
@@ -732,14 +1076,52 @@ function AdminDashboard({ onLogout, previewMode = false }) {
 
   const unreadNotificationCount = notifications.filter((item) => item.unread && !readNotificationIds.includes(item.id)).length
 
-  async function refreshPlatform(){
-    try{const data=await platformData();setOrders(data.orders);setRestaurants(data.restaurants);setDeliveryRiders(data.riders);setUsers(data.users);setPayments(data.payments);setRefunds(data.refunds);setNotifications(data.notifications);setReadNotificationIds(data.notifications.filter(note=>!note.unread).map(note=>note.id));setStatistics(data.statistics);setAdminAccount(data.account);setRestaurantsError('')}catch(error){setRestaurantsError(error.message)}finally{setRestaurantsLoading(false)}
+  const platformSnapshot=useRef({})
+  const refreshInFlight=useRef(null)
+  const currentView=useRef(activeNav)
+  currentView.current=activeNav
+  async function refreshPlatform(force=true){
+    if(refreshInFlight.current){await refreshInFlight.current;if(force||platformSnapshot.current._view!==currentView.current)return refreshPlatform(false);return}
+    const pending=(async()=>{
+      try{const data=await platformData(currentView.current,platformSnapshot.current);platformSnapshot.current=data;setOrders(data.orders);setRestaurants(data.restaurants);setDeliveryRiders(data.riders);setUsers(data.users);setPayments(data.payments);setRefunds(data.refunds);setNotifications(data.notifications);setReadNotificationIds(data.notifications.filter(note=>!note.unread).map(note=>note.id));setStatistics(data.statistics);setAdminAccount(data.account);setRestaurantsError('')}catch(error){setRestaurantsError(error.message)}finally{setRestaurantsLoading(false)}
+    })()
+    refreshInFlight.current=pending
+    try{await pending}finally{if(refreshInFlight.current===pending)refreshInFlight.current=null}
   }
-  useEffect(()=>{setRestaurantsLoading(true);refreshPlatform();const timer=setInterval(refreshPlatform,4000);return()=>clearInterval(timer)},[])
+  useVisiblePolling(()=>refreshPlatform(false),[activeNav])
   async function markAllRead(){try{await api('/api/notifications/read-all',{method:'POST'});await refreshPlatform()}catch(error){setRestaurantsError(error.message)}}
   const activeRiders=deliveryRiders.filter(rider=>rider.status==='ACTIVE').length
   const revenueStart=(()=>{const now=new Date();if(revenuePeriod==='This Year')return new Date(now.getFullYear(),0,1);if(revenuePeriod==='This Quarter')return new Date(now.getFullYear(),Math.floor(now.getMonth()/3)*3,1);if(revenuePeriod==='This Week')return new Date(now.getFullYear(),now.getMonth(),now.getDate()-(now.getDay()+6)%7);return new Date(now.getFullYear(),now.getMonth(),1)})()
-  const periodRevenue=payments.filter(payment=>payment.status==='COMPLETED'&&new Date(payment.paidDate)>=revenueStart).reduce((sum,payment)=>sum+Number(payment.amount),0)
+  const periodRevenue = payments
+      .filter((payment) => {
+        const paidDate = new Date(payment.paidDate);
+
+        return (
+            payment.status === 'COMPLETED' &&
+            paidDate >= revenueStart &&
+            paidDate <= new Date()
+        );
+      })
+      .reduce(
+          (total, payment) =>
+              total +
+              Number(payment.commission ?? 0) +
+              Number(payment.riderCommission ?? 0),
+          0
+      );
+  const totalPlatformRevenue = payments
+      .filter((payment) =>
+          payment.status === 'COMPLETED' &&
+          payment.paidDate >= dateFrom &&
+          payment.paidDate <= dateTo
+      )
+      .reduce(
+          (total, payment) =>
+              total +
+              Number(payment.commission ?? 0) +
+              Number(payment.riderCommission ?? 0),
+          0
+      );
   async function openNotification(item) {
     try{await api('/api/notifications/'+item.id+'/read',{method:'POST'})}catch(error){setRestaurantsError(error.message);return}
     setReadNotificationIds((current) => current.includes(item.id) ? current : [...current, item.id])
@@ -798,18 +1180,96 @@ function AdminDashboard({ onLogout, previewMode = false }) {
 
       {activeNav === 'Customers' ? <CustomerManagement users={users.filter(user=>user.role==='CUSTOMER')} onChange={refreshPlatform}/> : activeNav === 'Restaurants' ? <RestaurantPage restaurants={restaurants} loading={restaurantsLoading} error={restaurantsError} view={restaurantView} onView={setRestaurantView} search={restaurantSearch} onSearch={setRestaurantSearch} dateFrom={restaurantDateFrom} dateTo={restaurantDateTo} onDateApply={(from, to) => { setRestaurantDateFrom(from); setRestaurantDateTo(to) }} onAction={handleRestaurantAction} actionMessage={restaurantActionMessage} actionError={restaurantActionError}/> : activeNav === 'Delivery Riders' ? <DeliveryRidersPage riders={deliveryRiders} view={riderView} onView={setRiderView} search={riderSearch} onSearch={setRiderSearch} dateFrom={riderDateFrom} dateTo={riderDateTo} onDateApply={(from, to) => { setRiderDateFrom(from); setRiderDateTo(to) }} onAction={handleRiderAction} actionMessage={riderActionMessage}/> : activeNav === 'Payments' ? <PaymentsPage payments={payments} onCancel={handlePaymentCancel} actionMessage={paymentActionMessage}/> : activeNav === 'Refunds' ? <RefundsPage refunds={refunds} onDecision={handleRefundDecision} actionMessage={refundActionMessage} focusRequestId={refundFocusId}/> : activeNav === 'Complaints' ? <ComplaintsPage/> : activeNav === 'Notifications' ? <NotificationCenterPage items={notifications} readIds={readNotificationIds} onOpen={openNotification} onMarkAllRead={markAllRead}/> : activeNav === 'Coupons & Offers' ? <CouponsOffersPage/> : activeNav === 'Orders' ? <OrdersPage orders={ordersPageData} allOrders={orders} search={search} onSearch={setSearch} statusFilter={orderStatusFilter} onStatusFilter={setOrderStatusFilter} dateFrom={dateFrom} dateTo={dateTo} onDateApply={(from, to) => { setDateFrom(from); setDateTo(to) }}/> : <>
       <section className="stats-grid" aria-label="Platform summary">
-        <StatCard icon="wallet" label="Total Revenue" value={'Rs. '+Number(statistics.collectedSales || 0).toLocaleString()} tint="mint" />
+        <StatCard
+            icon="wallet"
+            label="Total Revenue"
+            value={
+                'Rs. ' +
+                totalPlatformRevenue.toLocaleString('en-LK', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })
+            }
+            tint="mint"
+        />
         <StatCard icon="bag" label="Total Orders" value={statistics.orders ?? '—'} tint="blue" />
+        <StatCard
+            icon="restaurant"
+            label="Total Merchants"
+            value={users.filter((user) => user.role === 'MERCHANT').length}
+            tint="mint"
+        />
         <StatCard icon="rider" label="Active Riders" value={activeRiders} tint="amber" />
-        <StatCard icon="user" label="Total Users" value={statistics.users ?? '—'} tint="lilac" />
+        <StatCard
+            icon="user"
+            label="Total Customers"
+            value={users.filter((user) => user.role === 'CUSTOMER').length}
+            tint="lilac"
+        />
       </section>
 
       <div className="dashboard-grid">
         <div className="dashboard-column primary-column">
-          <section className="panel chart-panel"><div className="panel-heading"><div><h2>Order Overview</h2><p>{displayDate(dateFrom)} – {displayDate(dateTo)}</p></div><button className="soft-button" onClick={() => setActiveNav('Orders')}>View Orders</button></div><div className="chart-empty-state">{ordersPageData.length} orders in this date range. {ordersPageData.filter(order=>order.status==='Delivered').length} completed.</div></section>
+          <section className="panel chart-panel"><div className="panel-heading"><div><h2>Order Overview</h2><p>{displayDate(dateFrom)} – {displayDate(dateTo)}</p></div><button className="soft-button" onClick={() => setActiveNav('Orders')}>View Orders</button></div><OrderOverviewChart orders={ordersPageData} /></section>
+          <section className="panel platform-insights-panel">
+            <div className="panel-heading">
+              <div>
+                <h2>Platform Insights</h2>
+                <p>Current availability across Foodie</p>
+              </div>
+            </div>
 
-          <section className="panel recent-panel"><div className="panel-heading"><div><h2>Recent Orders</h2><p>Latest platform activity</p></div><button className="soft-button" onClick={() => setActiveNav('Orders')}>View All Orders</button></div>
-            <div className="table-scroll"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Restaurant</th><th>Amount</th><th>Status</th></tr></thead><tbody>{filteredOrders.map((order) => <tr key={order.id}><td className="order-id">#{order.id}</td><td>{order.customer}</td><td>{order.restaurant}</td><td className="amount">{order.amount}</td><td><OrderStatus status={order.status}/></td></tr>)}</tbody></table>{filteredOrders.length === 0 && <p className="empty-state">No order data available.</p>}</div>
+            <div className="platform-insights-grid">
+              {[
+                {
+                  label: 'Merchants accepting orders',
+                  icon: 'restaurant',
+                  records: restaurants,
+                  idKey: 'merchantId'
+                },
+                {
+                  label: 'Riders online',
+                  icon: 'rider',
+                  records: deliveryRiders,
+                  idKey: 'riderId'
+                }
+              ].map((group) => {
+                const hasAvailability = group.records.every(
+                    (record) =>
+                        typeof record.online === 'boolean' &&
+                        record[group.idKey] != null
+                );
+
+                const count = new Set(
+                    group.records
+                        .filter((record) => record.online === true)
+                        .map((record) => record[group.idKey])
+                ).size;
+
+                return (
+                    <div className="platform-insight-item" key={group.label}>
+          <span className="platform-insight-icon">
+            <Icon name={group.icon} />
+          </span>
+
+                      <div className="platform-insight-content">
+                        <span>{group.label}</span>
+
+                        <strong>
+                          {hasAvailability ? count : 'Unavailable'}
+                        </strong>
+
+                        {hasAvailability && (
+                            <small>
+                              <i className={count > 0 ? 'is-online' : ''} />
+                              {count > 0 ? 'Available now' : 'None available'}
+                            </small>
+                        )}
+                      </div>
+                    </div>
+                );
+              })}
+            </div>
           </section>
         </div>
 
@@ -819,8 +1279,17 @@ function AdminDashboard({ onLogout, previewMode = false }) {
           </section>
 
           <section className="panel revenue-panel"><div className="panel-heading"><div><h2>Revenue Overview</h2><p>Revenue sources</p></div><label className="period-select"><span className="sr-only">Revenue period</span><select value={revenuePeriod} onChange={(e) => setRevenuePeriod(e.target.value)}><option>This Week</option><option>This Month</option><option>This Quarter</option><option>This Year</option></select><Icon name="down" size={14}/></label></div>
-            <div className="chart-empty-state">{payments.filter(payment=>payment.status==='COMPLETED').length} recorded collected payments.</div>
-            <div className="total-revenue"><strong>Total Revenue</strong><b>Rs. {periodRevenue.toLocaleString()}</b></div>
+            <PlatformRevenueChart
+                payments={payments}
+                revenueStart={revenueStart}
+            />
+            <div className="total-revenue"><strong>Total Revenue</strong><b>
+              Rs.{' '}
+              {periodRevenue.toLocaleString('en-LK', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </b></div>
           </section>
         </div>
       </div>

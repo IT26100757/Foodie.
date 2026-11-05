@@ -132,7 +132,16 @@ function LoginPortal({ onRegister, onLogin }) {
     </section>
   </main>
 }
+function getMerchantFoodSales(order) {
+  const subtotal = Number(order.subtotal || 0);
+  const discount = Number(order.discount || 0);
 
+  const additionalCharge = order.customerAgreed
+      ? Number(order.additionalCharge || 0)
+      : 0;
+
+  return subtotal - discount + additionalCharge;
+}
 function MerchantDashboard({ merchantName, onSignOut }) {
   const [active, setActive] = useState('Home')
   const [chartMetric, setChartMetric] = useState('Sales')
@@ -147,12 +156,45 @@ function MerchantDashboard({ merchantName, onSignOut }) {
   useEffect(()=>{
     let active=true
     async function refresh(){try{const [rows,notes,feedback]=await Promise.all([loadMerchantOrders(),api('/api/notifications'),api('/api/restaurants/mine').then(owned=>owned[0]?api('/api/reviews/restaurant/'+owned[0].id):[])]);if(active){setOrders(rows);setReviews(feedback);setNotifications(notes.filter(note=>!note.read).map(note=>({...note,orderId:note.title.match(/#(\d+)/)?.[1],receivedAt:note.createdAt})))}}catch(error){console.error(error.message)}}
-    refresh();const timer=setInterval(refresh,4000);return()=>{active=false;clearInterval(timer)}
+    refresh();const timer=setInterval(refresh,30000);return()=>{active=false;clearInterval(timer)}
   },[])
-  const completed=orders.filter(order=>['DELIVERED','PICKED_UP'].includes(order.backendStatus))
-  const periodOrders=orders.filter(order=>Date.now()-new Date(order.createdAt).getTime()< (dateRange==='Last 30 days'?30:7)*86400000)
-  const periodSales=periodOrders.filter(order=>order.paymentStatus==='COMPLETED').reduce((sum,order)=>sum+Number(order.netTotal),0)
-  const metricValues={'Total Sales':'Rs. '+periodSales.toLocaleString(),'Total Orders':periodOrders.length,'Average Order Value':'Rs. '+(periodOrders.length?periodOrders.reduce((sum,order)=>sum+Number(order.netTotal),0)/periodOrders.length:0).toLocaleString(),'Total Customers':new Set(periodOrders.map(order=>order.customerId || order.contactPhone)).size}
+  const completed = orders.filter((order) =>
+      ['DELIVERED', 'PICKED_UP'].includes(order.backendStatus)
+  );
+
+  const periodOrders = orders.filter((order) => {
+    const days = dateRange === 'Last 30 days' ? 30 : 7;
+
+    return (
+        Date.now() - new Date(order.createdAt).getTime() <
+        days * 86400000
+    );
+  });
+
+  const paidPeriodOrders = periodOrders.filter(
+      (order) => order.paymentStatus === 'COMPLETED'
+  );
+
+  const periodSales = paidPeriodOrders.reduce(
+      (sum, order) => sum + getMerchantFoodSales(order),
+      0
+  );
+
+  const averageOrderValue = paidPeriodOrders.length
+      ? periodSales / paidPeriodOrders.length
+      : 0;
+
+  const metricValues = {
+    'Total Sales': 'Rs. ' + periodSales.toLocaleString('en-LK'),
+    'Total Orders': periodOrders.length,
+    'Average Order Value':
+        'Rs. ' + averageOrderValue.toLocaleString('en-LK'),
+    'Total Customers': new Set(
+        periodOrders.map(
+            (order) => order.customerId || order.contactPhone
+        )
+    ).size
+  };
   const customerVisits=new Map()
   const bestItems=new Map()
   for(const order of periodOrders.filter(order=>order.backendStatus!=='CANCELLED')){
@@ -228,7 +270,11 @@ function MerchantDashboard({ merchantName, onSignOut }) {
       {active === 'Home' ? <div className="dashboard-content">
         <div className="dashboard-heading-row"><div><span className="dashboard-kicker">YOUR BUSINESS AT A GLANCE</span><h1>Good afternoon{merchantName ? `, ${merchantName}` : ''}<span>.</span></h1><p>Here’s what’s happening with your restaurant.</p></div><button className="date-select" type="button" onClick={() => setDateRange((range) => range === 'Last 7 days' ? 'Last 30 days' : 'Last 7 days')}><Icon name="calendar" size={16} />{dateRange}<Icon name="chevronDown" size={14} className="date-chevron" /></button></div>
         <div className="metric-grid">{[['Total Sales', 'trend', 'red'], ['Total Orders', 'orders', 'yellow'], ['Average Order Value', 'coins', 'peach'], ['Total Customers', 'customers', 'mint']].map(([label, icon, tone]) => <article className="metric-card" key={label}><div className="metric-top"><span>{label}</span><i className={`metric-icon ${tone}`}><Icon name={icon} size={18} /></i></div><strong className="metric-empty">{metricValues[label]}</strong></article>)}</div>
-        <section className="dashboard-card sales-card"><div className="card-heading"><div><h2>Business performance</h2><p>Track your restaurant over time</p></div><div className="chart-toggles" role="group" aria-label="Chart metric">{['Sales', 'Orders', 'Average Order Value'].map((metric) => <button type="button" key={metric} className={chartMetric === metric ? 'selected' : ''} onClick={() => setChartMetric(metric)}>{metric}</button>)}</div></div><div className="chart-empty"><div className="chart-y-axis"><span></span><span></span><span></span><span></span></div><div className="chart-grid-lines"><i /><i /><i /><i /><div className="chart-empty-message"><span><Icon name="chart" size={20} /></span><b>{chartMetric}: {chartValue}</b><small>{dateRange} · Based on recorded orders{chartMetric==='Sales'?' and collected payments':''}</small></div></div></div></section>
+        <BusinessPerformanceChart
+            orders={orders}
+            chartMetric={chartMetric}
+            setChartMetric={setChartMetric}
+        />
         <div className="insights-grid"><section className="dashboard-card insight-card"><div className="card-heading"><div><h2>Top Eats</h2><p>What customers are enjoying</p></div><span className="card-spark"><Icon name="sparkle" size={19} /></span></div><EmptyState icon="plate" text={bestItemText || 'No completed order items recorded.'} /></section>
           <section className="dashboard-card insight-card"><div className="card-heading"><div><h2>Top Selling Items</h2><p>Your best performers</p></div><button type="button" className="subtle-link" onClick={() => setActive('Menu')}>View menu →</button></div><EmptyState icon="orders" text={bestItemText || 'No completed order items recorded.'} /></section>
           <section className="dashboard-card insight-card"><div className="card-heading"><div><h2>Customers</h2><p>New and repeat visitors</p></div></div><div className="customer-legend"><span><i className="legend-new" />New customers</span><span><i className="legend-repeat" />Repeat customers</span></div><div className="customer-empty"><div className="donut-empty"><span>{customerVisits.size}</span></div><p>{customerVisits.size-repeatCustomers} new · {repeatCustomers} repeat customers in {dateRange.toLowerCase()}.</p></div></section>
@@ -742,5 +788,446 @@ function DocumentUpload({ title, preview, inputId, onChange }) {
       </div>
   )
 }
+
+
+function BusinessPerformanceChart({
+                                    orders = [],
+                                    chartMetric,
+                                    setChartMetric
+                                  }) {
+  const [period, setPeriod] = useState('Last 6 months');
+  const [chartType, setChartType] = useState('Line');
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  const now = new Date();
+
+  const monthCount =
+      period === 'Last 3 months'
+          ? 3
+          : period === 'This year'
+              ? now.getMonth() + 1
+              : 6;
+
+  // Prepare monthly order and sales data
+  const monthlyData = Array.from(
+      { length: monthCount },
+      (_, index) => {
+        const month = period === 'This year'
+            ? new Date(now.getFullYear(), index, 1)
+            : new Date(
+                now.getFullYear(),
+                now.getMonth() - monthCount + index + 1,
+                1
+            );
+
+        const monthOrders = orders.filter((order) => {
+          const date = new Date(order.createdAt || order.date);
+
+          return (
+              !Number.isNaN(date.getTime()) &&
+              date.getFullYear() === month.getFullYear() &&
+              date.getMonth() === month.getMonth()
+          );
+        });
+
+        // Only count collected payments as sales
+        const paidOrders = monthOrders.filter(
+            (order) => order.paymentStatus === 'COMPLETED'
+        );
+
+        // Food sales exclude delivery fees
+        const sales = paidOrders.reduce(
+            (total, order) =>
+                total + getMerchantFoodSales(order),
+            0
+        );
+
+        const average = paidOrders.length > 0
+            ? sales / paidOrders.length
+            : 0;
+
+        return {
+          label: month.toLocaleString('en-US', {
+            month: 'short'
+          }),
+
+          fullLabel: month.toLocaleString('en-US', {
+            month: 'long',
+            year: 'numeric'
+          }),
+
+          sales,
+          orders: monthOrders.length,
+          average
+        };
+      }
+  );
+
+  // Select chart metric
+  const metricKey =
+      chartMetric === 'Orders'
+          ? 'orders'
+          : chartMetric === 'Average Order Value'
+              ? 'average'
+              : 'sales';
+
+  const color =
+      chartMetric === 'Orders'
+          ? '#4ca36b'
+          : chartMetric === 'Average Order Value'
+              ? '#f0ad36'
+              : '#ef4438';
+
+  const formatValue = (value) => {
+    if (chartMetric === 'Orders') {
+      return String(value);
+    }
+
+    return `Rs. ${Number(value).toLocaleString('en-LK', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}`;
+  };
+
+  // Calculate chart scale
+  const values = monthlyData.map(
+      (item) => item[metricKey]
+  );
+
+  const highest = Math.max(
+      chartMetric === 'Orders' ? 4 : 100,
+      ...values
+  );
+
+  const roughStep = highest / 4;
+  const power = 10 ** Math.floor(Math.log10(roughStep));
+
+  const step =
+      [1, 2, 2.5, 5, 10]
+          .map((number) => number * power)
+          .find((number) => number >= roughStep) ||
+      10 * power;
+
+  const maxY = step * 4;
+
+  // SVG chart dimensions
+  const left = 65;
+  const right = 700;
+  const top = 20;
+  const bottom = 240;
+
+  const width = right - left;
+  const height = bottom - top;
+
+  const x = (index) =>
+      left +
+      (index / Math.max(monthlyData.length - 1, 1)) *
+      width;
+
+  const y = (value) =>
+      bottom - (value / maxY) * height;
+
+  const points = monthlyData
+      .map(
+          (item, index) =>
+              `${x(index)},${y(item[metricKey])}`
+      )
+      .join(' ');
+
+  const selectedIndex =
+      hoverIndex === null
+          ? monthlyData.length - 1
+          : Math.min(hoverIndex, monthlyData.length - 1);
+
+  const selected = monthlyData[selectedIndex];
+
+  return (
+      <section className="dashboard-card sales-card">
+
+        {/* Chart heading */}
+        <div
+            className="card-heading"
+            style={{
+              flexWrap: 'wrap',
+              gap: 12
+            }}
+        >
+          <div>
+            <h2>Business performance</h2>
+            <p>Track your restaurant's monthly performance</p>
+          </div>
+
+          <div
+              className="chart-toggles"
+              role="group"
+              aria-label="Chart metric"
+          >
+            {[
+              'Sales',
+              'Orders',
+              'Average Order Value'
+            ].map((metric) => (
+                <button
+                    type="button"
+                    key={metric}
+                    className={
+                      chartMetric === metric ? 'selected' : ''
+                    }
+                    onClick={() => setChartMetric(metric)}
+                >
+                  {metric}
+                </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Chart controls */}
+        <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 10,
+              marginTop: 20
+            }}
+        >
+          <select
+              value={period}
+              onChange={(event) => {
+                setPeriod(event.target.value);
+                setHoverIndex(null);
+              }}
+              style={{
+                border: '1px solid #e8e2da',
+                borderRadius: 8,
+                background: '#fff',
+                padding: '9px 12px',
+                fontSize: 11,
+                color: '#625b52'
+              }}
+          >
+            <option>Last 3 months</option>
+            <option>Last 6 months</option>
+            <option>This year</option>
+          </select>
+
+          <div style={{ display: 'flex', gap: 6 }}>
+            {['Line', 'Bar'].map((type) => (
+                <button
+                    key={type}
+                    type="button"
+                    onClick={() => setChartType(type)}
+                    style={{
+                      border: '1px solid #e8e2da',
+                      borderRadius: 8,
+                      padding: '9px 15px',
+                      background:
+                          chartType === type ? '#153d30' : '#fff',
+                      color:
+                          chartType === type ? '#fff' : '#625b52',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                >
+                  {type} chart
+                </button>
+            ))}
+          </div>
+        </div>
+
+        {/* SVG chart */}
+        <div
+            style={{
+              width: '100%',
+              marginTop: 18
+            }}
+        >
+          <svg
+              viewBox="0 0 730 295"
+              role="img"
+              aria-label={`${chartMetric} monthly ${chartType.toLowerCase()} chart`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block'
+              }}
+              onMouseLeave={() => setHoverIndex(null)}
+          >
+            {/* Horizontal grid lines and Y-axis labels */}
+            {[0, 1, 2, 3, 4].map((tick) => {
+              const value = (maxY / 4) * tick;
+              const position = y(value);
+
+              return (
+                  <g key={tick}>
+                    <line
+                        x1={left}
+                        x2={right}
+                        y1={position}
+                        y2={position}
+                        stroke="#e9e5df"
+                        strokeDasharray="4 5"
+                    />
+
+                    <text
+                        x={left - 12}
+                        y={position + 4}
+                        textAnchor="end"
+                        fill="#a19a90"
+                        fontSize="11"
+                    >
+                      {chartMetric === 'Orders'
+                          ? value.toLocaleString('en-LK')
+                          : `Rs. ${
+                              value >= 1000
+                                  ? `${(value / 1000).toFixed(1)}k`
+                                  : value.toLocaleString('en-LK')
+                          }`}
+                    </text>
+                  </g>
+              );
+            })}
+
+            {/* Line chart */}
+            {chartType === 'Line' ? (
+                <>
+                  <polyline
+                      points={points}
+                      fill="none"
+                      stroke={color}
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                  />
+
+                  {monthlyData.map((item, index) => (
+                      <circle
+                          key={index}
+                          cx={x(index)}
+                          cy={y(item[metricKey])}
+                          r={selectedIndex === index ? 6 : 4}
+                          fill="#fff"
+                          stroke={color}
+                          strokeWidth="2.5"
+                          style={{ cursor: 'pointer' }}
+                          tabIndex={0}
+                          onMouseEnter={() => setHoverIndex(index)}
+                          onFocus={() => setHoverIndex(index)}
+                          onClick={() => setHoverIndex(index)}
+                      >
+                        <title>
+                          {`${item.fullLabel}: ${formatValue(
+                              item[metricKey]
+                          )}`}
+                        </title>
+                      </circle>
+                  ))}
+                </>
+            ) : (
+                /* Bar chart */
+                monthlyData.map((item, index) => {
+                  const barWidth = Math.min(
+                      42,
+                      (width / monthCount) * 0.55
+                  );
+
+                  const barHeight =
+                      bottom - y(item[metricKey]);
+
+                  return (
+                      <rect
+                          key={index}
+                          x={x(index) - barWidth / 2}
+                          y={y(item[metricKey])}
+                          width={barWidth}
+                          height={barHeight}
+                          rx="5"
+                          fill={color}
+                          opacity={
+                            selectedIndex === index ? 1 : 0.75
+                          }
+                          style={{ cursor: 'pointer' }}
+                          tabIndex={0}
+                          onMouseEnter={() => setHoverIndex(index)}
+                          onFocus={() => setHoverIndex(index)}
+                          onClick={() => setHoverIndex(index)}
+                      >
+                        <title>
+                          {`${item.fullLabel}: ${formatValue(
+                              item[metricKey]
+                          )}`}
+                        </title>
+                      </rect>
+                  );
+                })
+            )}
+
+            {/* Month labels */}
+            {monthlyData.map((item, index) => (
+                <text
+                    key={index}
+                    x={x(index)}
+                    y={bottom + 25}
+                    textAnchor="middle"
+                    fill="#928a80"
+                    fontSize="11"
+                >
+                  {item.label}
+                </text>
+            ))}
+          </svg>
+        </div>
+
+        {/* Selected month details */}
+        <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 10,
+              flexWrap: 'wrap',
+              padding: '12px 14px',
+              background: '#f8f6f2',
+              border: '1px solid #eee9e2',
+              borderRadius: 10,
+              fontSize: 12
+            }}
+        >
+          <strong>{selected.fullLabel}</strong>
+
+          <span
+              style={{
+                color,
+                fontWeight: 800
+              }}
+          >
+          {chartMetric}: {formatValue(
+              selected[metricKey]
+          )}
+        </span>
+        </div>
+
+        {/* Chart information */}
+        <p
+            style={{
+              marginTop: 12,
+              color: '#999188',
+              fontSize: 10
+            }}
+        >
+          {chartMetric === 'Sales'
+              ? 'Based on collected merchant food sales, excluding delivery fees.'
+              : chartMetric === 'Orders'
+                  ? 'Based on recorded orders, including pending and cancelled orders.'
+                  : 'Average collected merchant food sales per paid order.'}
+
+          {' '}Months without matching orders show zero.
+        </p>
+      </section>
+  );
+}
+
 
 export default App

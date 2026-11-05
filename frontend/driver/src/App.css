@@ -274,3 +274,72 @@
 .driver-sidebar>.driver-side-user{width:100%;border:0;border-top:1px solid #ffffff24;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer;border-radius:9px;transition:background .16s ease}
 .driver-sidebar>.driver-side-user:hover{background:#ffffff0c}
 .driver-sidebar>.driver-side-user:focus-visible{outline:3px solid #ff9a7b;outline-offset:3px}
+.cash-collection-panel {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #e2e9e4;
+    border-radius: 16px;
+    background: #fff;
+    color: #153d30;
+}
+
+.cash-collection-heading,
+.cash-collection-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cash-collection-heading h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.cash-collection-heading button,
+.cash-collection-confirm {
+    padding: 10px 14px;
+    border: 1px solid #dce6df;
+    border-radius: 9px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.cash-collection-heading button {
+    background: #f2f7f3;
+    color: #153d30;
+}
+
+.cash-collection-list {
+    max-height: 200px;
+    margin: 12px 0;
+    overflow-y: auto;
+}
+
+.cash-collection-row {
+    padding: 14px 0;
+    border-bottom: 1px solid #edf1ee;
+}
+
+.cash-collection-row > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cash-collection-row span,
+.cash-collection-panel small,
+.cash-collection-panel p {
+    font-size: 13px;
+}
+
+.cash-collection-confirm {
+    background: #153d30;
+    color: #fff;
+}
+
+.cash-collection-panel button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}

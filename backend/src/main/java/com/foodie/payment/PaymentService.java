@@ -79,6 +79,55 @@ public class PaymentService {
         .toList();
   }
 
+  public List<Map<String, Object>> adminPayments() {
+    users.operational("ADMIN");
+
+    return payments.findAll().stream()
+            .map(payment -> {
+              var order = orders.findById(payment.getOrderId())
+                      .orElseThrow();
+
+              BigDecimal riderCommission = BigDecimal.ZERO;
+
+              if ("COLLECTED".equals(payment.getStatus())
+                      && "DELIVERY".equals(order.getType())
+                      && order.getDeliveryFee().signum() > 0) {
+
+                var delivery = deliveries.findByOrderId(order.getId())
+                        .orElse(null);
+
+                if (delivery == null) {
+                  riderCommission = null;
+                } else if ("DELIVERED".equals(delivery.getStatus())) {
+                  BigDecimal serviceRate = delivery.getServiceRate();
+
+                  if (serviceRate == null) {
+                    serviceRate = policies.amount("driver_service_rate");
+                  }
+
+                  riderCommission = order.getDeliveryFee()
+                          .multiply(serviceRate)
+                          .setScale(2, java.math.RoundingMode.HALF_UP);
+                }
+              }
+
+              Map<String, Object> row = new LinkedHashMap<>();
+
+              row.put("id", payment.getId());
+              row.put("orderId", payment.getOrderId());
+              row.put("method", payment.getMethod());
+              row.put("status", payment.getStatus());
+              row.put("amount", payment.getAmount());
+              row.put("commission", payment.getCommission());
+              row.put("riderCommission", riderCommission);
+              row.put("collectedBy", payment.getCollectedBy());
+              row.put("collectedAt", payment.getCollectedAt());
+
+              return row;
+            })
+            .toList();
+  }
+
   @Transactional
   public Payment collect(Long orderId) {
     var u = users.operational("MERCHANT", "RIDER");

@@ -142,6 +142,8 @@ public class DriverService {
     v.put("destination", o.getDeliveryAddress());
     v.put("status", o.getStatus());
     v.put("paymentStatus", o.getPaymentStatus());
+    v.put("paymentMethod", o.getPaymentMethod());
+    v.put("total", o.getTotal());
     deliveries
         .findByOrderId(o.getId())
         .ifPresent(

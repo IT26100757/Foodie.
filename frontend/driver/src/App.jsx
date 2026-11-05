@@ -275,6 +275,120 @@ function ProfileSettings({ driver, vehiclePending, onProfileChange, onVehicleSub
     </form>
   </div>
 }
+function CashCollectionPanel({ activeOrderId }) {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState(null);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const submitting = useRef(false);
+
+  const loadOrders = useCallback(async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const history = await api('/api/driver/orders/history');
+
+      setOrders(
+          history.filter((order) =>
+              order.status === 'DELIVERED' &&
+              order.paymentMethod === 'CASH' &&
+              order.paymentStatus === 'PENDING'
+          )
+      );
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadOrders();
+  }, [loadOrders, activeOrderId]);
+
+  async function confirmCollection(order) {
+    if (submitting.current) return;
+
+    submitting.current = true;
+    setBusyId(order.id);
+    setError('');
+    setMessage('');
+
+    try {
+      await api(`/api/payments/collect/${order.id}`, {
+        method: 'POST'
+      });
+
+      setOrders((current) =>
+          current.filter((item) => item.id !== order.id)
+      );
+
+      setMessage(`Cash collection recorded for order #${order.id}.`);
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      submitting.current = false;
+      setBusyId(null);
+    }
+  }
+
+  const money = (value) =>
+      'Rs. ' + Number(value).toLocaleString('en-LK', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+  return (
+      <section className="cash-collection-panel">
+        <div className="cash-collection-heading">
+          <h2>Cash collection</h2>
+
+          <button
+              type="button"
+              onClick={loadOrders}
+              disabled={loading || busyId !== null}
+          >
+            {loading ? 'Loading…' : 'Refresh'}
+          </button>
+        </div>
+
+        {error && <p role="alert">{error}</p>}
+        {message && <p role="status">{message}</p>}
+
+        {!loading && !error && orders.length === 0 && (
+            <p>No delivered orders awaiting cash collection.</p>
+        )}
+
+        <div className="cash-collection-list">
+          {orders.map((order) => (
+              <article className="cash-collection-row" key={order.id}>
+                <div>
+                  <strong>Order #{order.id}</strong>
+                  <span>Customer payment · {money(order.total)}</span>
+                </div>
+
+                <button
+                    type="button"
+                    className="cash-collection-confirm"
+                    disabled={loading || busyId !== null}
+                    onClick={() => confirmCollection(order)}
+                >
+                  {busyId === order.id
+                      ? 'Recording…'
+                      : 'Confirm cash collected'}
+                </button>
+              </article>
+          ))}
+        </div>
+
+        {orders.length > 0 && (
+            <small>Confirm after receiving the full customer payment.</small>
+        )}
+      </section>
+  );
+}
 function DriverDashboard({driver,onDriverChange}) {
   const [section,setSection]=useState('Home')
   const [online,setOnline]=useState(Boolean(driver?.online))
@@ -338,6 +452,9 @@ function DriverDashboard({driver,onDriverChange}) {
     <aside className="driver-sidebar"><div className="driver-brand"><span><Icon name="scooter" size={23}/></span><b>foodie<span>.</span></b><small>DRIVER</small></div><nav aria-label="Driver dashboard">{nav.map(([name,icon])=><button key={name} onClick={()=>setSection(name)} className={section===name?'active':''} aria-current={section===name?'page':undefined}><i><Icon name={icon} size={19}/></i>{name}{name==='Notifications'&&unreadNotifications>0&&<em>{unreadNotifications>99?'99+':unreadNotifications}</em>}</button>)}</nav><button type="button" className="driver-side-user" onClick={()=>setSection('Profile')} aria-label="Open driver profile"><span className="avatar">{initials}</span><span><b>{driverName}</b>{driver?.driverId&&<small>ID: {driver.driverId}</small>}</span></button></aside>
     <div className="driver-main"><header className="driver-topbar"><div className="driver-greeting"><div className="avatar">{initials}</div><div><small>Welcome,</small><b>{driverName}</b><span>Driver account</span></div></div><div className="driver-clock"><span>{displayDate}</span><b><Icon name="clock" size={14}/> {new Date(clockNow).toLocaleTimeString('en-LK',{hour:'2-digit',minute:'2-digit'})}</b></div></header>
       {section==='Home'&&<div className="driver-home"><DriverMap position={position} online={online} networkOnline={networkOnline} locationStatus={mapLocationStatus}/><div className="home-status"><div className={`status-icon ${online?'on':''}`}><Icon name={online?'location':'power'} size={19}/></div><div className="status-copy"><b>{online?'You’re Online':'You’re currently offline'}</b><span>{online?'Available for nearby deliveries':'Go online to receive delivery offers'}</span></div>{online&&<span className="online-pill"><i/> Online</span>}</div><div className="home-actions"><div className="searching-label"><span className={`pulse-ring ${online?'is-active':''}`}><Icon name={online?'location':'scooter'} size={20}/></span><div><b>{activeOrder?'Delivery in progress':online?'Waiting for delivery offers':'Ready to start delivering?'}</b><small>{activeOrder?`Order ${activeOrder.id}`:online?'New delivery offers will appear here.':'Turn on availability when you are ready.'}</small></div></div><button className="availability-control" type="button" onClick={()=>setAvailability(!online)} aria-label={online?'Go offline':'Go online'} aria-pressed={online}><span>{locating?'Locating…':online?'Online':'Offline'}</span><span className={`availability-switch ${online?'is-online':''}`}><i/></span></button></div>{(availabilityError||orderServiceError)&&<p className="driver-settings-feedback" role="status">{availabilityError||orderServiceError}</p>}{activeOrder&&<div className="accepted-card"><span className="accepted-icon"><Icon name="scooter" size={21}/></span><div><b>{activeOrder.id}</b><small>{activeOrder.destination||'Delivery in progress'}</small></div><button type="button" onClick={completeOrder}><Icon name="check" size={15}/> {activeOrder.deliveryStatus==='ON_DELIVERY'?'Complete delivery':'Confirm pickup'}</button></div>}</div>}
+      {section === 'Home' && (
+          <CashCollectionPanel activeOrderId={activeOrder?.id ?? null} />
+      )}
       {section==='Profile'&&<ProfileSettings driver={driver} vehiclePending={vehiclePending} onProfileChange={onDriverChange} onVehicleSubmit={async()=>onDriverChange(await api('/api/driver/profile'))}/>}
       {section==='Earnings'&&<DriverEarnings/>}
       {section==='Notifications'&&<div className="section-page"><div className="page-heading"><div><h1>Notifications</h1><p>Order updates, payment alerts, and important notes</p></div><button className="text-button" onClick={markAllRead} disabled={!unreadNotifications}>Mark all as read</button></div>{notificationError&&<p className="driver-settings-feedback" role="status">{notificationError}</p>}{notifications.length?<div className="notice-list">{notifications.map(item=><article key={item.id} className={!item.read?'is-unread':''}><DriverNotificationIcon type={item.type}/><div className="driver-notice-copy"><b>{item.title}</b><span>{item.message}</span></div><small>{notificationTime(item.createdAt)}</small>{!item.read&&<button type="button" className="driver-notice-mark-read" onClick={()=>markRead(item.id)}>Mark read</button>}</article>)}</div>:<div className="notice-list driver-notice-empty"><Icon name="bell" size={24}/><b>No notifications</b><span>{notificationError||'New account updates will appear here.'}</span></div>}</div>}

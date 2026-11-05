@@ -115,6 +115,12 @@ public class AdminController {
               p.put("verificationStatus", u.getApprovalStatus());
               p.put("submitted", u.getSubmitted());
               p.put("active", u.getActive());
+                p.put(
+                        "online",
+                        r.getOpen()
+                                && u.getActive()
+                                && "APPROVED".equals(u.getApprovalStatus())
+                );
               p.put("documents", users.documents(u.getId()));
               return p;
             })
@@ -130,6 +136,12 @@ public class AdminController {
             u -> {
               Map<String, Object> p = new LinkedHashMap<>();
               p.put("riderId", u.getId());
+                p.put(
+                        "online",
+                        ((com.foodie.user.model.RiderUser) u).getOnline()
+                                && u.getActive()
+                                && "APPROVED".equals(u.getApprovalStatus())
+                );
               p.put("firstName", u.getFirstName());
               p.put("lastName", u.getLastName());
               p.put("email", u.getEmail());
@@ -187,8 +199,7 @@ public class AdminController {
 
   @GetMapping("/payments")
   public Object payments() {
-    users.operational("ADMIN");
-    return payments.list();
+      return payments.adminPayments();
   }
 
   @GetMapping("/notifications")

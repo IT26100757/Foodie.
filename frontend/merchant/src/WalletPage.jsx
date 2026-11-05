@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { playTransactionResult, prepareTransactionAudio } from './transactionAudio.js'
 import './WalletPage.css'
 import WalletReports from './WalletReports.jsx'
@@ -80,9 +80,10 @@ function WalletPage({ onTransactionComplete, orders = [] }) {
     </div>
     <div className="wallet-main-grid">
       <div className="wallet-left-column">
-        <section className="dashboard-card wallet-analysis-card"><div className="wallet-card-heading"><div><span className="wallet-section-kicker">SALES & SETTLEMENTS</span><h2>Business Analysis</h2><p>Sales and settlement data will appear here.</p></div><PeriodPicker label="ANALYSIS PERIOD" value={chartPeriod} options={['Last 3 months', 'Last 6 months', 'This year']} onChange={setChartPeriod} /></div>
+        <section className="dashboard-card wallet-analysis-card"><div className="wallet-card-heading"><div><span className="wallet-section-kicker">SALES & SETTLEMENTS</span><h2>Business Analysis</h2><p>Monthly sales, service charges, and net earnings from collected orders.</p></div><PeriodPicker label="ANALYSIS PERIOD" value={chartPeriod} options={['Last 3 months', 'Last 6 months', 'This year']} onChange={setChartPeriod} /></div>
           <div className="wallet-chart-legend"><button type="button" className={metric === 'All' || metric === 'Sales' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Sales' ? 'All' : 'Sales')}><i className="legend-sales" />Sales</button><button type="button" className={metric === 'All' || metric === 'Charge' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Charge' ? 'All' : 'Charge')}><i className="legend-charge" />Service charge</button><button type="button" className={metric === 'All' || metric === 'Net' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Net' ? 'All' : 'Net')}><i className="legend-net" />Net earnings</button></div>
-          <div className="wallet-chart-empty">{chartPeriod} · {metric}: {moneyWithCents(metric==='Charge'?fees:metric==='Net'?gross-fees:gross)}</div>
+
+          <MonthlyWalletChart orders={orders} chartPeriod={chartPeriod} metric={metric} />
         </section>
         <section className="dashboard-card wallet-transactions-card" id="wallet-transactions"><div className="wallet-card-heading"><div><span className="wallet-section-kicker">YOUR WALLET ACTIVITY</span><h2>Recent Transactions</h2></div></div>
           {transactions.length ? <div className="wallet-table-wrap"><table className="wallet-table"><thead><tr><th>TRANSACTION</th><th>DATE</th><th>TYPE</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody>{transactions.map((item) => <tr key={item.id}><td><span className={`wallet-transaction-mark ${item.amount < 0 ? 'charge-mark' : ''}`}>{item.amount < 0 ? '−' : '+'}</span><span className="wallet-transaction-name"><b>{item.title}</b><small>{item.id}</small></span></td><td>{item.date}</td><td>{item.kind}</td><td className={item.amount < 0 ? 'negative-amount' : 'positive-amount'}>{item.amount < 0 ? '−' : '+'} {money(item.amount)}</td><td><span className={`wallet-status ${item.status === 'Completed' ? 'complete' : 'deducted'}`}><i />{item.status}</span></td></tr>)}</tbody></table></div> : <div className="wallet-chart-empty">No transactions found.</div>}
@@ -98,12 +99,163 @@ function WalletPage({ onTransactionComplete, orders = [] }) {
     {notice && <div className="wallet-toast" role="status">✓ <span>{notice}</span><button type="button" onClick={() => setNotice('')} aria-label="Dismiss">×</button></div>}
     {dialog && <div className="wallet-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !transferBusy) setDialog('') }}>
       {dialog === 'processing' ? <section className="wallet-dialog wallet-processing-dialog" role="status" aria-live="polite" aria-busy="true"><div className="wallet-processing-spinner" /><span className="wallet-section-kicker">FOODIE MERCHANT WALLET</span><h2>Transfer processing</h2><p>Your transaction is being recorded and checked. Keep this window open for the result.</p><div className="wallet-processing-steps"><span className="done">✓ Request received</span><span className="active"><i /> Checking destination bank</span><span>Confirmation pending</span></div></section>
-        : dialog === 'receipt' && activeTransaction ? <section className={`wallet-dialog wallet-receipt ${activeTransaction.status === 'COMPLETED' ? 'receipt-success' : 'receipt-failed'}`} role="dialog" aria-modal="true" aria-labelledby="wallet-receipt-title"><button type="button" className="wallet-dialog-close" onClick={() => setDialog('')} aria-label="Close receipt">×</button><div className="wallet-receipt-brand"><span>foodie<span>.</span></span><small>MERCHANT WALLET</small></div><h2 id="wallet-receipt-title">Transfer receipt</h2><div className="wallet-receipt-state"><span>{activeTransaction.status === 'COMPLETED' ? '✓' : '!'}</span><b>{activeTransaction.status === 'COMPLETED' ? 'COMPLETED' : 'FAILED'}</b><strong>{moneyWithCents(activeTransaction.amount)}</strong></div><div className="wallet-receipt-section"><span>TO</span><b>{activeTransaction.bankName}</b><small>{activeTransaction.accountHolder}<br />Account ending in {activeTransaction.accountLastFour}</small></div><div className="wallet-receipt-section"><span>TRANSACTION DETAILS</span><dl><div><dt>Date</dt><dd>{new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(activeTransaction.updatedAt))}</dd></div><div><dt>Transaction ID</dt><dd className="wallet-receipt-id">{activeTransaction.transactionId}</dd></div><div><dt>Status</dt><dd>{activeTransaction.status === 'COMPLETED' ? 'Completed' : 'Failed'}</dd></div>{activeTransaction.failureReason && <div><dt>Reason</dt><dd>{activeTransaction.failureReason}</dd></div>}</dl></div><div className="wallet-receipt-section"><span>FUNDING SOURCE</span><b>Foodie Bank Balance</b></div><div className="wallet-receipt-actions"><button type="button" className="wallet-receipt-secondary" onClick={printReceipt}>Print receipt</button><button type="button" className="wallet-dialog-submit" onClick={() => setDialog('')}>Done</button></div></section>
-        : <section className="wallet-dialog" role="dialog" aria-modal="true" aria-labelledby="wallet-dialog-title"><button type="button" className="wallet-dialog-close" onClick={() => setDialog('')} aria-label="Close">×</button><span className="wallet-section-kicker">FOODIE MERCHANT WALLET</span><h2 id="wallet-dialog-title">{dialog === 'account' ? 'Add a bank account' : 'Transfer to bank'}</h2><p>{dialog === 'account' ? 'Save an encrypted destination account.' : 'Request a payout for review; no automatic bank transfer is executed.'}</p>{dialog === 'account' ? <form onSubmit={addAccount} className="wallet-dialog-form"><label>Bank name<BankNamePicker value={accountForm.bank} onSelect={(bank) => { setAccountForm((current) => ({ ...current, bank })); setAccountError('') }} />{accountError && <small className="wallet-field-error" role="alert">{accountError}</small>}</label><label>Account holder<input required value={accountForm.name} onChange={(event) => setAccountForm({ ...accountForm, name: event.target.value })} placeholder="Name on account" /></label><label>Account number<input required inputMode="numeric" pattern="[0-9]{4,20}" minLength="4" maxLength="20" title="Enter a 4 to 20 digit account number" value={accountForm.number} onChange={(event) => setAccountForm({ ...accountForm, number: event.target.value })} placeholder="Enter account number" /></label><label>Branch<input value={accountForm.branch} onChange={(event) => setAccountForm({ ...accountForm, branch: event.target.value })} placeholder="Branch (optional)" /></label><button className="wallet-dialog-submit" type="submit">Save account</button></form> : <form onSubmit={requestTransfer} className="wallet-dialog-form"><label>Send to<BankAccountPicker accounts={accounts} selectedAccount={selectedAccount} onSelect={setSelectedAccount} /></label><label>Amount<input required type="number" min="1" step="0.01" value={transferAmount} onChange={(event) => setTransferAmount(event.target.value)} placeholder="Enter amount" /></label>{transferError && <div className="wallet-transfer-error" role="alert">{transferError}</div>}<button className="wallet-dialog-submit" type="submit" disabled={transferBusy}>Review transfer</button></form>}</section>}
+          : dialog === 'receipt' && activeTransaction ? <section className={`wallet-dialog wallet-receipt ${activeTransaction.status === 'COMPLETED' ? 'receipt-success' : 'receipt-failed'}`} role="dialog" aria-modal="true" aria-labelledby="wallet-receipt-title"><button type="button" className="wallet-dialog-close" onClick={() => setDialog('')} aria-label="Close receipt">×</button><div className="wallet-receipt-brand"><span>foodie<span>.</span></span><small>MERCHANT WALLET</small></div><h2 id="wallet-receipt-title">Transfer receipt</h2><div className="wallet-receipt-state"><span>{activeTransaction.status === 'COMPLETED' ? '✓' : '!'}</span><b>{activeTransaction.status === 'COMPLETED' ? 'COMPLETED' : 'FAILED'}</b><strong>{moneyWithCents(activeTransaction.amount)}</strong></div><div className="wallet-receipt-section"><span>TO</span><b>{activeTransaction.bankName}</b><small>{activeTransaction.accountHolder}<br />Account ending in {activeTransaction.accountLastFour}</small></div><div className="wallet-receipt-section"><span>TRANSACTION DETAILS</span><dl><div><dt>Date</dt><dd>{new Intl.DateTimeFormat('en-LK', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(activeTransaction.updatedAt))}</dd></div><div><dt>Transaction ID</dt><dd className="wallet-receipt-id">{activeTransaction.transactionId}</dd></div><div><dt>Status</dt><dd>{activeTransaction.status === 'COMPLETED' ? 'Completed' : 'Failed'}</dd></div>{activeTransaction.failureReason && <div><dt>Reason</dt><dd>{activeTransaction.failureReason}</dd></div>}</dl></div><div className="wallet-receipt-section"><span>FUNDING SOURCE</span><b>Foodie Bank Balance</b></div><div className="wallet-receipt-actions"><button type="button" className="wallet-receipt-secondary" onClick={printReceipt}>Print receipt</button><button type="button" className="wallet-dialog-submit" onClick={() => setDialog('')}>Done</button></div></section>
+              : <section className="wallet-dialog" role="dialog" aria-modal="true" aria-labelledby="wallet-dialog-title"><button type="button" className="wallet-dialog-close" onClick={() => setDialog('')} aria-label="Close">×</button><span className="wallet-section-kicker">FOODIE MERCHANT WALLET</span><h2 id="wallet-dialog-title">{dialog === 'account' ? 'Add a bank account' : 'Transfer to bank'}</h2><p>{dialog === 'account' ? 'Save an encrypted destination account.' : 'Request a payout for review; no automatic bank transfer is executed.'}</p>{dialog === 'account' ? <form onSubmit={addAccount} className="wallet-dialog-form"><label>Bank name<BankNamePicker value={accountForm.bank} onSelect={(bank) => { setAccountForm((current) => ({ ...current, bank })); setAccountError('') }} />{accountError && <small className="wallet-field-error" role="alert">{accountError}</small>}</label><label>Account holder<input required value={accountForm.name} onChange={(event) => setAccountForm({ ...accountForm, name: event.target.value })} placeholder="Name on account" /></label><label>Account number<input required inputMode="numeric" pattern="[0-9]{4,20}" minLength="4" maxLength="20" title="Enter a 4 to 20 digit account number" value={accountForm.number} onChange={(event) => setAccountForm({ ...accountForm, number: event.target.value })} placeholder="Enter account number" /></label><label>Branch<input value={accountForm.branch} onChange={(event) => setAccountForm({ ...accountForm, branch: event.target.value })} placeholder="Branch (optional)" /></label><button className="wallet-dialog-submit" type="submit">Save account</button></form> : <form onSubmit={requestTransfer} className="wallet-dialog-form"><label>Send to<BankAccountPicker accounts={accounts} selectedAccount={selectedAccount} onSelect={setSelectedAccount} /></label><label>Amount<input required type="number" min="1" step="0.01" value={transferAmount} onChange={(event) => setTransferAmount(event.target.value)} placeholder="Enter amount" /></label>{transferError && <div className="wallet-transfer-error" role="alert">{transferError}</div>}<button className="wallet-dialog-submit" type="submit" disabled={transferBusy}>Review transfer</button></form>}</section>}
     </div>}
   </div>
 }
 
+
+
+// Business Analysis: use the same collected-order fields as the wallet summary.
+// Historical months require the parent to pass the corresponding orders.
+const walletChartSeries = [
+  { key: 'Sales', field: 'sales', label: 'Sales', color: '#ef493c' },
+  { key: 'Charge', field: 'charge', label: 'Service charge', color: '#eaba4e' },
+  { key: 'Net', field: 'net', label: 'Net earnings', color: '#65a87a' },
+]
+
+function MonthlyWalletChart({ orders, chartPeriod, metric }) {
+  const [chartType, setChartType] = useState('line')
+  const [selectedMonth, setSelectedMonth] = useState(null)
+
+  const months = useMemo(() => {
+    const now = new Date()
+    const count = chartPeriod === 'Last 3 months' ? 3
+        : chartPeriod === 'This year' ? now.getMonth() + 1 : 6
+    const startOffset = chartPeriod === 'This year' ? -now.getMonth() : 1 - count
+    const buckets = Array.from({ length: count }, (_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() + startOffset + index, 1)
+      const shortMonth = date.toLocaleDateString('en-LK', { month: 'short' })
+      return {
+        key: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+        label: date.getFullYear() === now.getFullYear() ? shortMonth : `${shortMonth} '${String(date.getFullYear()).slice(-2)}`,
+        fullLabel: date.toLocaleDateString('en-LK', { month: 'long', year: 'numeric' }),
+        sales: 0, charge: 0, net: 0,
+      }
+    })
+    const byMonth = new Map(buckets.map((bucket) => [bucket.key, bucket]))
+
+    for (const order of orders) {
+      // The existing merchant wallet counts completed payments. Some APIs
+      // expose the equivalent status as COLLECTED.
+      const status = String(order.paymentStatus ?? '').toUpperCase()
+      if (status !== 'COMPLETED' && status !== 'COLLECTED') continue
+      const dateValue = order.paymentCollectedAt ?? order.collectedAt ?? order.paidAt ?? order.createdAt ?? order.date
+      if (!dateValue) continue
+      const date = new Date(dateValue)
+      if (Number.isNaN(date.getTime())) continue
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      const bucket = byMonth.get(key)
+      if (!bucket) continue
+
+      const number = (value) => {
+        const parsed = Number(value ?? 0)
+        return Number.isFinite(parsed) ? parsed : 0
+      }
+      const additionalAgreed = order.customerAgreed === true || order.customerAgreedToAdditionalCharges === true
+      const sale = number(order.subtotal) - number(order.discount) + (additionalAgreed ? number(order.additionalCharge) : 0)
+      const charge = number(order.serviceCharge)
+      bucket.sales += sale
+      bucket.charge += charge
+      bucket.net += sale - charge
+    }
+    return buckets
+  }, [orders, chartPeriod])
+
+  useEffect(() => { setSelectedMonth(null) }, [chartPeriod])
+
+  const visible = walletChartSeries.filter((series) => metric === 'All' || metric === series.key)
+  const selectedIndex = selectedMonth !== null && selectedMonth < months.length ? selectedMonth : months.length - 1
+  const active = months[selectedIndex]
+  const maximum = Math.max(1, ...months.flatMap((month) => visible.map((series) => month[series.field])))
+  const magnitude = 10 ** Math.floor(Math.log10(maximum / 4))
+  const step = Math.ceil(maximum / (4 * magnitude)) * magnitude
+  const chartMaximum = step * 4
+
+  const left = 69
+  const right = 760
+  const top = 22
+  const bottom = 238
+  const x = (index) => months.length === 1 ? (left + right) / 2 : left + (right - left) * index / (months.length - 1)
+  const y = (value) => bottom - Math.max(0, value) / chartMaximum * (bottom - top)
+  const compact = (value) => {
+    if (value >= 1000000) return `Rs. ${(value / 1000000).toFixed(1)}m`
+    if (value >= 1000) return `Rs. ${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k`
+    return `Rs. ${Number(value.toFixed(2))}`
+  }
+  const barWidth = Math.min(19, (right - left) / months.length / 4)
+  const barGap = 3
+  const hitWidth = (right - left) / Math.max(1, months.length - 1)
+
+  return <div style={{ marginTop: 12, minWidth: 0 }}>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 5, marginBottom: 6 }} role="group" aria-label="Chart display">
+      {['line', 'bar'].map((type) => <button
+          key={type}
+          type="button"
+          aria-pressed={chartType === type}
+          onClick={() => setChartType(type)}
+          style={{
+            padding: '7px 13px', borderRadius: 8, cursor: 'pointer', fontSize: 11, fontWeight: 700,
+            border: '1px solid #eee5dc',
+            background: chartType === type ? '#153d30' : '#fff',
+            color: chartType === type ? '#fff' : '#645d54',
+          }}
+      >{type === 'line' ? 'Line chart' : 'Bar chart'}</button>)}
+    </div>
+    <svg viewBox="0 0 800 284" role="img" aria-label={`Monthly ${chartType} chart of collected sales, service charges, and net earnings`} style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}>
+      {Array.from({ length: 5 }, (_, tick) => {
+        const value = chartMaximum * tick / 4
+        const tickY = y(value)
+        return <g key={tick}>
+          <line x1={left} x2={right} y1={tickY} y2={tickY} stroke="#eee9e1" strokeDasharray="4 5" />
+          <text x={left - 10} y={tickY + 4} textAnchor="end" fill="#938a80" fontSize="11">{compact(value)}</text>
+        </g>
+      })}
+      {months.map((month, index) => <text key={month.key} x={x(index)} y="264" textAnchor="middle" fill="#80776d" fontSize="12" fontWeight={index === selectedIndex ? '700' : '400'}>{month.label}</text>)}
+      {chartType === 'line' ? visible.map((series) => {
+        const points = months.map((month, index) => `${x(index)},${y(month[series.field])}`).join(' ')
+        const area = `M ${x(0)} ${bottom} L ${months.map((month, index) => `${x(index)} ${y(month[series.field])}`).join(' L ')} L ${x(months.length - 1)} ${bottom} Z`
+        return <g key={series.key}>
+          <path d={area} fill={series.color} fillOpacity="0.055" />
+          <polyline points={points} fill="none" stroke={series.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          {months.map((month, index) => <circle key={month.key} cx={x(index)} cy={y(month[series.field])} r={index === selectedIndex ? 5 : 3.5} fill="#fff" stroke={series.color} strokeWidth="2.5" />)}
+        </g>
+      }) : months.map((month, monthIndex) => visible.map((series, seriesIndex) => {
+        const barX = x(monthIndex) - (visible.length * (barWidth + barGap) - barGap) / 2 + seriesIndex * (barWidth + barGap)
+        const barY = y(month[series.field])
+        return <rect key={`${month.key}-${series.key}`} x={barX} y={barY} width={barWidth} height={Math.max(0, bottom - barY)} rx="3" fill={series.color} />
+      }))}
+      {months.map((month, index) => <rect
+          key={`hit-${month.key}`}
+          x={x(index) - hitWidth / 2}
+          y={top}
+          width={hitWidth}
+          height={bottom - top}
+          fill="transparent"
+          tabIndex="0"
+          role="button"
+          aria-label={`${month.fullLabel}: ${visible.map((series) => `${series.label} ${moneyWithCents(month[series.field])}`).join(', ')}`}
+          onMouseEnter={() => setSelectedMonth(index)}
+          onFocus={() => setSelectedMonth(index)}
+          onClick={() => setSelectedMonth(index)}
+          style={{ cursor: 'pointer' }}
+      ><title>{`${month.fullLabel} — ${visible.map((series) => `${series.label}: ${moneyWithCents(month[series.field])}`).join(' · ')}`}</title></rect>)}
+    </svg>
+    {active && <div style={{
+      display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '9px 17px',
+      padding: '11px 12px', borderRadius: 9, background: '#faf8f4', border: '1px solid #f0ebe4',
+      fontSize: 11, color: '#514a42',
+    }}>
+      <strong style={{ minWidth: 92 }}>{active.fullLabel}</strong>
+      {visible.map((series) => <span key={series.key} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <i style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: series.color }} />
+        {series.label}: <b>{moneyWithCents(active[series.field])}</b>
+      </span>)}
+    </div>}
+    <p className="wallet-chart-footnote">Based on collected orders. Hover, tap, or focus a month to view its totals. Months without collected orders show zero.</p>
+  </div>
+}
 
 function PeriodPicker({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false)
