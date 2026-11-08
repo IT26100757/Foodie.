@@ -105,17 +105,7 @@ export default function AccountCenter({ pointsBalance, policy = {}, section, cus
   }
   function addCard(event) {
     event.preventDefault()
-    setNotice('Card storage and payments are unavailable until a real payment gateway is configured.');return
-    const last4 = cardForm.last4.replace(/\D/g, '').slice(-4)
-    if (!cardForm.bank || !cardForm.holder.trim() || last4.length !== 4 || cardForm.expiry.split('/').length !== 2 || cardForm.expiry.split('/')[0].length !== 2 || cardForm.expiry.split('/')[1].length !== 2) {
-      setNotice('Enter the bank, cardholder, final four digits, and expiry (MM/YY).')
-      return
-    }
-    const next = [...cards, { id: crypto.randomUUID(), bank: cardForm.bank, holder: cardForm.holder.trim(), last4, expiry: cardForm.expiry }]
-    setCards(next)
-    localStorage.setItem('foodie.customer.cards', JSON.stringify(next))
-    setCardForm({ bank: '', holder: '', last4: '', expiry: '' })
-    setNotice('Demo card summary saved. No full card number or security code was requested or stored.')
+    setNotice('Card storage and payments are unavailable until a real payment gateway is configured.')
   }
   function deleteCard(id) {
     const next = cards.filter((card) => card.id !== id)

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { playTransactionResult, prepareTransactionAudio } from './transactionAudio.js'
 import './WalletPage.css'
 import WalletReports from './WalletReports.jsx'
 import { api } from './api.js'
@@ -40,7 +39,7 @@ function WalletPage({ onTransactionComplete, orders = [] }) {
   const [balance,setBalance]=useState(null)
   const [commissionRate,setCommissionRate]=useState(null)
   async function refreshWallet(){const [banks,wallet,payouts,policies]=await Promise.all([api('/api/wallet/bank-accounts'),api('/api/wallet'),api('/api/wallet/transfers'),api('/api/customer/policies')]);setAccounts(banks.map(bank=>({...bank,number:'•••• '+bank.lastFour,primary:bank.primaryAccount})));setBalance(wallet);setCommissionRate(policies.commission_rate);setTransactions(payouts.map(payout=>({id:payout.transactionId,title:'Transfer to '+payout.bankName,date:new Date(payout.updatedAt).toLocaleDateString(),kind:'Transfer',amount:-Number(payout.amount),status:payout.status==='COMPLETED'?'Completed':payout.status==='FAILED'?'Failed':'Processing'})))}
-  useEffect(()=>{let active=true;const refresh=()=>{if(active)refreshWallet().catch(error=>setNotice(error.message))};refresh();const timer=setInterval(refresh,4000);return()=>{active=false;clearInterval(timer)}},[])
+  useEffect(()=>{let active=true;const refresh=()=>{if(active&&document.visibilityState!=='hidden')refreshWallet().catch(error=>setNotice(error.message))};refresh();const timer=setInterval(refresh,30000);return()=>{active=false;clearInterval(timer)}},[])
   const periodStart=new Date(new Date().getFullYear(),new Date().getMonth()-(summaryPeriod==='Last month'?1:summaryPeriod==='Last 3 months'?2:summaryPeriod==='Last 6 months'?5:0),1)
   const periodEnd=summaryPeriod==='Last month'?new Date(new Date().getFullYear(),new Date().getMonth(),1):new Date()
   const periodOrders=orders.filter(order=>order.paymentStatus==='COMPLETED'&&new Date(order.createdAt)>=periodStart&&new Date(order.createdAt)<=periodEnd)
@@ -56,7 +55,7 @@ function WalletPage({ onTransactionComplete, orders = [] }) {
     const account=accounts.find(item=>String(item.id)===selectedAccount) || accounts[0]
     if(!account){setTransferError('Add a bank account first.');return}
     setTransferBusy(true);setTransferError('')
-    try {const result=await api('/api/wallet/transfers',{method:'POST',headers:{'Idempotency-Key':crypto.randomUUID()},body:{bankAccountId:account.id,bankName:account.bank,accountHolder:account.name,accountLastFour:account.lastFour,amount:Number(transferAmount)}});await refreshWallet();setTransferAmount('');setDialog('');showNotice('Payout request '+result.transactionId+' saved for review. No bank transfer has been executed.')}catch(error){setTransferError(error.message)}finally{setTransferBusy(false)}
+    try {const result=await api('/api/wallet/transfers',{method:'POST',headers:{'Idempotency-Key':crypto.randomUUID()},body:{bankAccountId:account.id,bankName:account.bank,accountHolder:account.name,accountLastFour:account.lastFour,amount:Number(transferAmount)}});setActiveTransaction(result);onTransactionComplete?.(result);await refreshWallet();setTransferAmount('');setDialog('');showNotice('Payout request '+result.transactionId+' saved for review. No bank transfer has been executed.')}catch(error){setTransferError(error.message)}finally{setTransferBusy(false)}
   }
 
   function printReceipt() {
@@ -83,7 +82,7 @@ function WalletPage({ onTransactionComplete, orders = [] }) {
         <section className="dashboard-card wallet-analysis-card"><div className="wallet-card-heading"><div><span className="wallet-section-kicker">SALES & SETTLEMENTS</span><h2>Business Analysis</h2><p>Monthly sales, service charges, and net earnings from collected orders.</p></div><PeriodPicker label="ANALYSIS PERIOD" value={chartPeriod} options={['Last 3 months', 'Last 6 months', 'This year']} onChange={setChartPeriod} /></div>
           <div className="wallet-chart-legend"><button type="button" className={metric === 'All' || metric === 'Sales' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Sales' ? 'All' : 'Sales')}><i className="legend-sales" />Sales</button><button type="button" className={metric === 'All' || metric === 'Charge' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Charge' ? 'All' : 'Charge')}><i className="legend-charge" />Service charge</button><button type="button" className={metric === 'All' || metric === 'Net' ? 'chosen' : ''} onClick={() => setMetric(metric === 'Net' ? 'All' : 'Net')}><i className="legend-net" />Net earnings</button></div>
 
-          <MonthlyWalletChart orders={orders} chartPeriod={chartPeriod} metric={metric} />
+          <MonthlyWalletChart key={chartPeriod} orders={orders} chartPeriod={chartPeriod} metric={metric} />
         </section>
         <section className="dashboard-card wallet-transactions-card" id="wallet-transactions"><div className="wallet-card-heading"><div><span className="wallet-section-kicker">YOUR WALLET ACTIVITY</span><h2>Recent Transactions</h2></div></div>
           {transactions.length ? <div className="wallet-table-wrap"><table className="wallet-table"><thead><tr><th>TRANSACTION</th><th>DATE</th><th>TYPE</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody>{transactions.map((item) => <tr key={item.id}><td><span className={`wallet-transaction-mark ${item.amount < 0 ? 'charge-mark' : ''}`}>{item.amount < 0 ? '−' : '+'}</span><span className="wallet-transaction-name"><b>{item.title}</b><small>{item.id}</small></span></td><td>{item.date}</td><td>{item.kind}</td><td className={item.amount < 0 ? 'negative-amount' : 'positive-amount'}>{item.amount < 0 ? '−' : '+'} {money(item.amount)}</td><td><span className={`wallet-status ${item.status === 'Completed' ? 'complete' : 'deducted'}`}><i />{item.status}</span></td></tr>)}</tbody></table></div> : <div className="wallet-chart-empty">No transactions found.</div>}
@@ -162,8 +161,6 @@ function MonthlyWalletChart({ orders, chartPeriod, metric }) {
     }
     return buckets
   }, [orders, chartPeriod])
-
-  useEffect(() => { setSelectedMonth(null) }, [chartPeriod])
 
   const visible = walletChartSeries.filter((series) => metric === 'All' || metric === series.key)
   const selectedIndex = selectedMonth !== null && selectedMonth < months.length ? selectedMonth : months.length - 1

@@ -4,10 +4,10 @@ import { api, apiFetch, signIn } from './api.js'
 import { platformData, pollWhileVisible } from './adminApi.js'
 
 
-function useVisiblePolling(task, dependencies=[]) {
+function useVisiblePolling(task, viewKey) {
   const latest=useRef(task)
-  latest.current=task
-  useEffect(()=>pollWhileVisible(()=>latest.current()),dependencies)
+  useEffect(()=>{latest.current=task})
+  useEffect(()=>pollWhileVisible(()=>latest.current()),[viewKey])
 }
 
 function Icon({ name, size = 20, ...props }) {
@@ -379,13 +379,12 @@ function PaymentsPage({ payments, onCancel, actionMessage }) {
 
 function RefundsPage({ refunds, onDecision, actionMessage, focusRequestId }) {
   const [filter, setFilter] = useState('all')
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(focusRequestId || '')
   const [searchFocused, setSearchFocused] = useState(false)
   const [activeSuggestion, setActiveSuggestion] = useState(-1)
   const [dateFrom, setDateFrom] = useState('2020-01-01')
   const [dateTo, setDateTo] = useState(() => isoDate(new Date()))
   const [selectedRefund, setSelectedRefund] = useState(null)
-  useEffect(() => { if (focusRequestId) { setSearch(focusRequestId); setFilter('all') } }, [focusRequestId])
   const datedRefunds = refunds.filter((refund) => refund.requestedDate >= dateFrom && refund.requestedDate <= dateTo)
   const filters = [['all', 'All requests'], ['pending', 'Pending'], ['approved', 'Approved'], ['rejected', 'Declined']]
   const matchesFilter = (refund, key) => key === 'all' || refund.status.toLowerCase() === key
@@ -561,7 +560,7 @@ function RestaurantPage({ restaurants, loading, error, view, onView, search, onS
   const [activeSuggestion, setActiveSuggestion] = useState(-1)
   const [selectedRestaurant, setSelectedRestaurant] = useState(null)
   const [selectedMenu,setSelectedMenu]=useState([])
-  useEffect(()=>{let active=true;if(selectedRestaurant)api('/api/restaurants/'+selectedRestaurant.restaurantId+'/menu/manage').then(menu=>{if(active)setSelectedMenu(menu)}).catch(()=>{if(active)setSelectedMenu([])});return()=>{active=false}},[selectedRestaurant?.restaurantId])
+  useEffect(()=>{let active=true;if(selectedRestaurant)api('/api/restaurants/'+selectedRestaurant.restaurantId+'/menu/manage').then(menu=>{if(active)setSelectedMenu(menu)}).catch(()=>{if(active)setSelectedMenu([])});return()=>{active=false}},[selectedRestaurant])
   const datedRestaurants = restaurants.filter((restaurant) => {
     if (!restaurant.registeredAt) return true
     const registrationDate = restaurant.registeredAt.slice(0, 10)
@@ -1036,7 +1035,7 @@ function OrderOverviewChart({ orders }) {
       </div>
   );
 }
-function AdminDashboard({ onLogout, previewMode = false }) {
+function AdminDashboard({ onLogout }) {
   const [activeNav, setActiveNav] = useState('Dashboard')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [readNotificationIds,setReadNotificationIds]=useState([])
@@ -1079,7 +1078,7 @@ function AdminDashboard({ onLogout, previewMode = false }) {
   const platformSnapshot=useRef({})
   const refreshInFlight=useRef(null)
   const currentView=useRef(activeNav)
-  currentView.current=activeNav
+  useEffect(()=>{currentView.current=activeNav},[activeNav])
   async function refreshPlatform(force=true){
     if(refreshInFlight.current){await refreshInFlight.current;if(force||platformSnapshot.current._view!==currentView.current)return refreshPlatform(false);return}
     const pending=(async()=>{
@@ -1088,7 +1087,7 @@ function AdminDashboard({ onLogout, previewMode = false }) {
     refreshInFlight.current=pending
     try{await pending}finally{if(refreshInFlight.current===pending)refreshInFlight.current=null}
   }
-  useVisiblePolling(()=>refreshPlatform(false),[activeNav])
+  useVisiblePolling(()=>refreshPlatform(false),activeNav)
   async function markAllRead(){try{await api('/api/notifications/read-all',{method:'POST'});await refreshPlatform()}catch(error){setRestaurantsError(error.message)}}
   const activeRiders=deliveryRiders.filter(rider=>rider.status==='ACTIVE').length
   const revenueStart=(()=>{const now=new Date();if(revenuePeriod==='This Year')return new Date(now.getFullYear(),0,1);if(revenuePeriod==='This Quarter')return new Date(now.getFullYear(),Math.floor(now.getMonth()/3)*3,1);if(revenuePeriod==='This Week')return new Date(now.getFullYear(),now.getMonth(),now.getDate()-(now.getDay()+6)%7);return new Date(now.getFullYear(),now.getMonth(),1)})()
@@ -1178,7 +1177,7 @@ function AdminDashboard({ onLogout, previewMode = false }) {
 
       {searchOpen && <div className="search-bar"><Icon name="search" size={18}/><input autoFocus placeholder="Search order, customer, or restaurant..." value={search} onChange={(e) => setSearch(e.target.value)} /><button onClick={() => { setSearch(''); setSearchOpen(false) }} aria-label="Close search"><Icon name="close" size={18}/></button></div>}
 
-      {activeNav === 'Customers' ? <CustomerManagement users={users.filter(user=>user.role==='CUSTOMER')} onChange={refreshPlatform}/> : activeNav === 'Restaurants' ? <RestaurantPage restaurants={restaurants} loading={restaurantsLoading} error={restaurantsError} view={restaurantView} onView={setRestaurantView} search={restaurantSearch} onSearch={setRestaurantSearch} dateFrom={restaurantDateFrom} dateTo={restaurantDateTo} onDateApply={(from, to) => { setRestaurantDateFrom(from); setRestaurantDateTo(to) }} onAction={handleRestaurantAction} actionMessage={restaurantActionMessage} actionError={restaurantActionError}/> : activeNav === 'Delivery Riders' ? <DeliveryRidersPage riders={deliveryRiders} view={riderView} onView={setRiderView} search={riderSearch} onSearch={setRiderSearch} dateFrom={riderDateFrom} dateTo={riderDateTo} onDateApply={(from, to) => { setRiderDateFrom(from); setRiderDateTo(to) }} onAction={handleRiderAction} actionMessage={riderActionMessage}/> : activeNav === 'Payments' ? <PaymentsPage payments={payments} onCancel={handlePaymentCancel} actionMessage={paymentActionMessage}/> : activeNav === 'Refunds' ? <RefundsPage refunds={refunds} onDecision={handleRefundDecision} actionMessage={refundActionMessage} focusRequestId={refundFocusId}/> : activeNav === 'Complaints' ? <ComplaintsPage/> : activeNav === 'Notifications' ? <NotificationCenterPage items={notifications} readIds={readNotificationIds} onOpen={openNotification} onMarkAllRead={markAllRead}/> : activeNav === 'Coupons & Offers' ? <CouponsOffersPage/> : activeNav === 'Orders' ? <OrdersPage orders={ordersPageData} allOrders={orders} search={search} onSearch={setSearch} statusFilter={orderStatusFilter} onStatusFilter={setOrderStatusFilter} dateFrom={dateFrom} dateTo={dateTo} onDateApply={(from, to) => { setDateFrom(from); setDateTo(to) }}/> : <>
+      {activeNav === 'Customers' ? <CustomerManagement users={users.filter(user=>user.role==='CUSTOMER')} onChange={refreshPlatform}/> : activeNav === 'Restaurants' ? <RestaurantPage restaurants={restaurants} loading={restaurantsLoading} error={restaurantsError} view={restaurantView} onView={setRestaurantView} search={restaurantSearch} onSearch={setRestaurantSearch} dateFrom={restaurantDateFrom} dateTo={restaurantDateTo} onDateApply={(from, to) => { setRestaurantDateFrom(from); setRestaurantDateTo(to) }} onAction={handleRestaurantAction} actionMessage={restaurantActionMessage} actionError={restaurantActionError}/> : activeNav === 'Delivery Riders' ? <DeliveryRidersPage riders={deliveryRiders} view={riderView} onView={setRiderView} search={riderSearch} onSearch={setRiderSearch} dateFrom={riderDateFrom} dateTo={riderDateTo} onDateApply={(from, to) => { setRiderDateFrom(from); setRiderDateTo(to) }} onAction={handleRiderAction} actionMessage={riderActionMessage}/> : activeNav === 'Payments' ? <PaymentsPage payments={payments} onCancel={handlePaymentCancel} actionMessage={paymentActionMessage}/> : activeNav === 'Refunds' ? <RefundsPage key={refundFocusId} refunds={refunds} onDecision={handleRefundDecision} actionMessage={refundActionMessage} focusRequestId={refundFocusId}/> : activeNav === 'Complaints' ? <ComplaintsPage/> : activeNav === 'Notifications' ? <NotificationCenterPage items={notifications} readIds={readNotificationIds} onOpen={openNotification} onMarkAllRead={markAllRead}/> : activeNav === 'Coupons & Offers' ? <CouponsOffersPage/> : activeNav === 'Orders' ? <OrdersPage orders={ordersPageData} allOrders={orders} search={search} onSearch={setSearch} statusFilter={orderStatusFilter} onStatusFilter={setOrderStatusFilter} dateFrom={dateFrom} dateTo={dateTo} onDateApply={(from, to) => { setDateFrom(from); setDateTo(to) }}/> : <>
       <section className="stats-grid" aria-label="Platform summary">
         <StatCard
             icon="wallet"
@@ -1301,16 +1300,6 @@ function AdminDashboard({ onLogout, previewMode = false }) {
   </div>
 }
 
-async function getLoginCsrfToken() {
-  const response = await apiFetch('/login', { credentials: 'include', headers: { Accept: 'text/html' } })
-  if (!response.ok) throw new Error(`Admin sign-in service returned ${response.status}. Check that the backend is running on localhost:8081.`)
-  const html = await response.text()
-  const documentPage = new DOMParser().parseFromString(html, 'text/html')
-  const csrf = documentPage.querySelector('input[name="_csrf"]')?.value
-  if (!csrf) throw new Error('Could not start a secure sign-in. Please refresh and try again.')
-  return csrf
-}
-
 async function checkAdminSession() {
   const response = await apiFetch('/api/admin/test', { credentials: 'include', headers: { Accept: 'application/json' } })
   if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return false
@@ -1318,14 +1307,7 @@ async function checkAdminSession() {
   return result.message === 'Platform Admin authentication successful'
 }
 
-async function getAdminCsrfToken() {
-  const response = await apiFetch('/api/admin/csrf', { credentials: 'include', headers: { Accept: 'application/json' } })
-  if (!response.ok) throw new Error('Could not securely sign out. Please try again.')
-  const payload = await response.json()
-  return payload.token
-}
-
-function LoginPage({ onSuccess, onPreview }) {
+function LoginPage({ onSuccess }) {
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
@@ -1366,7 +1348,6 @@ function LoginPage({ onSuccess, onPreview }) {
         <button className="auth-submit" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign In'} {!busy && <Icon name="arrow" size={19}/>}</button>
       </form>
       <div className="auth-divider"><span/>OR<span/></div><aside className="auth-notice"><Icon name="shield" size={34}/><div><strong>Authorized Personnel Only</strong><small>This portal is restricted to Foodie administrators.</small></div></aside>
-      {false && <button className="auth-preview-button" type="button" onClick={()=>document.querySelector('#admin-email')?.focus()}>Admin sign-in required <span>Authorized accounts only</span></button>}
       <p className="auth-session-note">Secure sign-in uses your Foodie admin account.</p>
     </div></section>
   </main>
@@ -1374,7 +1355,6 @@ function LoginPage({ onSuccess, onPreview }) {
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
-  const [previewMode, setPreviewMode] = useState(false)
   const [checkingSession, setCheckingSession] = useState(true)
 
   useEffect(() => {
@@ -1393,7 +1373,7 @@ function App() {
 
   if (checkingSession) return <main className="auth-loading"><span className="auth-spinner"/><p>Checking admin session…</p></main>
   if (authenticated) return <AdminDashboard onLogout={signOut}/>
-  return <LoginPage onSuccess={() => setAuthenticated(true)} onPreview={() => setPreviewMode(true)}/>
+  return <LoginPage onSuccess={() => setAuthenticated(true)}/>
 }
 
 export default App

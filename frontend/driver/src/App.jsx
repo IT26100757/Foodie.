@@ -241,7 +241,7 @@ function ProfileSettings({ driver, vehiclePending, onProfileChange, onVehicleSub
     try {
       const response=await apiFetch(field==='password'?'/api/driver/profile/password':'/api/driver/profile',{method:field==='password'?'POST':'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(field==='password'?{currentPassword:data.get('currentPassword'),newPassword:data.get('password')}:{[field]:value})})
       if(!response.ok)throw new Error()
-      const updated=await response.json().catch(()=>({}))
+      await response.json().catch(()=>({}))
       if(field!=='password')onProfileChange(await api('/api/driver/profile'))
       setMessage(field==='email'?'Verification requested. Your current email remains active until verified.':`${label} updated.`);form.reset()
     } catch {setMessage('Profile service is currently unavailable. No changes were saved.')}
@@ -305,8 +305,29 @@ function CashCollectionPanel({ activeOrderId }) {
   }, []);
 
   useEffect(() => {
-    void loadOrders();
-  }, [loadOrders, activeOrderId]);
+    let active = true;
+    api('/api/driver/orders/history')
+      .then((history) => {
+        if (!active) return;
+        setOrders(
+          history.filter((order) =>
+            order.status === 'DELIVERED' &&
+            order.paymentMethod === 'CASH' &&
+            order.paymentStatus === 'PENDING'
+          )
+        );
+        setError('');
+      })
+      .catch((requestError) => {
+        if (active) setError(requestError.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [activeOrderId]);
 
   async function confirmCollection(order) {
     if (submitting.current) return;
@@ -400,8 +421,6 @@ function DriverDashboard({driver,onDriverChange}) {
   const [networkOnline,setNetworkOnline]=useState(()=>navigator.onLine)
   const [offer,setOffer]=useState(null)
   const [activeOrder,setActiveOrder]=useState(null)
-  useEffect(()=>{let active=true;async function refresh(){try{const order=await api('/api/driver/orders/active');if(active)setActiveOrder(order)}catch(error){if(active)setOrderServiceError(error.message)}}refresh();const timer=setInterval(refresh,4000);return()=>{active=false;clearInterval(timer)}},[])
-
   const [sound,setSound]=useState(()=>localStorage.getItem('foodie-driver-sound')!=='off')
   const [dark,setDark]=useState(()=>localStorage.getItem('foodie-driver-dark-mode')==='on')
   const [settingsNotice,setSettingsNotice]=useState('')
@@ -409,6 +428,7 @@ function DriverDashboard({driver,onDriverChange}) {
   const [notificationError,setNotificationError]=useState('')
   const [clockNow,setClockNow]=useState(()=>Date.now())
   const [orderServiceError,setOrderServiceError]=useState('')
+  useEffect(()=>{let active=true;async function refresh(){if(document.visibilityState==='hidden')return;try{const order=await api('/api/driver/orders/active');if(active)setActiveOrder(order)}catch(error){if(active)setOrderServiceError(error.message)}}refresh();const timer=setInterval(refresh,15000);return()=>{active=false;clearInterval(timer)}},[])
   const vehiclePending=driver?.vehicleChangeStatus==='PENDING_REVIEW'||driver?.status==='SUSPENDED_FOR_VEHICLE_REVIEW'
   const unreadNotifications=notifications.filter(item=>!item.read).length
   const driverName=driver?.fullName||`${driver?.firstName||''} ${driver?.lastName||''}`.trim()||'Driver account'
@@ -429,13 +449,13 @@ function DriverDashboard({driver,onDriverChange}) {
   const loadNotifications=async()=>{try{const response=await apiFetch('/api/driver/notifications',{credentials:'include'});if(!response.ok)throw new Error();const items=await response.json();setNotifications(Array.isArray(items)?items.map(item=>({...item,message:item.text})):[]);setNotificationError('')}catch{setNotifications([]);setNotificationError('Notifications are currently unavailable.')}}
   const markAllRead=async()=>{try{const response=await apiFetch('/api/driver/notifications/read-all',{method:'POST',credentials:'include'});if(!response.ok)throw new Error();setNotifications(current=>current.map(item=>({...item,read:true})));setNotificationError('')}catch{setNotificationError('Notifications could not be updated.')}}
   const markRead=async id=>{try{const response=await apiFetch(`/api/driver/notifications/${encodeURIComponent(id)}/read`,{method:'POST',credentials:'include'});if(!response.ok)throw new Error();setNotifications(current=>current.map(item=>item.id===id?{...item,read:true}:item))}catch{setNotificationError('Notification could not be updated.')}}
-  useEffect(()=>{const firstLoad=window.setTimeout(loadNotifications,0);const notificationsTimer=window.setInterval(loadNotifications,30000);const clockTimer=window.setInterval(()=>setClockNow(Date.now()),30000);return()=>{window.clearTimeout(firstLoad);window.clearInterval(notificationsTimer);window.clearInterval(clockTimer)}},[])
+  useEffect(()=>{const firstLoad=window.setTimeout(loadNotifications,0);const notificationsTimer=window.setInterval(()=>{if(document.visibilityState!=='hidden')loadNotifications()},30000);const clockTimer=window.setInterval(()=>setClockNow(Date.now()),30000);return()=>{window.clearTimeout(firstLoad);window.clearInterval(notificationsTimer);window.clearInterval(clockTimer)}},[])
   useEffect(()=>{const updateNetwork=()=>setNetworkOnline(navigator.onLine);window.addEventListener('online',updateNetwork);window.addEventListener('offline',updateNetwork);return()=>{window.removeEventListener('online',updateNetwork);window.removeEventListener('offline',updateNetwork)}},[])
   useEffect(()=>{
     if(!online || activeOrder)return undefined
     let active=true
-    const poll=async()=>{try{const response=await apiFetch('/api/driver/orders/offer',{credentials:'include'});if(response.status===204)return;if(!response.ok)throw new Error();const next=await response.json();if(active&&next?.id){setOffer(current=>{if(current?.id!==next.id&&sound)playAlert();return next});setOrderServiceError('')}}catch{if(active)setOrderServiceError('Order service is currently unavailable.')}}
-    poll();const timer=window.setInterval(poll,4000);return()=>{active=false;window.clearInterval(timer)}
+    const poll=async()=>{if(document.visibilityState==='hidden')return;try{const response=await apiFetch('/api/driver/orders/offer',{credentials:'include'});if(response.status===204)return;if(!response.ok)throw new Error();const next=await response.json();if(active&&next?.id){setOffer(current=>{if(current?.id!==next.id&&sound)playAlert();return next});setOrderServiceError('')}}catch{if(active)setOrderServiceError('Order service is currently unavailable.')}}
+    poll();const timer=window.setInterval(poll,15000);return()=>{active=false;window.clearInterval(timer)}
   },[online,activeOrder,sound,playAlert])
   const decideOrder=async accept=>{if(!offer)return;try{const response=await apiFetch(`/api/driver/orders/${encodeURIComponent(offer.id)}/${accept?'accept':'reject'}`,{method:'POST',credentials:'include'});if(!response.ok)throw new Error();const result=await response.json().catch(()=>({}));if(accept)setActiveOrder(result.order||offer);setOffer(null)}catch{setOrderServiceError('Order service is currently unavailable. Your response was not recorded.')}}
   const completeOrder=async()=>{
@@ -464,6 +484,8 @@ function DriverDashboard({driver,onDriverChange}) {
     {offer&&<div className="order-overlay"><div className="order-dialog"><div className="order-bell"><Icon name="bell" size={24}/></div><h2>New delivery offer</h2><p>Review the delivery details and respond.</p><div className="order-id">Order ID<b>{offer.id}</b></div><div className="customer-row"><div className="avatar">{String(offer.customerName||'C').slice(0,1).toUpperCase()}</div><div><small>Customer</small><b>{offer.customerName||'Customer'}</b></div></div>{Array.isArray(offer.items)&&<div className="order-items"><b>Items</b>{offer.items.map((item,index)=><span key={item.id||index}>{item.name||item}</span>)}</div>}<div className="order-totals"><div><span>Delivery payment</span><b>{formatMoney(offer.deliveryPayment)}</b></div></div><div className="destination-row"><span>📍</span><div><b>Destination</b><small>{offer.destination||'Address unavailable'}</small></div><b>{offer.distance||''}</b></div><div className="order-buttons"><button type="button" onClick={()=>decideOrder(false)}>Reject</button><button type="button" onClick={()=>decideOrder(true)}>Accept order</button></div></div></div>}
   </section>
 }
+const documentKinds={'NIC (Front Side)':'NIC_FRONT','NIC (Back Side)':'NIC_BACK','Driving License (Front Side)':'LICENSE_FRONT','Driving License (Back Side)':'LICENSE_BACK','Vehicle Registration Document (Front Side)':'REGISTRATION_FRONT','Vehicle Registration Document (Back Side)':'REGISTRATION_BACK','Vehicle Revenue Licence (Front Side)':'REVENUE_FRONT','Vehicle Revenue Licence (Back Side)':'REVENUE_BACK','Vehicle Insurance (Front Side)':'INSURANCE_FRONT','Vehicle Insurance (Back Side)':'INSURANCE_BACK','Front View':'VEHICLE_FRONT','Back View':'VEHICLE_BACK','Side View':'VEHICLE_SIDE'}
+
 function App() {
   const [page,setPage]=useState('splash')
   const [step,setStep]=useState(0)
@@ -481,10 +503,8 @@ function App() {
   const [registrationBusy,setRegistrationBusy]=useState(false)
   const fieldKeys={'First Name':'firstName','Last Name':'lastName','NIC Number':'nationalId','Driving License Number':'licenseNumber','Email Address':'email','Address Line 1':'address1','Address Line 2':'address2','Address Line 3':'address3','Vehicle Registration Number':'registration'}
   const registrationField=label=>({name:fieldKeys[label],value:registrationData[fieldKeys[label]] || '',onChange:event=>setRegistrationData(current=>({...current,[fieldKeys[label]]:event.target.value}))})
-  const documentKinds={'NIC (Front Side)':'NIC_FRONT','NIC (Back Side)':'NIC_BACK','Driving License (Front Side)':'LICENSE_FRONT','Driving License (Back Side)':'LICENSE_BACK','Vehicle Registration Document (Front Side)':'REGISTRATION_FRONT','Vehicle Registration Document (Back Side)':'REGISTRATION_BACK','Vehicle Revenue Licence (Front Side)':'REVENUE_FRONT','Vehicle Revenue Licence (Back Side)':'REVENUE_BACK','Vehicle Insurance (Front Side)':'INSURANCE_FRONT','Vehicle Insurance (Back Side)':'INSURANCE_BACK','Front View':'VEHICLE_FRONT','Back View':'VEHICLE_BACK','Side View':'VEHICLE_SIDE'}
 
-
-  useEffect(()=>{const timer=window.setTimeout(async()=>{try{const account=await api('/api/account');if(account.role==='RIDER'){setApplicationAccount(account);setRegistrationData({firstName:account.firstName,lastName:account.lastName,nationalId:account.nationalId,licenseNumber:account.licenseNumber,email:account.email,address1:account.address1,address2:account.address2,address3:account.address3,registration:account.plate});setPhone(account.phone || '');setBirthDate(account.birthDate || '');const documents=await api('/api/applications/documents');setRegistrationFiles(Object.fromEntries(documents.map(document=>[Object.keys(documentKinds).find(label=>documentKinds[label]===document.name),{name:'Saved '+document.name,size:document.size,existing:true}]).filter(([label])=>label)));if(account.approvalStatus==='APPROVED'){setDriver(await api('/api/driver/profile'));setPage('dashboard');return}setLoginError('Application '+account.approvalStatus+'. Permitted onboarding remains available.')}}catch{}setPage('login')},1400);return()=>window.clearTimeout(timer)},[])
+  useEffect(()=>{const timer=window.setTimeout(async()=>{try{const account=await api('/api/account');if(account.role==='RIDER'){setApplicationAccount(account);setRegistrationData({firstName:account.firstName,lastName:account.lastName,nationalId:account.nationalId,licenseNumber:account.licenseNumber,email:account.email,address1:account.address1,address2:account.address2,address3:account.address3,registration:account.plate});setPhone(account.phone || '');setBirthDate(account.birthDate || '');const documents=await api('/api/applications/documents');setRegistrationFiles(Object.fromEntries(documents.map(document=>[Object.keys(documentKinds).find(label=>documentKinds[label]===document.name),{name:'Saved '+document.name,size:document.size,existing:true}]).filter(([label])=>label)));if(account.approvalStatus==='APPROVED'){setDriver(await api('/api/driver/profile'));setPage('dashboard');return}setLoginError('Application '+account.approvalStatus+'. Permitted onboarding remains available.')}}catch{/* Unauthenticated session */}setPage('login')},1400);return()=>window.clearTimeout(timer)},[])
   const normalizePhone=value=>value.replace(/[^\d+]/g,'')
   const validPhone=value=>/^(?:\+94|0)?\d{9}$/.test(normalizePhone(value))
   const submitLogin=async event=>{

@@ -3,7 +3,7 @@ import './OrderTracking.css'
 import { api } from './api.js'
 import { loadOrder, acceptAdditionalCharge } from './customerApi.js'
 import './OrderTrackingProvider.css'
-import { confirmDelivery, mountTrackingMap, saveOrderUpdate, subscribeToOrder } from './orderTrackingService.js'
+import { confirmDelivery, mountTrackingMap, subscribeToOrder } from './orderTrackingService.js'
 
 const steps = ['Order Placed', 'Preparing', 'Picked Up', 'Out for Delivery', 'Delivered']
 const demoDriver = { name:'Awaiting driver assignment',phone:'',photo:'',vehicleNumber:'Not assigned',vehicleType:'Not assigned' }

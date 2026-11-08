@@ -71,13 +71,6 @@ function normalizeCustomerPhone(value) {
   return digits.replace(/^94/, '').replace(/^0/, '').slice(-9)
 }
 
-function readLocalCustomerAccounts() {
-  try {
-    const accounts = JSON.parse(localStorage.getItem('foodie.customer.accounts') || '[]')
-    return Array.isArray(accounts) ? accounts : []
-  } catch { return [] }
-}
-
 function App() {
   const [isHome, setIsHome] = useState(window.location.pathname === '/home')
   const isAuthRoute = !isHome && ['/', '/login', '/register'].includes(window.location.pathname)

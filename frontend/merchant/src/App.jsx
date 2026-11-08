@@ -42,7 +42,7 @@ function App() {
   const [merchantName, setMerchantName] = useState('')
 
   useEffect(() => {
-    const timer = window.setTimeout(async () => {try{const account=await api('/api/account');if(account.role==='MERCHANT'&&account.approvalStatus==='APPROVED'){setMerchantName(account.firstName);setView('dashboard');return}}catch{}setView('login')}, 1800)
+    const timer = window.setTimeout(async () => {try{const account=await api('/api/account');if(account.role==='MERCHANT'&&account.approvalStatus==='APPROVED'){setMerchantName(account.firstName);setView('dashboard');return}}catch{/* Unauthenticated session */}setView('login')}, 1800)
     return () => window.clearTimeout(timer)
   }, [])
 
@@ -153,9 +153,10 @@ function MerchantDashboard({ merchantName, onSignOut }) {
   const [orderSoundEnabled, setOrderSoundEnabled] = useState(false)
   const [settingsTheme, setSettingsTheme] = useState(() => localStorage.getItem('foodie-theme') || 'light')
   const alertStopRef = useRef(null)
+  const [referenceNow, setReferenceNow] = useState(() => Date.now())
   useEffect(()=>{
     let active=true
-    async function refresh(){try{const [rows,notes,feedback]=await Promise.all([loadMerchantOrders(),api('/api/notifications'),api('/api/restaurants/mine').then(owned=>owned[0]?api('/api/reviews/restaurant/'+owned[0].id):[])]);if(active){setOrders(rows);setReviews(feedback);setNotifications(notes.filter(note=>!note.read).map(note=>({...note,orderId:note.title.match(/#(\d+)/)?.[1],receivedAt:note.createdAt})))}}catch(error){console.error(error.message)}}
+    async function refresh(){if(document.visibilityState==='hidden')return;try{const [rows,notes,feedback]=await Promise.all([loadMerchantOrders(),api('/api/notifications'),api('/api/restaurants/mine').then(owned=>owned[0]?api('/api/reviews/restaurant/'+owned[0].id):[])]);if(active){setOrders(rows);setReviews(feedback);setReferenceNow(Date.now());setNotifications(notes.filter(note=>!note.read).map(note=>({...note,orderId:note.title.match(/#(\d+)/)?.[1],receivedAt:note.createdAt})))}}catch(error){console.error(error.message)}}
     refresh();const timer=setInterval(refresh,30000);return()=>{active=false;clearInterval(timer)}
   },[])
   const completed = orders.filter((order) =>
@@ -166,7 +167,7 @@ function MerchantDashboard({ merchantName, onSignOut }) {
     const days = dateRange === 'Last 30 days' ? 30 : 7;
 
     return (
-        Date.now() - new Date(order.createdAt).getTime() <
+        referenceNow - new Date(order.createdAt).getTime() <
         days * 86400000
     );
   });
@@ -204,7 +205,6 @@ function MerchantDashboard({ merchantName, onSignOut }) {
   for(const order of completed)for(const item of order.items){const key=item.menuItemId;const existing=bestItems.get(key)||{name:item.name,quantity:0};existing.quantity+=Number(item.quantity);bestItems.set(key,existing)}
   const bestItemText=[...bestItems.values()].sort((a,b)=>b.quantity-a.quantity).slice(0,3).map(item=>item.name+' × '+item.quantity).join(' · ')
   const repeatCustomers=[...customerVisits.values()].filter(count=>count>1).length
-  const chartValue=chartMetric==='Sales'?metricValues['Total Sales']:chartMetric==='Orders'?periodOrders.length:metricValues['Average Order Value']
   const feedbackText=reviews.length?reviews.slice(0,3).map(review=>'★ '+review.rating+' · '+review.comment).join(' · '):'No customer reviews recorded.'
 
 
@@ -359,9 +359,6 @@ function RegistrationPortal({ onLogin }) {
   const [message, setMessage] = useState('')
   const [documents,setDocuments]=useState({})
   const [application,setApplication]=useState(null)
-  useEffect(()=>{api('/api/account').then(async account=>{if(account.role!=='MERCHANT')return;setApplication(account);const restaurant=await api('/api/applications/restaurant');setFormData(current=>({...current,firstName:account.firstName,lastName:account.lastName,nationalId:account.nationalId,email:account.email,restaurantName:restaurant.name,restaurantAddress:restaurant.address,restaurantPhone:restaurant.phone}));setMessage('Application '+account.approvalStatus+(account.submitted?' — submitted for review.':' — upload documents to complete onboarding.'))}).catch(()=>{})},[])
-
-
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -373,6 +370,7 @@ function RegistrationPortal({ onLogin }) {
     password: '',
     confirmPassword: '',
   })
+  useEffect(()=>{api('/api/account').then(async account=>{if(account.role!=='MERCHANT')return;setApplication(account);const restaurant=await api('/api/applications/restaurant');setFormData(current=>({...current,firstName:account.firstName,lastName:account.lastName,nationalId:account.nationalId,email:account.email,restaurantName:restaurant.name,restaurantAddress:restaurant.address,restaurantPhone:restaurant.phone}));setMessage('Application '+account.approvalStatus+(account.submitted?' — submitted for review.':' — upload documents to complete onboarding.'))}).catch(()=>{})},[])
 
   function handleChange(event) {
     const { name, value } = event.target

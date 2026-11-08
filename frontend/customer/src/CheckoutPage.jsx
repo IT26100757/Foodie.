@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from './api.js'
 import { checkoutRequest } from './customerApi.js'
 import './CheckoutPage.css'
-import { rewardPoints } from './rewardPoints.js'
 
 const emptyAddress = { address1: '', address2: '', address3: '', city: '', postalCode: '' }
 const money = (value) => `Rs. ${Number(value || 0).toLocaleString('en-LK')}`
@@ -41,18 +40,28 @@ function CardSummary({ card, selected, onSelect }) {
 
 export default function CheckoutPage({ cart, profile, onProfileChange, isGuest, pointsBalance, offer, onComplete, onOpenRewards }) {
   const [step, setStep] = useState(1)
-  const [details, setDetails] = useState(() => ({
+  const [draftDetails, setDetails] = useState(() => ({
     name: profile.name || '', phone: sriLankanPhoneDigits(profile.phone), email: profile.email || '',
     ...emptyAddress, address1: profile.address1 || '', address2: profile.address2 || '', address3: profile.address3 || '',
     city: profile.city || '', postalCode: profile.postalCode || '',
   }))
-  useEffect(()=>{setDetails(current=>({...current,name:current.name || profile.name || '',email:current.email || profile.email || '',phone:current.phone || sriLankanPhoneDigits(profile.phone),address1:current.address1 || profile.address1 || '',address2:current.address2 || profile.address2 || '',address3:current.address3 || profile.address3 || '',city:current.city || profile.city || '',postalCode:current.postalCode || profile.postalCode || ''}))},[profile.name,profile.email,profile.phone,profile.address1])
+  const details = useMemo(() => ({
+    ...draftDetails,
+    name: draftDetails.name || profile.name || '',
+    email: draftDetails.email || profile.email || '',
+    phone: draftDetails.phone || sriLankanPhoneDigits(profile.phone),
+    address1: draftDetails.address1 || profile.address1 || '',
+    address2: draftDetails.address2 || profile.address2 || '',
+    address3: draftDetails.address3 || profile.address3 || '',
+    city: draftDetails.city || profile.city || '',
+    postalCode: draftDetails.postalCode || profile.postalCode || '',
+  }), [draftDetails, profile.name, profile.email, profile.phone, profile.address1, profile.address2, profile.address3, profile.city, profile.postalCode])
   const [saveAddress, setSaveAddress] = useState(!isGuest)
   const [paymentMethod, setPaymentMethod] = useState('card')
   const [redeemPoints, setRedeemPoints] = useState(false)
-  const [cards, setCards] = useState(() => isGuest ? [] : loadCards())
+  const [cards] = useState(() => isGuest ? [] : loadCards())
   const [selectedCardId, setSelectedCardId] = useState(() => isGuest ? '' : loadCards()[0]?.id || '')
-  const [newCardId, setNewCardId] = useState('')
+  const [newCardId] = useState('')
   const [showNewCard, setShowNewCard] = useState(false)
   const [newCard, setNewCard] = useState({ bank: 'Visa', holder: '', last4: '', expiry: '' })
   const [saveCard, setSaveCard] = useState(false)

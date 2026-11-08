@@ -2,7 +2,7 @@ import { api } from './api.js'
 export const statusLabel={NEW:'Confirmed',PREPARING:'Preparing',READY:'Ready',ON_DELIVERY:'Picked Up',DELIVERED:'Delivered',PICKED_UP:'Delivered',CANCELLED:'Cancelled'}
 
 // Wait for completion before scheduling another refresh; hidden tabs do not poll.
-export function pollWhileVisible(task, visibility=globalThis.document, delay=15000, clock=globalThis) {
+export function pollWhileVisible(task, visibility=globalThis.document, delay=30000, clock=globalThis) {
  let stopped=false, running=false, timer=null
  const visible=()=>!visibility || visibility.visibilityState!=='hidden'
  const clear=()=>{if(timer!==null){clock.clearTimeout(timer);timer=null}}

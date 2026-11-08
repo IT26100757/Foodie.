@@ -3,7 +3,7 @@ import './HomePage.css'
 import AccountCenter from './AccountCenter.jsx'
 import RestaurantExperience from './RestaurantExperience.jsx'
 import CheckoutPage from './CheckoutPage.jsx'
-import { DEMO_RESTAURANTS, fetchMerchantRestaurants } from './restaurantData.js'
+import { fetchMerchantRestaurants } from './restaurantData.js'
 import OrderTracking from './OrderTracking.jsx'
 import OffersPage from './OffersPage.jsx'
 import { api, profileView, accountView } from './api.js'
@@ -110,7 +110,7 @@ export default function HomePage() {
 
     async function poll() {
       try {
-        await refresh()
+        if (document.visibilityState !== 'hidden') await refresh()
       } finally {
         if (active) timer = window.setTimeout(poll, 30000)
       }
@@ -125,7 +125,6 @@ export default function HomePage() {
   const [checkoutOffer] = useState(() => { try { return JSON.parse(sessionStorage.getItem('foodie.checkout.offer') || 'null') } catch { return null } })
   const handleTrackedOrderChange = useCallback((updatedOrder) => setOrders((current) => current.map((order) => order.id === updatedOrder.id ? updatedOrder : order)), [])
   const isGuest = new URLSearchParams(window.location.search).get('mode') === 'guest' || !customer
-  const favoriteStorageKey = !isGuest && (customer?.identifier || customer?.displayName) ? 'foodie.customer.favorites.' + encodeURIComponent(String(customer.identifier || customer.displayName).trim().toLowerCase()) : ''
 
   const changeSlide = useCallback((nextSlide) => {
     const currentSlide = activeSlideRef.current
@@ -151,7 +150,7 @@ export default function HomePage() {
 
     async function pollRestaurants() {
       try {
-        await loadRestaurants()
+        if (document.visibilityState !== 'hidden') await loadRestaurants()
       } finally {
         if (active) {
           restaurantsTimer = window.setTimeout(pollRestaurants, 60000)
@@ -205,7 +204,7 @@ export default function HomePage() {
 
     async function pollMenu() {
       try {
-        await loadMenu()
+        if (document.visibilityState !== 'hidden') await loadMenu()
       } finally {
         if (active) timer = window.setTimeout(pollMenu, 60000)
       }

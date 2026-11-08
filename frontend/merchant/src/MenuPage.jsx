@@ -16,7 +16,7 @@ export default function MenuPage() {
   const [items, setItems] = useState([])
   const [restaurantId,setRestaurantId]=useState(null)
   async function loadMenu(){const restaurants=await api('/api/restaurants/mine');const id=restaurants[0]?.id;if(!id)throw new Error('Restaurant profile required.');setRestaurantId(id);const rows=await api('/api/restaurants/'+id+'/menu/manage');setItems(rows.map(item=>({...blankItem(),...item,sizes:{...blankItem().sizes,...item.sizes}})))}
-  useEffect(()=>{loadMenu().catch(error=>window.alert(error.message))},[])
+  useEffect(()=>{let active=true;api('/api/restaurants/mine').then(async restaurants=>{const id=restaurants[0]?.id;if(!id)throw new Error('Restaurant profile required.');if(active)setRestaurantId(id);const rows=await api('/api/restaurants/'+id+'/menu/manage');if(active)setItems(rows.map(item=>({...blankItem(),...item,sizes:{...blankItem().sizes,...item.sizes}})))}).catch(error=>{if(active)window.alert(error.message)});return()=>{active=false}},[])
   async function toggleAvailability(item){try{await api('/api/menu-items/'+item.id,{method:'POST',body:{...item,available:!item.available}});await loadMenu()}catch(error){window.alert(error.message)}}
 
   const [drawerOpen, setDrawerOpen] = useState(false)
