@@ -1,0 +1,44 @@
+# Credentials and private machine settings — never commit these
+.env
+.env.*
+*.local
+application-local.*
+application-private.*
+application-secrets.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.json
+secrets.json
+
+# Dependencies and generated application/build outputs
+node_modules/
+target/
+build/
+dist/
+dist-ssr/
+.vite/
+coverage/
+*.class
+*.jar
+*.war
+*.zip
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDE and OS files, which may contain private environment variables
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+Thumbs.db
+
+# Workspace-only scratch and delivery directories
+/work/
+/outputs/
